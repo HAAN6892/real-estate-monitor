@@ -1,0 +1,5 @@
+sent_history.json
+coord_cache.json
+apt_info_cache.json
+__pycache__/
+*.pyc
