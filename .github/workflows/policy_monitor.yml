@@ -50,6 +50,9 @@ jobs:
             policy-sent-
 
       - name: 정책 모니터링 실행
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_DB_ID: ${{ secrets.NOTION_DB_ID }}
         run: python policy_monitor.py
 
       - name: 전송 기록 저장
