@@ -1,0 +1,60 @@
+name: 부동산 정책 모니터링
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+    - cron: '0 5 * * *'
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+
+jobs:
+  policy-monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 패키지 설치
+        run: pip install requests
+
+      - name: config.json 생성
+        env:
+          MY_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          MY_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          python3 << 'EOF'
+          import json, os
+          config = {
+              "telegram": {
+                  "bot_token": os.environ["MY_BOT_TOKEN"],
+                  "chat_id": os.environ["MY_CHAT_ID"]
+              }
+          }
+          with open("config.json", "w", encoding="utf-8") as f:
+              json.dump(config, f, ensure_ascii=False, indent=2)
+          print("config.json 생성 완료")
+          EOF
+
+      - name: 전송 기록 복원
+        uses: actions/cache@v4
+        with:
+          path: policy_sent_ids.json
+          key: policy-sent-${{ github.run_id }}
+          restore-keys: |
+            policy-sent-
+
+      - name: 정책 모니터링 실행
+        run: python policy_monitor.py
+
+      - name: 전송 기록 저장
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: policy_sent_ids.json
+          key: policy-sent-${{ github.run_id }}
