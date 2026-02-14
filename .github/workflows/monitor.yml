@@ -74,4 +74,7 @@ jobs:
           EOF
 
       - name: 모니터링 실행
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_PROPERTY_DB_ID: ${{ secrets.NOTION_PROPERTY_DB_ID }}
         run: python main.py
