@@ -1,13 +1,15 @@
 """
-수도권 부동산 실거래가 모니터링 봇 v2
+수도권 부동산 실거래가 모니터링 봇 v3
 - 국토교통부 실거래가 API 데이터 수집
 - 카카오 로컬 API로 아파트 좌표 → 최근접 역 거리 계산
 - 동일 단지 묶기, 가격대별 그룹핑, 평당가 계산
 - 지역별 요약 텔레그램 알림
+- [v3] 노션 DB에 매물 데이터 저장
 """
 
 import json
 import math
+import os
 import requests
 import urllib.parse
 import xml.etree.ElementTree as ET
@@ -20,6 +22,15 @@ CONFIG_PATH = BASE_DIR / "config.json"
 HISTORY_PATH = BASE_DIR / "sent_history.json"
 COORD_CACHE_PATH = BASE_DIR / "coord_cache.json"
 APT_INFO_CACHE_PATH = BASE_DIR / "apt_info_cache.json"
+
+# ─── 노션 설정 ───
+NOTION_API_KEY = os.environ.get("NOTION_API_KEY", "")
+NOTION_PROPERTY_DB_ID = os.environ.get("NOTION_PROPERTY_DB_ID", "")
+NOTION_HEADERS = {
+    "Authorization": f"Bearer {NOTION_API_KEY}",
+    "Content-Type": "application/json",
+    "Notion-Version": "2022-06-28"
+}
 
 # ─── 신분당선 + 주요 지하철역 좌표 ───
 STATIONS = [
@@ -119,7 +130,6 @@ def save_history(history):
 
 
 def load_coord_cache():
-    """좌표 캐시 로드 (카카오 API 호출 절약)"""
     if COORD_CACHE_PATH.exists():
         with open(COORD_CACHE_PATH, "r", encoding="utf-8") as f:
             return json.load(f)
@@ -132,7 +142,6 @@ def save_coord_cache(cache):
 
 
 def load_apt_info_cache():
-    """아파트 단지 정보 캐시 (세대수 등)"""
     if APT_INFO_CACHE_PATH.exists():
         with open(APT_INFO_CACHE_PATH, "r", encoding="utf-8") as f:
             return json.load(f)
@@ -144,11 +153,122 @@ def save_apt_info_cache(cache):
         json.dump(cache, f, ensure_ascii=False, indent=2)
 
 
+# ─── 노션 DB 속성 자동 설정 ───
+def setup_notion_property_db():
+    """매물 트래커 DB에 필요한 속성(컬럼) 자동 생성"""
+    if not NOTION_API_KEY or not NOTION_PROPERTY_DB_ID:
+        print("  [노션] API 키 또는 DB ID 미설정 → 노션 저장 건너뜀")
+        return False
+
+    url = f"https://api.notion.com/v1/databases/{NOTION_PROPERTY_DB_ID}"
+
+    properties = {
+        "지역": {"multi_select": {}},
+        "법정동": {"rich_text": {}},
+        "면적": {"number": {"format": "number"}},
+        "평수": {"number": {"format": "number"}},
+        "매매가": {"number": {"format": "number"}},
+        "평당가": {"number": {"format": "number"}},
+        "층": {"number": {"format": "number"}},
+        "건축년도": {"number": {"format": "number"}},
+        "세대수": {"number": {"format": "number"}},
+        "최근접역": {"rich_text": {}},
+        "노선": {"rich_text": {}},
+        "도보(분)": {"number": {"format": "number"}},
+        "거래일": {"date": {}},
+        "매물링크": {"url": {}},
+    }
+
+    try:
+        resp = requests.patch(url, headers=NOTION_HEADERS, json={"properties": properties})
+        if resp.status_code == 200:
+            print("  [노션] 매물 DB 속성 설정 완료")
+            return True
+        else:
+            print(f"  [노션] DB 속성 설정 실패: {resp.status_code} {resp.text[:200]}")
+            return False
+    except Exception as e:
+        print(f"  [노션] DB 속성 설정 오류: {e}")
+        return False
+
+
+def save_trade_to_notion(trade_summary, region_name):
+    """개별 거래 요약 데이터를 노션 DB에 저장"""
+    if not NOTION_API_KEY or not NOTION_PROPERTY_DB_ID:
+        return False
+
+    url = "https://api.notion.com/v1/pages"
+
+    # 거래일 구성
+    trade_date = None
+    if trade_summary.get("거래일"):
+        trade_date = trade_summary["거래일"]
+
+    # 네이버 부동산 링크
+    search_query = urllib.parse.quote(f"{trade_summary['법정동']} {trade_summary['아파트']}")
+    naver_link = f"https://m.land.naver.com/search/result/{search_query}"
+
+    # 최근접역 정보 파싱
+    station_name = ""
+    station_line = ""
+    walk_min = None
+    if trade_summary.get("역이름"):
+        station_name = trade_summary["역이름"]
+    if trade_summary.get("역노선"):
+        station_line = trade_summary["역노선"]
+    if trade_summary.get("도보분") and trade_summary["도보분"] < 999:
+        walk_min = trade_summary["도보분"]
+
+    # 제목: "단지명 면적 매매가"
+    title = f"{trade_summary['아파트']} {trade_summary['평']}평 {format_price(trade_summary['매매가'])}"
+
+    properties = {
+        "이름": {
+            "title": [{"text": {"content": title}}]
+        },
+        "지역": {
+            "multi_select": [{"name": region_name}]
+        },
+        "법정동": {
+            "rich_text": [{"text": {"content": trade_summary.get("법정동", "")}}]
+        },
+        "면적": {"number": trade_summary.get("면적", 0)},
+        "평수": {"number": trade_summary.get("평", 0)},
+        "매매가": {"number": trade_summary.get("매매가", 0)},
+        "평당가": {"number": trade_summary.get("평당가", 0)},
+        "층": {"number": trade_summary.get("층", 0)},
+        "건축년도": {"number": trade_summary.get("건축년도", 0)},
+        "세대수": {"number": trade_summary.get("세대수", 0)},
+        "매물링크": {"url": naver_link},
+    }
+
+    if station_name:
+        properties["최근접역"] = {"rich_text": [{"text": {"content": station_name}}]}
+    if station_line:
+        properties["노선"] = {"rich_text": [{"text": {"content": station_line}}]}
+    if walk_min is not None:
+        properties["도보(분)"] = {"number": walk_min}
+    if trade_date:
+        properties["거래일"] = {"date": {"start": trade_date}}
+
+    body = {
+        "parent": {"database_id": NOTION_PROPERTY_DB_ID},
+        "properties": properties
+    }
+
+    try:
+        resp = requests.post(url, headers=NOTION_HEADERS, json=body)
+        if resp.status_code == 200:
+            return True
+        else:
+            print(f"  [노션] 저장 실패: {resp.status_code} {resp.text[:200]}")
+            return False
+    except Exception as e:
+        print(f"  [노션] 저장 오류: {e}")
+        return False
+
+
 def fetch_region_apt_list(api_key, sigungu_code, apt_list_cache):
-    """
-    시군구 아파트 목록 조회 (단지코드+단지명)
-    - 캐시 활용으로 한 지역당 최초 1회만 호출
-    """
     if sigungu_code in apt_list_cache:
         return apt_list_cache[sigungu_code]
 
@@ -187,25 +307,20 @@ def fetch_region_apt_list(api_key, sigungu_code, apt_list_cache):
 
 
 def find_kapt_code(apt_name, apt_list):
-    """아파트 목록에서 단지명 매칭하여 단지코드 찾기"""
-    # 공백/특수문자 제거한 이름으로 비교
     def clean(name):
         return name.replace(" ", "").replace("(", "").replace(")", "").lower()
 
     clean_name = clean(apt_name)
 
-    # 1차: 정확 매칭
     for apt in apt_list:
         if clean(apt.get("kaptName", "")) == clean_name:
             return apt["kaptCode"]
 
-    # 2차: 부분 매칭 (검색 이름이 목록 이름에 포함)
     for apt in apt_list:
         kname = clean(apt.get("kaptName", ""))
         if clean_name in kname or kname in clean_name:
             return apt["kaptCode"]
 
-    # 3차: 핵심 단어 매칭 (2글자 이상 단어 기준)
     name_words = [w for w in clean_name if len(w) >= 2]
     best_score = 0
     best_code = None
@@ -223,16 +338,10 @@ def find_kapt_code(apt_name, apt_list):
 
 
 def get_apt_household_count(api_key, apt_name, sigungu_code, apt_info_cache, apt_list_cache):
-    """
-    2단계 세대수 조회:
-    1) 목록 API로 단지코드 찾기
-    2) 기본정보 API로 세대수 조회
-    """
     cache_key = f"{sigungu_code}_{apt_name}"
     if cache_key in apt_info_cache:
         return apt_info_cache[cache_key]
 
-    # 1단계: 지역 아파트 목록에서 단지코드 찾기
     apt_list = fetch_region_apt_list(api_key, sigungu_code, apt_list_cache)
     kapt_code = find_kapt_code(apt_name, apt_list)
 
@@ -242,7 +351,6 @@ def get_apt_household_count(api_key, apt_name, sigungu_code, apt_info_cache, apt
         apt_info_cache[cache_key] = result
         return result
 
-    # 2단계: 기본정보 API로 세대수 조회
     url = "https://apis.data.go.kr/1613000/AptBasisInfoServiceV4/getAphusBassInfoV4"
     params = {
         "serviceKey": api_key,
@@ -325,10 +433,9 @@ def fetch_trades(api_key, region_code, deal_ymd):
 def filter_trades(trades, filters):
     filtered = []
     today = datetime.now().date()
-    max_days = filters.get("max_days_ago", 14)  # 기본 14일 이내 거래만
+    max_days = filters.get("max_days_ago", 14)
 
     for t in trades:
-        # 거래일 기준 최근 N일 이내만
         try:
             trade_date = datetime(t["거래년도"], t["거래월"], t["거래일"]).date()
             if (today - trade_date).days > max_days:
@@ -355,7 +462,6 @@ def make_trade_id(trade, region_name):
 
 # ─── 카카오 API로 주소 → 좌표 변환 ───
 def get_coordinates(kakao_key, address, coord_cache):
-    """주소로 좌표 검색 (캐시 활용)"""
     if address in coord_cache:
         return coord_cache[address]
 
@@ -374,7 +480,6 @@ def get_coordinates(kakao_key, address, coord_cache):
     except Exception:
         pass
 
-    # 주소 검색 실패 시 키워드 검색 시도
     url2 = "https://dapi.kakao.com/v2/local/search/keyword.json"
     try:
         resp = requests.get(url2, headers=headers, params=params, timeout=5)
@@ -391,7 +496,6 @@ def get_coordinates(kakao_key, address, coord_cache):
 
 
 def haversine(lat1, lon1, lat2, lon2):
-    """두 좌표 간 직선거리 (km)"""
     R = 6371
     dlat = math.radians(lat2 - lat1)
     dlon = math.radians(lon2 - lon1)
@@ -400,7 +504,6 @@ def haversine(lat1, lon1, lat2, lon2):
 
 
 def find_nearest_station(lat, lon):
-    """가장 가까운 역 찾기"""
     nearest = None
     min_dist = float("inf")
     for st in STATIONS:
@@ -408,7 +511,6 @@ def find_nearest_station(lat, lon):
         if dist < min_dist:
             min_dist = dist
             nearest = st
-    # 직선거리 → 도보시간 환산 (직선 1km ≈ 도보 15분)
     walk_min = round(min_dist * 15)
     return nearest, min_dist, walk_min
 
@@ -429,14 +531,12 @@ def to_pyeong(m2):
 
 
 def price_group_label(price_man):
-    """가격대 라벨"""
     억 = price_man // 10000
     return f"{억}억대"
 
 
 # ─── 단지별 묶기 + 요약 ───
 def group_by_complex(trades):
-    """동일 단지+면적 묶기"""
     groups = {}
     for t in trades:
         key = f"{t['아파트']}_{t['면적']}"
@@ -454,18 +554,16 @@ def group_by_complex(trades):
 
 
 def build_region_summary(region_name, complex_groups, kakao_key, coord_cache, sgg_name, api_key, apt_info_cache, min_households, region_code, apt_list_cache):
-    """한 지역의 요약 메시지 생성"""
+    """한 지역의 요약 메시지 생성 + 노션 저장용 데이터 반환"""
 
-    # 단지별 대표 정보 만들기
     summaries = []
+    notion_items = []  # [v3] 노션 저장용
     skipped_small = 0
 
     for key, group in complex_groups.items():
-        # 세대수 조회
         apt_info = get_apt_household_count(api_key, group["아파트"], region_code, apt_info_cache, apt_list_cache)
         household = apt_info["세대수"]
 
-        # 세대수 필터 (조회 실패(0)인 경우는 통과시킴)
         if household > 0 and household < min_households:
             skipped_small += 1
             continue
@@ -477,14 +575,17 @@ def build_region_summary(region_name, complex_groups, kakao_key, coord_cache, sg
         pyeong = to_pyeong(group["면적"])
         price_per_pyeong = round(avg_p / pyeong) if pyeong > 0 else 0
 
-        # 좌표 검색
         address = f"{sgg_name} {group['법정동']} {group['아파트']}"
         coord = get_coordinates(kakao_key, address, coord_cache)
 
         station_info = ""
         walk_min = 999
+        nearest_station_name = ""
+        nearest_station_line = ""
         if coord:
             nearest, dist_km, walk_min = find_nearest_station(coord["lat"], coord["lon"])
+            nearest_station_name = nearest["name"]
+            nearest_station_line = nearest["line"]
             if walk_min <= 15:
                 station_info = f"🚇 {nearest['name']}역 {walk_min}분"
             elif walk_min <= 25:
@@ -511,6 +612,29 @@ def build_region_summary(region_name, complex_groups, kakao_key, coord_cache, sg
             "세대수표시": household_str,
         })
 
+        # [v3] 각 거래를 노션 저장용으로 준비
+        for t in trades:
+            try:
+                trade_date_str = f"{t['거래년도']}-{t['거래월']:02d}-{t['거래일']:02d}"
+            except (ValueError, TypeError):
+                trade_date_str = None
+
+            notion_items.append({
+                "아파트": group["아파트"],
+                "법정동": group["법정동"],
+                "면적": group["면적"],
+                "평": pyeong,
+                "매매가": t["거래금액"],
+                "평당가": round(t["거래금액"] / pyeong) if pyeong > 0 else 0,
+                "층": t["층"],
+                "건축년도": group["건축년도"],
+                "세대수": household,
+                "역이름": nearest_station_name,
+                "역노선": nearest_station_line,
+                "도보분": walk_min,
+                "거래일": trade_date_str,
+            })
+
     # 가격순 정렬
     summaries.sort(key=lambda x: x["평균가"])
 
@@ -536,7 +660,6 @@ def build_region_summary(region_name, complex_groups, kakao_key, coord_cache, sg
         items = price_groups[label]
         lines.append(f"💰 *{label}*")
 
-        # 가격대별 상위 5개 단지만 표시
         shown = items[:5]
         hidden = len(items) - 5
 
@@ -545,11 +668,8 @@ def build_region_summary(region_name, complex_groups, kakao_key, coord_cache, sg
             if s["건수"] > 1:
                 price_str = f"{format_price(s['최저가'])}~{format_price(s['최고가'])}"
 
-            # 세대수 표시 (없으면 -세대)
             household_str = s["세대수표시"] if s["세대수표시"] else "-세대"
-            # 역정보 표시 (없으면 -)
             station_str = s["역정보"] if s["역정보"] else "📍 역정보 없음"
-            # 네이버 부동산 검색 링크
             search_query = urllib.parse.quote(f"{s['법정동']} {s['아파트']}")
             naver_link = f"https://m.land.naver.com/search/result/{search_query}"
 
@@ -567,7 +687,7 @@ def build_region_summary(region_name, complex_groups, kakao_key, coord_cache, sg
     if skipped_small > 0:
         lines.append(f"ℹ️ {min_households}세대 미만 {skipped_small}개 단지 제외")
 
-    return "\n".join(lines)
+    return "\n".join(lines), notion_items
 
 
 # ─── 텔레그램 전송 ───
@@ -609,7 +729,7 @@ def send_long_message(bot_token, chat_id, message):
 # ─── 메인 ───
 def main():
     print("=" * 50)
-    print("🏠 부동산 실거래가 모니터링 v2")
+    print("🏠 부동산 실거래가 모니터링 v3 (노션 연동)")
     print(f"⏰ {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 50)
 
@@ -625,8 +745,11 @@ def main():
     history_set = set(history)
     coord_cache = load_coord_cache()
     apt_info_cache = load_apt_info_cache()
-    apt_list_cache = {}  # 지역별 아파트 목록 캐시 (메모리만, 매 실행마다 새로 조회)
+    apt_list_cache = {}
     min_households = filters.get("min_households", 200)
+
+    # [v3] 노션 DB 속성 설정
+    notion_enabled = setup_notion_property_db()
 
     now = datetime.now()
     months = [now.strftime("%Y%m"), (now - timedelta(days=30)).strftime("%Y%m")]
@@ -634,6 +757,7 @@ def main():
 
     total_new = 0
     total_checked = 0
+    total_notion = 0
     region_results = {}
 
     for region in regions:
@@ -686,7 +810,6 @@ def main():
     date_to = now.strftime("%m/%d")
 
     # ─── 텔레그램 전송 ───
-    # 전체 지역 요약 (0건도 표시)
     region_summary_lines = []
     for region in regions:
         rname = region["name"]
@@ -709,12 +832,23 @@ def main():
     send_telegram(bot_token, chat_id, header)
 
     if region_results:
-        # 지역별 상세
         for rname, rdata in region_results.items():
             complex_groups = group_by_complex(rdata["trades"])
-            message = build_region_summary(rname, complex_groups, kakao_key, coord_cache, rdata["sgg_name"], api_key, apt_info_cache, min_households, rdata["region_code"], apt_list_cache)
+            message, notion_items = build_region_summary(
+                rname, complex_groups, kakao_key, coord_cache,
+                rdata["sgg_name"], api_key, apt_info_cache,
+                min_households, rdata["region_code"], apt_list_cache
+            )
             send_long_message(bot_token, chat_id, message)
             print(f"  📤 {rname} 알림 전송")
+
+            # [v3] 노션에 저장
+            if notion_enabled and notion_items:
+                print(f"  📒 {rname} 노션 저장 중... ({len(notion_items)}건)")
+                for item in notion_items:
+                    if save_trade_to_notion(item, rname):
+                        total_notion += 1
+                print(f"  📒 {rname} 노션 저장 완료")
 
     # 저장
     save_history(history)
@@ -722,7 +856,7 @@ def main():
     save_apt_info_cache(apt_info_cache)
 
     print(f"\n{'=' * 50}")
-    print(f"✅ 완료! 새 알림 {total_new}건")
+    print(f"✅ 완료! 새 알림 {total_new}건 / 노션 저장 {total_notion}건")
     print(f"{'=' * 50}")
 
 
