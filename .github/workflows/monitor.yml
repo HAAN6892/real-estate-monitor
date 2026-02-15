@@ -70,11 +70,14 @@ jobs:
           with open("config.json", "w", encoding="utf-8") as f:
               json.dump(config, f, ensure_ascii=False, indent=2)
           print("config.json 생성 완료")
-          print(f"chat_id: {config['telegram']['chat_id']}")
           EOF
 
       - name: 모니터링 실행
-        env:
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
-          NOTION_PROPERTY_DB_ID: ${{ secrets.NOTION_PROPERTY_DB_ID }}
         run: python main.py
+
+      - name: data.json 커밋 및 푸시
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          git diff --cached --quiet && echo "변경사항 없음" || (git commit -m "📊 data.json 업데이트 $(date +'%Y-%m-%d %H:%M')" && git push)
