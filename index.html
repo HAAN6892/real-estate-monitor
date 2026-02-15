@@ -507,8 +507,8 @@ tr:hover td { background:rgba(124,106,246,0.03); }
     <div class="field">
       <label>인테리어 예산</label>
       <div class="field-row">
-        <input type="range" id="interior" min="0" max="15000" step="500" value="9000">
-        <input type="number" class="field-value" id="interiorVal" value="9000" min="0" max="999999">
+        <input type="range" id="interior" min="0" max="15000" step="500" value="5000">
+        <input type="number" class="field-value" id="interiorVal" value="5000" min="0" max="999999">
         <span class="field-unit">만원</span>
       </div>
     </div>
@@ -609,6 +609,30 @@ let currentSort = 'price-asc';
 let searchQuery = '';
 let regionFilterVal = '';
 let verdictFilterVal = '';
+
+// settings.json에서 기본값 로드
+async function loadSettings() {
+  try {
+    const resp = await fetch('settings.json');
+    if (!resp.ok) throw new Error('settings.json 없음');
+    const s = await resp.json();
+    const fields = ['income1','income2','cash','interior','rate','term','monthlyLimit','mgmt','ltv','dsr'];
+    fields.forEach(id => {
+      if (s[id] !== undefined) {
+        const slider = document.getElementById(id);
+        const input = document.getElementById(id + 'Val');
+        if (slider) slider.value = s[id];
+        if (input) input.value = s[id];
+      }
+    });
+    if (s.houseCount !== undefined) {
+      document.getElementById('houseCount').value = s.houseCount;
+    }
+    console.log('✅ settings.json 로딩 완료');
+  } catch (e) {
+    console.warn('⚠️ settings.json 없음, 기본값 사용');
+  }
+}
 
 function groupProperties(rawItems) {
   const groups = {};
@@ -890,7 +914,8 @@ document.getElementById('searchInput').addEventListener('input', update);
 document.getElementById('regionFilter').addEventListener('change', update);
 document.getElementById('verdictFilter').addEventListener('change', update);
 
-loadData();
+// settings → data 순서로 로딩
+loadSettings().then(() => loadData());
 </script>
 </body>
 </html>
