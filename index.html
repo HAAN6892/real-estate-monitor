@@ -613,6 +613,7 @@ tr:hover td { background:rgba(124,106,246,0.03); }
       <div class="section-title">🎯 정책대출 자격 체크</div>
       <div class="section-badge" id="policyBadge">소득 연동 자동 판정</div>
     </div>
+    <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px">📅 기준: 2026년 2월 · 출처: 주택도시기금·한국주택금융공사 공시</div>
     <div class="policy-grid" id="policyGrid"></div>
   </div>
   </div><!-- /tab-policy -->
@@ -1099,13 +1100,12 @@ function update() {
     pageBtns.appendChild(nextBtn);
   }
 
-  // --- 정책대출 ---
+  // --- 정책대출 (2026.02 현행 기준) ---
   const policyLoans = [
-    { name:'디딤돌 대출', icon:'🏠', incomeLimit:6000, desc:'부부합산 6,000만 이하', maxLoan:'최대 2.5억', rate:'2.15~3.00%', conditions:['무주택','주택가격 5억 이하'], houseReq:0 },
-    { name:'보금자리론', icon:'🛡️', incomeLimit:7000, desc:'부부합산 7,000만 이하', maxLoan:'최대 3.6억', rate:'3.25~3.85%', conditions:['무주택/1주택 처분','주택 6억 이하'], houseReq:1 },
-    { name:'신혼부부 구입', icon:'💍', incomeLimit:8500, desc:'부부합산 8,500만 이하', maxLoan:'최대 3억', rate:'1.85~2.70%', conditions:['혼인 7년 이내','무주택','5억 이하'], houseReq:0 },
-    { name:'신생아 특례', icon:'👶', incomeLimit:20000, desc:'부부합산 2억 이하', maxLoan:'최대 5억', rate:'1.60~3.30%', conditions:['2년 내 출생아','무주택','9억 이하'], houseReq:0, special:'출산 시 활용 가능' },
-    { name:'생애최초 특례', icon:'🌟', incomeLimit:10000, desc:'부부합산 1억 이하', maxLoan:'최대 4억', rate:'시중금리 우대', conditions:['생애 최초','무주택','9억 이하'], houseReq:0 },
+    { name:'디딤돌 대출', icon:'🏠', incomeLimit:6000, desc:'부부합산 6,000만 이하', maxLoan:'최대 2억', rate:'2.85~4.15%', conditions:['무주택','주택가격 5억 이하','LTV 70%'], houseReq:0, note:'생애최초: 소득 7,000만·한도 2.4억·LTV 80%' },
+    { name:'보금자리론', icon:'🛡️', incomeLimit:7000, desc:'부부합산 7,000만 이하', maxLoan:'최대 3.6억', rate:'4.05~4.35%', conditions:['무주택/1주택 처분','주택 6억 이하','LTV 70%'], houseReq:1, note:'생애최초: 한도 4.2억·LTV 80%' },
+    { name:'신혼부부 구입', icon:'💍', incomeLimit:8500, desc:'부부합산 8,500만 이하', maxLoan:'최대 3.2억', rate:'1.85~3.65%', conditions:['혼인 7년 이내','무주택','6억 이하','LTV 80%'], houseReq:0 },
+    { name:'신생아 특례', icon:'👶', incomeLimit:13000, incomeLimitDual:20000, desc:'부부합산 1.3억 이하 (맞벌이 2억)', maxLoan:'최대 4억', rate:'1.80~4.50%', conditions:['2년 내 출산','무주택','9억 이하'], houseReq:0, special:'출산 시 활용 가능', note:'특례금리 5년 적용, 추가출산 시 연장' },
   ];
 
   const policyGrid = document.getElementById('policyGrid');
@@ -1113,7 +1113,9 @@ function update() {
   let eligibleCount = 0;
 
   policyLoans.forEach(loan => {
-    const gap = totalIncome - loan.incomeLimit;
+    // 맞벌이 소득 구분 (신생아 특례)
+    const effectiveIncomeLimit = loan.incomeLimitDual ? loan.incomeLimitDual : loan.incomeLimit;
+    const gap = totalIncome - effectiveIncomeLimit;
     const isIncomeOk = gap <= 0, isHouseOk = houseCount <= loan.houseReq, isSpecial = !!loan.special;
     let statusClass, statusText, cardClass;
     if (isIncomeOk && isHouseOk && !isSpecial) { statusClass='yes'; statusText='✅ 자격 충족'; cardClass='eligible'; eligibleCount++; }
@@ -1127,11 +1129,14 @@ function update() {
     else if (gap===0) { gapText='기준 딱 맞음'; gapClass='close'; }
     else { gapText=`${Math.abs(gap).toLocaleString()}만 여유`; gapClass='under'; }
 
+    const noteHtml = loan.note ? `<div style="font-size:10px;color:var(--accent2);margin-top:4px">💡 ${loan.note}</div>` : '';
+
     const card = document.createElement('div');
     card.className = `policy-card ${cardClass}`;
     card.innerHTML = `
       <div class="policy-name">${loan.icon} ${loan.name} <span class="policy-status ${statusClass}">${statusText}</span></div>
       <div class="policy-detail">${loan.desc} · ${loan.maxLoan} · ${loan.rate}<br>조건: ${loan.conditions.join(' / ')}</div>
+      ${noteHtml}
       <div class="policy-gap ${gapClass}">소득 ${gapText}</div>
     `;
     policyGrid.appendChild(card);
