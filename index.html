@@ -177,7 +177,27 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--
 .table-wrap {
   background:var(--surface); border:1px solid var(--border);
   border-radius:10px; overflow:hidden;
+  max-height:600px; overflow-y:auto;
 }
+.table-wrap::-webkit-scrollbar { width:6px; }
+.table-wrap::-webkit-scrollbar-track { background:var(--surface); }
+.table-wrap::-webkit-scrollbar-thumb { background:var(--border-hover); border-radius:3px; }
+
+/* Tab Navigation */
+.tab-nav {
+  display:flex; gap:4px; margin-bottom:16px;
+  border-bottom:2px solid var(--border); padding-bottom:0;
+}
+.tab-btn {
+  background:none; border:none; color:var(--text-dim);
+  padding:10px 18px; font-size:13px; font-weight:600; cursor:pointer;
+  font-family:'Noto Sans KR',sans-serif; border-bottom:2px solid transparent;
+  margin-bottom:-2px; transition:all 0.2s; white-space:nowrap;
+}
+.tab-btn:hover { color:var(--text-mid); }
+.tab-btn.active { color:var(--accent2); border-bottom-color:var(--accent); }
+.tab-content { display:none; }
+.tab-content.active { display:block; }
 table { width:100%; border-collapse:collapse; font-size:13px; table-layout:fixed; }
 thead { background:var(--surface2); }
 th { padding:9px 10px; text-align:left; font-weight:500; color:var(--text-dim); font-size:11px; letter-spacing:0.5px; cursor:pointer; white-space:nowrap; }
@@ -327,8 +347,11 @@ tr:hover td { background:rgba(124,106,246,0.03); }
   .quick-link { min-width:calc(50% - 6px); flex:none; padding:8px 10px; }
   .ql-desc { display:none; }
 
+  /* 탭 */
+  .tab-btn { padding:8px 14px; font-size:12px; }
+
   /* 테이블 → 카드 뷰 */
-  .table-wrap { background:none; border:none; border-radius:0; }
+  .table-wrap { background:none; border:none; border-radius:0; max-height:500px; overflow-y:auto; }
   table, thead, tbody, th, td, tr { display:block; }
   thead { display:none; }
   tr {
@@ -466,54 +489,64 @@ tr:hover td { background:rgba(124,106,246,0.03); }
     </div>
   </div>
 
-  <!-- Property Table -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title">🏘️ 관심 매물 시뮬레이션</div>
-      <div class="section-badge" id="propertyBadge">데이터 없음</div>
-    </div>
-    <div class="table-controls">
-      <input type="text" class="search-input" id="searchInput" placeholder="단지명, 지역, 동 검색...">
-      <select class="filter-select" id="regionFilter">
-        <option value="">전체 지역</option>
-      </select>
-      <select class="filter-select" id="verdictFilter">
-        <option value="">전체 판정</option>
-        <option value="매수가능">매수가능</option>
-        <option value="빠듯함">빠듯함</option>
-        <option value="상환초과">상환초과</option>
-        <option value="자금부족">자금부족</option>
-      </select>
-      <button class="sort-btn active" data-sort="price-asc" onclick="setSort(this)">가격↑</button>
-      <button class="sort-btn" data-sort="price-desc" onclick="setSort(this)">가격↓</button>
-      <button class="sort-btn" data-sort="walk" onclick="setSort(this)">역세권순</button>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th class="col-name">단지명</th>
-            <th class="col-region">지역</th>
-            <th class="col-area"><span class="area-toggle" onclick="toggleAreaUnit()" title="클릭하여 전환">면적 <span id="areaUnitLabel">평</span></span></th>
-            <th class="col-price">매매가</th>
-            <th class="col-equity">필요자금</th>
-            <th class="col-loan">대출액</th>
-            <th class="col-monthly">월상환</th>
-            <th class="col-verdict">판정</th>
-            <th class="col-link">링크</th>
-          </tr>
-        </thead>
-        <tbody id="propertyBody"></tbody>
-      </table>
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('properties')">📊 매물 시뮬레이션</button>
+    <button class="tab-btn" onclick="switchTab('policy')">📜 정책 · 대출</button>
+  </div>
+
+  <!-- Tab 1: 매물 시뮬레이션 -->
+  <div class="tab-content active" id="tab-properties">
+    <div class="section" style="margin-top:0">
+      <div class="section-header">
+        <div class="section-title">🏘️ 관심 매물 시뮬레이션</div>
+        <div class="section-badge" id="propertyBadge">데이터 없음</div>
+      </div>
+      <div class="table-controls">
+        <input type="text" class="search-input" id="searchInput" placeholder="단지명, 지역, 동 검색...">
+        <select class="filter-select" id="regionFilter">
+          <option value="">전체 지역</option>
+        </select>
+        <select class="filter-select" id="verdictFilter">
+          <option value="">전체 판정</option>
+          <option value="매수가능">매수가능</option>
+          <option value="빠듯함">빠듯함</option>
+          <option value="상환초과">상환초과</option>
+          <option value="자금부족">자금부족</option>
+        </select>
+        <button class="sort-btn active" data-sort="price-asc" onclick="setSort(this)">가격↑</button>
+        <button class="sort-btn" data-sort="price-desc" onclick="setSort(this)">가격↓</button>
+        <button class="sort-btn" data-sort="walk" onclick="setSort(this)">역세권순</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="col-name">단지명</th>
+              <th class="col-region">지역</th>
+              <th class="col-area"><span class="area-toggle" onclick="toggleAreaUnit()" title="클릭하여 전환">면적 <span id="areaUnitLabel">평</span></span></th>
+              <th class="col-price">매매가</th>
+              <th class="col-equity">필요자금</th>
+              <th class="col-loan">대출액</th>
+              <th class="col-monthly">월상환</th>
+              <th class="col-verdict">판정</th>
+              <th class="col-link">링크</th>
+            </tr>
+          </thead>
+          <tbody id="propertyBody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 
-  <!-- Policy Timeline -->
-  <div class="section">
-    <div class="section-header">
-      <div class="section-title">📜 최근 정책 변동</div>
-      <div class="section-badge">영향도 분석</div>
-    </div>
+  <!-- Tab 2: 정책 · 대출 -->
+  <div class="tab-content" id="tab-policy">
+    <!-- Policy Timeline -->
+    <div class="section" style="margin-top:0">
+      <div class="section-header">
+        <div class="section-title">📜 최근 정책 변동</div>
+        <div class="section-badge">영향도 분석</div>
+      </div>
     <div class="timeline">
       <div class="tl-item">
         <div class="tl-dot high"></div>
@@ -550,6 +583,7 @@ tr:hover td { background:rgba(124,106,246,0.03); }
     </div>
     <div class="policy-grid" id="policyGrid"></div>
   </div>
+  </div><!-- /tab-policy -->
 
   <div class="footer">
     설정(⚙️)에서 소득·자금·대출 조건을 변경하면 모든 숫자가 실시간으로 재계산됩니다
@@ -713,6 +747,12 @@ function toggleHistory(btn) {
       ? '▼ 거래내역 접기'
       : `▶ 거래내역 ${hist.querySelectorAll('.trade-row').length}건`;
   }
+}
+function switchTab(tabId) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + tabId).classList.add('active');
+  event.currentTarget.classList.add('active');
 }
 
 // settings.json에서 기본값 로드
