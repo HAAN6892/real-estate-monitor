@@ -221,6 +221,24 @@ tr:hover td { background:rgba(124,106,246,0.03); }
   color:var(--text-mid); white-space:nowrap;
 }
 
+/* Quick Links */
+.quick-links { display:flex; flex-wrap:wrap; gap:8px; }
+
+/* Area Toggle */
+.area-toggle { cursor:pointer; user-select:none; }
+.area-toggle:hover { color:var(--accent2); }
+#areaUnitLabel { font-size:10px; padding:1px 5px; background:var(--accent); color:#fff; border-radius:3px; }
+.quick-link {
+  display:flex; align-items:center; gap:8px;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:10px 14px; text-decoration:none;
+  color:var(--text); transition:all 0.2s; flex:1; min-width:140px;
+}
+.quick-link:hover { border-color:var(--accent); transform:translateY(-1px); }
+.ql-icon { font-size:18px; }
+.ql-name { font-size:13px; font-weight:600; }
+.ql-desc { font-size:10px; color:var(--text-dim); }
+
 /* Policy Timeline */
 .timeline { display:flex; flex-direction:column; gap:8px; }
 .tl-item {
@@ -275,6 +293,11 @@ tr:hover td { background:rgba(124,106,246,0.03); }
   .policy-grid { grid-template-columns:1fr; }
   .tl-item { flex-direction:column; gap:4px; }
   .tl-date { min-width:auto; }
+
+  /* 바로가기 2열 */
+  .quick-links { gap:6px; }
+  .quick-link { min-width:calc(50% - 6px); flex:none; padding:8px 10px; }
+  .ql-desc { display:none; }
 
   /* 테이블 → 카드 뷰 */
   .table-wrap { background:none; border:none; border-radius:0; }
@@ -381,6 +404,40 @@ tr:hover td { background:rgba(124,106,246,0.03); }
     </div>
   </div>
 
+  <!-- 유용한 사이트 바로가기 -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">🔗 부동산 사이트 바로가기</div>
+    </div>
+    <div class="quick-links">
+      <a href="https://new.land.naver.com/" target="_blank" class="quick-link">
+        <span class="ql-icon">🟢</span>
+        <span class="ql-name">네이버 부동산</span>
+        <span class="ql-desc">매물 검색 · 시세</span>
+      </a>
+      <a href="https://hogangnono.com/" target="_blank" class="quick-link">
+        <span class="ql-icon">🟡</span>
+        <span class="ql-name">호갱노노</span>
+        <span class="ql-desc">실거래가 · 리뷰</span>
+      </a>
+      <a href="https://asil.kr/" target="_blank" class="quick-link">
+        <span class="ql-icon">🔵</span>
+        <span class="ql-name">아실</span>
+        <span class="ql-desc">실거래가 · 시세비교</span>
+      </a>
+      <a href="https://kbland.kr/" target="_blank" class="quick-link">
+        <span class="ql-icon">🟠</span>
+        <span class="ql-name">KB부동산</span>
+        <span class="ql-desc">KB시세 · 대출</span>
+      </a>
+      <a href="https://rt.molit.go.kr/" target="_blank" class="quick-link">
+        <span class="ql-icon">🏛️</span>
+        <span class="ql-name">국토부 실거래가</span>
+        <span class="ql-desc">공식 거래 데이터</span>
+      </a>
+    </div>
+  </div>
+
   <!-- Property Table -->
   <div class="section">
     <div class="section-header">
@@ -409,7 +466,7 @@ tr:hover td { background:rgba(124,106,246,0.03); }
           <tr>
             <th class="col-name">단지명</th>
             <th class="col-region">지역</th>
-            <th class="col-area">면적</th>
+            <th class="col-area"><span class="area-toggle" onclick="toggleAreaUnit()" title="클릭하여 전환">면적 <span id="areaUnitLabel">평</span></span></th>
             <th class="col-price">매매가</th>
             <th class="col-equity">필요자금</th>
             <th class="col-loan">대출액</th>
@@ -609,6 +666,17 @@ let currentSort = 'price-asc';
 let searchQuery = '';
 let regionFilterVal = '';
 let verdictFilterVal = '';
+let areaUnit = 'py'; // 'py' or 'm2'
+
+function toggleAreaUnit() {
+  areaUnit = areaUnit === 'py' ? 'm2' : 'py';
+  document.getElementById('areaUnitLabel').textContent = areaUnit === 'py' ? '평' : '㎡';
+  update();
+}
+function fmtArea(p) {
+  if (areaUnit === 'py') return p.area_py ? p.area_py + '평' : p.area;
+  return p.area;
+}
 
 // settings.json에서 기본값 로드
 async function loadSettings() {
@@ -658,7 +726,7 @@ function groupProperties(rawItems) {
   return Object.values(groups).map(g => {
     const avgPrice = Math.round(g.prices.reduce((a,b) => a+b, 0) / g.prices.length);
     return {
-      name: g.name, region: g.region, area: g.area, price: avgPrice,
+      name: g.name, region: g.region, area: g.area, area_py: g.area_py, price: avgPrice,
       regulated: g.regulated, station: g.station, station_name: g.station_name,
       line: g.line, walk_min: g.walk_min, dong: g.dong,
       built_year: g.built_year, households: g.households, link: g.link,
@@ -727,9 +795,9 @@ function maxLoanFromMonthly(monthlyMax, annualRate, years) {
 function makeLinks(p) {
   const q = encodeURIComponent(`${p.dong} ${p.name}`);
   const naverUrl = `https://m.land.naver.com/search/result/${q}`;
-  const asilUrl = `https://asil.kr/asil/index.jsp`;
+  const kbUrl = `https://kbland.kr/map?xy=37.5,127.0&search=${encodeURIComponent(p.name)}`;
   let html = `<a href="${naverUrl}" target="_blank" class="link-icon" title="네이버 부동산">N</a>`;
-  html += `<a href="${asilUrl}" target="_blank" class="link-icon" title="아실">A</a>`;
+  html += `<a href="${kbUrl}" target="_blank" class="link-icon" title="KB부동산">K</a>`;
   return html;
 }
 
@@ -835,7 +903,7 @@ function update() {
     tr.innerHTML = `
       <td data-label="단지명"><strong>${p.name}</strong><br><span style="font-size:10px;color:var(--text-dim)">${p.line ? p.line+' ' : ''}${p.station}${extra.length ? ' · '+extra.join(' · ') : ''}</span></td>
       <td data-label="지역"><span class="tag tag-region">${p.region}</span></td>
-      <td data-label="면적">${p.area}</td>
+      <td data-label="면적">${fmtArea(p)}</td>
       <td data-label="매매가" class="mono">${fmtShort(p.price)}</td>
       <td data-label="필요자금" class="mono" style="color:${pEquityNeeded > equity ? 'var(--red)' : 'var(--text)'}">${fmtShort(pEquityNeeded)}</td>
       <td data-label="대출액" class="mono">${fmtShort(pLoan)}<br><span style="font-size:10px;color:var(--text-dim)">LTV ${pLTV}%</span></td>
