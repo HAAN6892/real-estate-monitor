@@ -283,6 +283,34 @@ tr:hover td { background:rgba(124,106,246,0.03); }
 /* Footer */
 .footer { text-align:center; padding:16px; font-size:11px; color:var(--text-dim); border-top:1px solid var(--border); margin-top:20px; }
 
+/* Trade History */
+.trade-history {
+  grid-column:1/-1; background:var(--surface2); border:1px solid var(--border);
+  border-radius:8px; padding:10px 12px; margin-top:4px; display:none;
+}
+.trade-history.open { display:block; }
+.trade-history-title {
+  font-size:11px; font-weight:600; color:var(--accent2); margin-bottom:6px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.trade-row {
+  display:flex; gap:12px; padding:4px 0; font-size:11px;
+  border-bottom:1px solid var(--border);
+}
+.trade-row:last-child { border-bottom:none; }
+.trade-date { color:var(--text-dim); min-width:70px; }
+.trade-price { font-family:var(--mono); font-weight:600; min-width:80px; }
+.trade-floor { color:var(--text-mid); }
+.trade-delta { font-family:var(--mono); font-size:10px; }
+.trade-delta.up { color:var(--red); }
+.trade-delta.down { color:var(--green); }
+.trade-delta.same { color:var(--text-dim); }
+.expand-btn {
+  cursor:pointer; color:var(--accent2); font-size:10px;
+  background:none; border:none; padding:0; font-family:'Noto Sans KR',sans-serif;
+}
+.expand-btn:hover { color:var(--accent); }
+
 /* ===== MOBILE ===== */
 @media(max-width:768px) {
   .main { padding:12px 10px; }
@@ -677,6 +705,15 @@ function fmtArea(p) {
   if (areaUnit === 'py') return p.area_py ? p.area_py + '평' : p.area;
   return p.area;
 }
+function toggleHistory(btn) {
+  const hist = btn.nextElementSibling;
+  if (hist && hist.classList.contains('trade-history')) {
+    hist.classList.toggle('open');
+    btn.textContent = hist.classList.contains('open')
+      ? '▼ 거래내역 접기'
+      : `▶ 거래내역 ${hist.querySelectorAll('.trade-row').length}건`;
+  }
+}
 
 // settings.json에서 기본값 로드
 async function loadSettings() {
@@ -716,15 +753,18 @@ function groupProperties(rawItems) {
         walk_min: item.walk_min, dong: item.dong || '',
         built_year: item.built_year || 0, households: item.households || 0,
         link: item.link || '', prices: [], floors: [], dates: [],
+        trades: [],
       };
     }
     groups[key].prices.push(item.price);
     groups[key].floors.push(item.floor);
     groups[key].dates.push(item.trade_date);
+    groups[key].trades.push({ price: item.price, floor: item.floor, date: item.trade_date });
   });
 
   return Object.values(groups).map(g => {
     const avgPrice = Math.round(g.prices.reduce((a,b) => a+b, 0) / g.prices.length);
+    const trades = g.trades.sort((a,b) => (b.date||'').localeCompare(a.date||''));
     return {
       name: g.name, region: g.region, area: g.area, area_py: g.area_py, price: avgPrice,
       regulated: g.regulated, station: g.station, station_name: g.station_name,
@@ -734,6 +774,7 @@ function groupProperties(rawItems) {
       min_price: Math.min(...g.prices), max_price: Math.max(...g.prices),
       latest_date: g.dates.sort().reverse()[0] || '',
       price_per_py: g.area_py > 0 ? Math.round(avgPrice / g.area_py) : 0,
+      trades: trades,
     };
   }).sort((a,b) => a.price - b.price);
 }
@@ -899,12 +940,45 @@ function update() {
     if (p.households) extra.push(`${p.households}세대`);
     if (p.trade_count > 1) extra.push(`${p.trade_count}건`);
 
+    const tradeBtn = p.trade_count > 1 ? `<button class="expand-btn" onclick="toggleHistory(this)">▶ 거래내역 ${p.trade_count}건</button>` : '';
+
+    // 거래 히스토리 HTML
+    let historyHtml = '';
+    if (p.trade_count > 1) {
+      const rows = p.trades.map((t, i) => {
+        let deltaHtml = '';
+        if (i < p.trades.length - 1) {
+          const diff = t.price - p.trades[i+1].price;
+          if (diff > 0) deltaHtml = `<span class="trade-delta up">+${fmtShort(diff)}</span>`;
+          else if (diff < 0) deltaHtml = `<span class="trade-delta down">${fmtShort(diff)}</span>`;
+          else deltaHtml = `<span class="trade-delta same">±0</span>`;
+        }
+        return `<div class="trade-row">
+          <span class="trade-date">${t.date || '날짜없음'}</span>
+          <span class="trade-price">${fmtShort(t.price)}</span>
+          <span class="trade-floor">${t.floor}층</span>
+          ${deltaHtml}
+        </div>`;
+      }).join('');
+
+      const priceDiff = p.max_price - p.min_price;
+      const rangeText = priceDiff > 0 ? `변동폭: ${fmtShort(priceDiff)}` : '동일가';
+
+      historyHtml = `<div class="trade-history" id="hist_${shown}">
+        <div class="trade-history-title">
+          <span>📊 거래 히스토리 (최신순)</span>
+          <span style="font-size:10px;color:var(--text-dim)">${rangeText}</span>
+        </div>
+        ${rows}
+      </div>`;
+    }
+
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td data-label="단지명"><strong>${p.name}</strong><br><span style="font-size:10px;color:var(--text-dim)">${p.line ? p.line+' ' : ''}${p.station}${extra.length ? ' · '+extra.join(' · ') : ''}</span></td>
+      <td data-label="단지명"><strong>${p.name}</strong><br><span style="font-size:10px;color:var(--text-dim)">${p.line ? p.line+' ' : ''}${p.station}${extra.length ? ' · '+extra.join(' · ') : ''}</span><br>${tradeBtn}${historyHtml}</td>
       <td data-label="지역"><span class="tag tag-region">${p.region}</span></td>
       <td data-label="면적">${fmtArea(p)}</td>
-      <td data-label="매매가" class="mono">${fmtShort(p.price)}</td>
+      <td data-label="매매가" class="mono">${fmtShort(p.price)}${p.trade_count > 1 ? '<br><span style="font-size:9px;color:var(--text-dim)">'+fmtShort(p.min_price)+'~'+fmtShort(p.max_price)+'</span>' : ''}</td>
       <td data-label="필요자금" class="mono" style="color:${pEquityNeeded > equity ? 'var(--red)' : 'var(--text)'}">${fmtShort(pEquityNeeded)}</td>
       <td data-label="대출액" class="mono">${fmtShort(pLoan)}<br><span style="font-size:10px;color:var(--text-dim)">LTV ${pLTV}%</span></td>
       <td data-label="월상환" class="mono" style="color:${pMonthly > monthlyRoom ? 'var(--red)' : pMonthly > monthlyRoom*0.85 ? 'var(--yellow)' : 'var(--green)'}">${pMonthly}만</td>
