@@ -1,0 +1,13 @@
+{
+  "income1": 4740,
+  "income2": 4000,
+  "cash": 15000,
+  "interior": 5000,
+  "rate": 4.0,
+  "term": 30,
+  "monthlyLimit": 200,
+  "mgmt": 35,
+  "ltv": 70,
+  "dsr": 40,
+  "houseCount": 1
+}
