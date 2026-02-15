@@ -176,12 +176,30 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--
 /* Property Cards (모바일 대응) */
 .table-wrap {
   background:var(--surface); border:1px solid var(--border);
-  border-radius:10px; overflow:hidden;
-  max-height:600px; overflow-y:auto;
+  border-radius:10px; overflow-x:auto;
 }
-.table-wrap::-webkit-scrollbar { width:6px; }
-.table-wrap::-webkit-scrollbar-track { background:var(--surface); }
-.table-wrap::-webkit-scrollbar-thumb { background:var(--border-hover); border-radius:3px; }
+
+/* Pagination */
+.pagination-bar {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:10px 14px; border-top:1px solid var(--border);
+  background:var(--surface); font-size:12px; color:var(--text-dim);
+}
+.page-size-select {
+  background:var(--surface2); border:1px solid var(--border); color:var(--text-mid);
+  padding:5px 8px; border-radius:6px; font-size:12px; cursor:pointer;
+  font-family:'Noto Sans KR',sans-serif; outline:none;
+}
+.page-btns { display:flex; gap:4px; align-items:center; }
+.page-btn {
+  background:var(--surface2); border:1px solid var(--border); color:var(--text-mid);
+  padding:5px 10px; border-radius:6px; font-size:12px; cursor:pointer;
+  font-family:'Noto Sans KR',sans-serif; transition:all 0.15s;
+}
+.page-btn:hover { border-color:var(--accent); color:var(--accent2); }
+.page-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+.page-btn:disabled { opacity:0.3; cursor:default; }
+.page-info { font-size:11px; color:var(--text-dim); }
 
 /* Tab Navigation */
 .tab-nav {
@@ -198,7 +216,7 @@ body { font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--
 .tab-btn.active { color:var(--accent2); border-bottom-color:var(--accent); }
 .tab-content { display:none; }
 .tab-content.active { display:block; }
-table { width:100%; border-collapse:collapse; font-size:13px; table-layout:fixed; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
 thead { background:var(--surface2); }
 th { padding:9px 10px; text-align:left; font-weight:500; color:var(--text-dim); font-size:11px; letter-spacing:0.5px; cursor:pointer; white-space:nowrap; }
 th:hover { color:var(--text-mid); }
@@ -206,15 +224,15 @@ td { padding:10px; border-top:1px solid var(--border); vertical-align:top; }
 tr:hover td { background:rgba(124,106,246,0.03); }
 
 /* 컬럼 너비 지정 */
-.col-name { width:22%; }
-.col-region { width:10%; }
-.col-area { width:7%; }
-.col-price { width:12%; }
-.col-equity { width:12%; }
-.col-loan { width:13%; }
-.col-monthly { width:10%; }
-.col-verdict { width:8%; }
-.col-link { width:6%; }
+.col-name { min-width:250px; }
+.col-region { min-width:80px; }
+.col-area { min-width:60px; }
+.col-price { min-width:100px; }
+.col-equity { min-width:100px; }
+.col-loan { min-width:100px; }
+.col-monthly { min-width:70px; }
+.col-verdict { min-width:70px; }
+.col-link { min-width:50px; }
 
 .mono { font-family:var(--mono); font-weight:600; }
 .tag { display:inline-block; padding:2px 8px; border-radius:4px; font-size:11px; font-weight:500; }
@@ -307,6 +325,7 @@ tr:hover td { background:rgba(124,106,246,0.03); }
 .trade-history {
   grid-column:1/-1; background:var(--surface2); border:1px solid var(--border);
   border-radius:8px; padding:10px 12px; margin-top:4px; display:none;
+  min-width:280px;
 }
 .trade-history.open { display:block; }
 .trade-history-title {
@@ -315,13 +334,13 @@ tr:hover td { background:rgba(124,106,246,0.03); }
 }
 .trade-row {
   display:flex; gap:12px; padding:4px 0; font-size:11px;
-  border-bottom:1px solid var(--border);
+  border-bottom:1px solid var(--border); align-items:center; white-space:nowrap;
 }
 .trade-row:last-child { border-bottom:none; }
-.trade-date { color:var(--text-dim); min-width:70px; }
-.trade-price { font-family:var(--mono); font-weight:600; min-width:80px; }
-.trade-floor { color:var(--text-mid); }
-.trade-delta { font-family:var(--mono); font-size:10px; }
+.trade-date { color:var(--text-dim); min-width:75px; }
+.trade-price { font-family:var(--mono); font-weight:600; min-width:85px; }
+.trade-floor { color:var(--text-mid); min-width:30px; }
+.trade-delta { font-family:var(--mono); font-size:10px; min-width:60px; }
 .trade-delta.up { color:var(--red); }
 .trade-delta.down { color:var(--green); }
 .trade-delta.same { color:var(--text-dim); }
@@ -351,7 +370,7 @@ tr:hover td { background:rgba(124,106,246,0.03); }
   .tab-btn { padding:8px 14px; font-size:12px; }
 
   /* 테이블 → 카드 뷰 */
-  .table-wrap { background:none; border:none; border-radius:0; max-height:500px; overflow-y:auto; }
+  .table-wrap { background:none; border:none; border-radius:0; }
   table, thead, tbody, th, td, tr { display:block; }
   thead { display:none; }
   tr {
@@ -535,6 +554,19 @@ tr:hover td { background:rgba(124,106,246,0.03); }
           </thead>
           <tbody id="propertyBody"></tbody>
         </table>
+      </div>
+      <div class="pagination-bar">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span>표시 건수</span>
+          <select class="page-size-select" id="pageSizeSelect" onchange="changePageSize(this.value)">
+            <option value="20" selected>20개</option>
+            <option value="30">30개</option>
+            <option value="40">40개</option>
+            <option value="50">50개</option>
+          </select>
+        </div>
+        <div class="page-info" id="pageInfo"></div>
+        <div class="page-btns" id="pageBtns"></div>
       </div>
     </div>
   </div>
@@ -729,6 +761,8 @@ let searchQuery = '';
 let regionFilterVal = '';
 let verdictFilterVal = '';
 let areaUnit = 'py'; // 'py' or 'm2'
+let pageSize = 20;
+let currentPage = 1;
 
 function toggleAreaUnit() {
   areaUnit = areaUnit === 'py' ? 'm2' : 'py';
@@ -753,6 +787,11 @@ function switchTab(tabId) {
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.getElementById('tab-' + tabId).classList.add('active');
   event.currentTarget.classList.add('active');
+}
+function changePageSize(val) {
+  pageSize = parseInt(val);
+  currentPage = 1;
+  update();
 }
 
 // settings.json에서 기본값 로드
@@ -843,6 +882,7 @@ function setSort(btn) {
   document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   currentSort = btn.dataset.sort;
+  currentPage = 1;
   update();
 }
 
@@ -956,25 +996,30 @@ function update() {
   else if (currentSort === 'price-desc') filtered.sort((a,b) => b.price - a.price);
   else if (currentSort === 'walk') filtered.sort((a,b) => (a.walk_min||999) - (b.walk_min||999));
 
-  const tbody = document.getElementById('propertyBody');
-  tbody.innerHTML = '';
-  let shown = 0;
-
-  filtered.forEach(p => {
+  // verdict 필터 적용 (계산 필요하므로 여기서)
+  const withVerdict = filtered.map(p => {
     const pLTV = p.regulated ? Math.min(effectiveLTV, 50) : effectiveLTV;
     const pLoan = Math.min(Math.floor(p.price * pLTV / 100), finalLoan);
     const pEquityNeeded = p.price - pLoan;
     const pMonthly = Math.floor(monthlyPayment(pLoan, rate, term));
-
     let verdict, verdictTag;
     if (pEquityNeeded > equity) { verdict = '자금부족'; verdictTag = 'tag-danger'; }
     else if (pMonthly > monthlyRoom) { verdict = '상환초과'; verdictTag = 'tag-danger'; }
     else if (pMonthly > monthlyRoom * 0.85) { verdict = '빠듯함'; verdictTag = 'tag-warn'; }
     else { verdict = '매수가능'; verdictTag = 'tag-ok'; }
+    return { ...p, pLTV, pLoan, pEquityNeeded, pMonthly, verdict, verdictTag };
+  }).filter(p => !verdictFilterVal || p.verdict === verdictFilterVal);
 
-    if (verdictFilterVal && verdict !== verdictFilterVal) return;
-    shown++;
+  const totalItems = withVerdict.length;
+  const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
+  if (currentPage > totalPages) currentPage = totalPages;
+  const startIdx = (currentPage - 1) * pageSize;
+  const pageItems = withVerdict.slice(startIdx, startIdx + pageSize);
 
+  const tbody = document.getElementById('propertyBody');
+  tbody.innerHTML = '';
+
+  pageItems.forEach((p, idx) => {
     const extra = [];
     if (p.built_year) extra.push(`${p.built_year}년`);
     if (p.households) extra.push(`${p.households}세대`);
@@ -982,7 +1027,6 @@ function update() {
 
     const tradeBtn = p.trade_count > 1 ? `<button class="expand-btn" onclick="toggleHistory(this)">▶ 거래내역 ${p.trade_count}건</button>` : '';
 
-    // 거래 히스토리 HTML
     let historyHtml = '';
     if (p.trade_count > 1) {
       const rows = p.trades.map((t, i) => {
@@ -1000,11 +1044,9 @@ function update() {
           ${deltaHtml}
         </div>`;
       }).join('');
-
       const priceDiff = p.max_price - p.min_price;
       const rangeText = priceDiff > 0 ? `변동폭: ${fmtShort(priceDiff)}` : '동일가';
-
-      historyHtml = `<div class="trade-history" id="hist_${shown}">
+      historyHtml = `<div class="trade-history">
         <div class="trade-history-title">
           <span>📊 거래 히스토리 (최신순)</span>
           <span style="font-size:10px;color:var(--text-dim)">${rangeText}</span>
@@ -1019,16 +1061,43 @@ function update() {
       <td data-label="지역"><span class="tag tag-region">${p.region}</span></td>
       <td data-label="면적">${fmtArea(p)}</td>
       <td data-label="매매가" class="mono">${fmtShort(p.price)}${p.trade_count > 1 ? '<br><span style="font-size:9px;color:var(--text-dim)">'+fmtShort(p.min_price)+'~'+fmtShort(p.max_price)+'</span>' : ''}</td>
-      <td data-label="필요자금" class="mono" style="color:${pEquityNeeded > equity ? 'var(--red)' : 'var(--text)'}">${fmtShort(pEquityNeeded)}</td>
-      <td data-label="대출액" class="mono">${fmtShort(pLoan)}<br><span style="font-size:10px;color:var(--text-dim)">LTV ${pLTV}%</span></td>
-      <td data-label="월상환" class="mono" style="color:${pMonthly > monthlyRoom ? 'var(--red)' : pMonthly > monthlyRoom*0.85 ? 'var(--yellow)' : 'var(--green)'}">${pMonthly}만</td>
-      <td data-label="판정"><span class="tag ${verdictTag}">${verdict}</span></td>
+      <td data-label="필요자금" class="mono" style="color:${p.pEquityNeeded > equity ? 'var(--red)' : 'var(--text)'}">${fmtShort(p.pEquityNeeded)}</td>
+      <td data-label="대출액" class="mono">${fmtShort(p.pLoan)}<br><span style="font-size:10px;color:var(--text-dim)">LTV ${p.pLTV}%</span></td>
+      <td data-label="월상환" class="mono" style="color:${p.pMonthly > monthlyRoom ? 'var(--red)' : p.pMonthly > monthlyRoom*0.85 ? 'var(--yellow)' : 'var(--green)'}">${p.pMonthly}만</td>
+      <td data-label="판정"><span class="tag ${p.verdictTag}">${p.verdict}</span></td>
       <td data-label="링크"><div class="link-icons">${makeLinks(p)}</div></td>
     `;
     tbody.appendChild(tr);
   });
 
-  document.getElementById('propertyBadge').textContent = DATA_LOADED ? `${shown}/${PROPERTIES.length}개 표시` : '데이터 없음';
+  document.getElementById('propertyBadge').textContent = DATA_LOADED ? `${totalItems}/${PROPERTIES.length}개 표시` : '데이터 없음';
+
+  // 페이지네이션 UI
+  const pageInfo = document.getElementById('pageInfo');
+  pageInfo.textContent = totalItems > 0 ? `${startIdx+1}-${Math.min(startIdx+pageSize, totalItems)} / ${totalItems}건` : '0건';
+  const pageBtns = document.getElementById('pageBtns');
+  pageBtns.innerHTML = '';
+  if (totalPages > 1) {
+    const prevBtn = document.createElement('button');
+    prevBtn.className = 'page-btn'; prevBtn.textContent = '◀'; prevBtn.disabled = currentPage <= 1;
+    prevBtn.onclick = () => { currentPage--; update(); };
+    pageBtns.appendChild(prevBtn);
+    for (let i = 1; i <= totalPages; i++) {
+      if (totalPages > 7 && i > 2 && i < totalPages - 1 && Math.abs(i - currentPage) > 1) {
+        if (i === 3 || i === totalPages - 2) { const dot = document.createElement('span'); dot.className = 'page-info'; dot.textContent = '…'; pageBtns.appendChild(dot); }
+        continue;
+      }
+      const btn = document.createElement('button');
+      btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+      btn.textContent = i;
+      btn.onclick = () => { currentPage = i; update(); };
+      pageBtns.appendChild(btn);
+    }
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'page-btn'; nextBtn.textContent = '▶'; nextBtn.disabled = currentPage >= totalPages;
+    nextBtn.onclick = () => { currentPage++; update(); };
+    pageBtns.appendChild(nextBtn);
+  }
 
   // --- 정책대출 ---
   const policyLoans = [
@@ -1092,9 +1161,9 @@ PAIRS.forEach(([s,i]) => {
   input.addEventListener('input', () => { slider.value = input.value; update(); });
 });
 document.getElementById('houseCount').addEventListener('change', update);
-document.getElementById('searchInput').addEventListener('input', update);
-document.getElementById('regionFilter').addEventListener('change', update);
-document.getElementById('verdictFilter').addEventListener('change', update);
+document.getElementById('searchInput').addEventListener('input', () => { currentPage = 1; update(); });
+document.getElementById('regionFilter').addEventListener('change', () => { currentPage = 1; update(); });
+document.getElementById('verdictFilter').addEventListener('change', () => { currentPage = 1; update(); });
 
 // settings → data 순서로 로딩
 loadSettings().then(() => loadData());
