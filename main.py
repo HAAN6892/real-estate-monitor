@@ -3,8 +3,8 @@
 - 국토교통부 실거래가 API 데이터 수집
 - 카카오 로컬 API로 아파트 좌표 → 최근접 역 거리 계산
 - 동일 단지 묶기, 가격대별 그룹핑, 평당가 계산
-- 지역별 요약 텔레그램 알림
-- [v4] data.json 파일로 매물 데이터 저장 (노션 대체)
+- 텔레그램: 간소화 알림 (요약 + 대시보드 링크)
+- [v4] data.json 파일로 매물 데이터 저장
 """
 
 import json
@@ -23,6 +23,9 @@ HISTORY_PATH = BASE_DIR / "sent_history.json"
 COORD_CACHE_PATH = BASE_DIR / "coord_cache.json"
 APT_INFO_CACHE_PATH = BASE_DIR / "apt_info_cache.json"
 DATA_JSON_PATH = BASE_DIR / "data.json"
+
+# ─── 대시보드 URL ───
+DASHBOARD_URL = "https://haan6892.github.io/real-estate-monitor/"
 
 # ─── 신분당선 + 주요 지하철역 좌표 ───
 STATIONS = [
@@ -147,7 +150,6 @@ def save_apt_info_cache(cache):
 
 # ─── data.json 로드/저장 ───
 def load_data_json():
-    """기존 data.json 로드 (없으면 빈 구조 반환)"""
     if DATA_JSON_PATH.exists():
         with open(DATA_JSON_PATH, "r", encoding="utf-8") as f:
             return json.load(f)
@@ -155,7 +157,6 @@ def load_data_json():
 
 
 def save_data_json(data):
-    """data.json 저장"""
     with open(DATA_JSON_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
     print(f"  [data.json] 저장 완료 ({len(data['properties'])}건)")
@@ -446,11 +447,10 @@ def group_by_complex(trades):
     return groups
 
 
-def build_region_summary(region_name, complex_groups, kakao_key, coord_cache, sgg_name, api_key, apt_info_cache, min_households, region_code, apt_list_cache):
-    """한 지역의 요약 메시지 생성 + data.json 저장용 데이터 반환"""
+def build_region_data(region_name, complex_groups, kakao_key, coord_cache, sgg_name, api_key, apt_info_cache, min_households, region_code, apt_list_cache):
+    """한 지역의 data.json 저장용 데이터 생성 (텔레그램 메시지 생성 제거)"""
 
-    summaries = []
-    data_items = []  # [v4] data.json 저장용
+    data_items = []
     skipped_small = 0
 
     for key, group in complex_groups.items():
@@ -462,16 +462,11 @@ def build_region_summary(region_name, complex_groups, kakao_key, coord_cache, sg
             continue
 
         trades = group["거래"]
-        prices = [t["거래금액"] for t in trades]
-        min_p, max_p = min(prices), max(prices)
-        avg_p = sum(prices) // len(prices)
         pyeong = to_pyeong(group["면적"])
-        price_per_pyeong = round(avg_p / pyeong) if pyeong > 0 else 0
 
         address = f"{sgg_name} {group['법정동']} {group['아파트']}"
         coord = get_coordinates(kakao_key, address, coord_cache)
 
-        station_info = ""
         walk_min = 999
         nearest_station_name = ""
         nearest_station_line = ""
@@ -479,33 +474,7 @@ def build_region_summary(region_name, complex_groups, kakao_key, coord_cache, sg
             nearest, dist_km, walk_min = find_nearest_station(coord["lat"], coord["lon"])
             nearest_station_name = nearest["name"]
             nearest_station_line = nearest["line"]
-            if walk_min <= 15:
-                station_info = f"🚇 {nearest['name']}역 {walk_min}분"
-            elif walk_min <= 25:
-                station_info = f"🚌 {nearest['name']}역 {walk_min}분"
-            else:
-                station_info = f"📍 역 먼 지역"
 
-        household_str = f"{household}세대" if household > 0 else ""
-
-        summaries.append({
-            "아파트": group["아파트"],
-            "법정동": group["법정동"],
-            "면적": group["면적"],
-            "평": pyeong,
-            "건축년도": group["건축년도"],
-            "건수": len(trades),
-            "최저가": min_p,
-            "최고가": max_p,
-            "평균가": avg_p,
-            "평당가": price_per_pyeong,
-            "역정보": station_info,
-            "도보분": walk_min,
-            "세대수": household,
-            "세대수표시": household_str,
-        })
-
-        # [v4] 각 거래를 data.json 저장용으로 준비
         for t in trades:
             try:
                 trade_date_str = f"{t['거래년도']}-{t['거래월']:02d}-{t['거래일']:02d}"
@@ -531,68 +500,19 @@ def build_region_summary(region_name, complex_groups, kakao_key, coord_cache, sg
                 "walk_min": walk_min if walk_min < 999 else None,
                 "trade_date": trade_date_str,
                 "link": naver_link,
-                "regulated": False,  # 기본값, 나중에 규제지역 판별 추가 가능
+                "regulated": False,
             })
 
-    # 가격순 정렬
-    summaries.sort(key=lambda x: x["평균가"])
-
-    # 가격대별 그룹핑
-    price_groups = {}
-    for s in summaries:
-        label = price_group_label(s["평균가"])
-        if label not in price_groups:
-            price_groups[label] = []
-        price_groups[label].append(s)
-
-    # 메시지 생성
-    total_trades = sum(s["건수"] for s in summaries)
-    total_complexes = len(summaries)
-
-    lines = [
-        f"📍 *{region_name}*",
-        f"   {total_complexes}개 단지 / {total_trades}건 거래",
-        ""
-    ]
-
-    for label in sorted(price_groups.keys()):
-        items = price_groups[label]
-        lines.append(f"💰 *{label}*")
-
-        shown = items[:5]
-        hidden = len(items) - 5
-
-        for s in shown:
-            price_str = format_price(s["최저가"])
-            if s["건수"] > 1:
-                price_str = f"{format_price(s['최저가'])}~{format_price(s['최고가'])}"
-
-            household_str = s["세대수표시"] if s["세대수표시"] else "-세대"
-            station_str = s["역정보"] if s["역정보"] else "📍 역정보 없음"
-            search_query = urllib.parse.quote(f"{s['법정동']} {s['아파트']}")
-            naver_link = f"https://m.land.naver.com/search/result/{search_query}"
-
-            line = f"  • {s['법정동']} {s['아파트']}"
-            line += f"\n    {price_str} | {s['평']}평 | {s['건축년도']}년 | {household_str} | {station_str}"
-            if s["건수"] > 1:
-                line += f" | {s['건수']}건"
-            line += f"\n    🔗 [매물보기]({naver_link})"
-            lines.append(line)
-
-        if hidden > 0:
-            lines.append(f"  ⋯ 외 {hidden}개 단지")
-        lines.append("")
-
     if skipped_small > 0:
-        lines.append(f"ℹ️ {min_households}세대 미만 {skipped_small}개 단지 제외")
+        print(f"    ℹ️ {min_households}세대 미만 {skipped_small}개 단지 제외")
 
-    return "\n".join(lines), data_items
+    return data_items
 
 
 # ─── 텔레그램 전송 ───
 def send_telegram(bot_token, chat_id, message):
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-    payload = {"chat_id": chat_id, "text": message, "parse_mode": "Markdown"}
+    payload = {"chat_id": chat_id, "text": message, "parse_mode": "Markdown", "disable_web_page_preview": True}
     try:
         resp = requests.post(url, json=payload, timeout=10)
         if resp.status_code != 200:
@@ -602,27 +522,6 @@ def send_telegram(bot_token, chat_id, message):
     except requests.exceptions.RequestException as e:
         print(f"  [오류] 텔레그램 전송 실패: {e}")
         return False
-
-
-def send_long_message(bot_token, chat_id, message):
-    MAX_LEN = 4000
-    if len(message) <= MAX_LEN:
-        return send_telegram(bot_token, chat_id, message)
-
-    lines = message.split("\n")
-    chunk = ""
-    success = True
-    for line in lines:
-        if len(chunk) + len(line) + 1 > MAX_LEN:
-            if chunk:
-                if not send_telegram(bot_token, chat_id, chunk):
-                    success = False
-                chunk = ""
-        chunk += line + "\n"
-    if chunk.strip():
-        if not send_telegram(bot_token, chat_id, chunk):
-            success = False
-    return success
 
 
 # ─── 메인 ───
@@ -651,7 +550,6 @@ def main():
     existing_data = load_data_json()
     existing_properties = existing_data.get("properties", [])
 
-    # 기존 데이터에서 중복 체크용 키 세트 생성
     existing_keys = set()
     for p in existing_properties:
         key = f"{p['region']}_{p['name']}_{p['area_m2']}_{p['price']}_{p['floor']}_{p['trade_date']}"
@@ -664,7 +562,7 @@ def main():
 
     total_new = 0
     total_checked = 0
-    all_new_items = []  # [v4] 새로 추가할 매물들
+    all_new_items = []
     region_results = {}
 
     for region in regions:
@@ -695,79 +593,57 @@ def main():
             region_results[region_name] = {"trades": new_trades, "sgg_name": sgg_name, "region_code": region_code}
             print(f"  ✅ 새 거래 {len(new_trades)}건")
 
-    # ─── 검색 조건 요약 텍스트 ───
-    min_py = to_pyeong(filters["min_area"])
-    max_py = to_pyeong(filters["max_area"])
-    max_p = filters["max_price"]
-    price_label = f"{max_p // 10000}억" if max_p >= 10000 else f"{max_p:,}만"
-    region_names = [r["name"] for r in regions]
+    # ─── 텔레그램 간소화 알림 ───
+    if total_new > 0:
+        # 지역별 건수 요약
+        region_lines = []
+        for rname, rdata in region_results.items():
+            region_lines.append(f"  • {rname}: {len(rdata['trades'])}건")
 
-    filter_text = (
-        f"🔎 *검색 조건*\n"
-        f"  면적: {filters['min_area']}~{filters['max_area']}㎡ ({min_py}~{max_py}평)\n"
-        f"  가격: ~{price_label} 이하\n"
-        f"  층수: {filters.get('min_floor', 1)}층 이상\n"
-        f"  세대수: {min_households}세대 이상\n"
-        f"  지역: {', '.join(region_names)}"
-    )
+        message = (
+            f"🏠 *매물 업데이트*\n"
+            f"━━━━━━━━━━━━━━━\n"
+            f"⏰ {now.strftime('%Y-%m-%d %H:%M')}\n"
+            f"🆕 신규 거래 *{total_new}건*\n\n"
+            + "\n".join(region_lines) +
+            f"\n\n📊 [대시보드에서 확인]({DASHBOARD_URL})"
+        )
+    else:
+        message = (
+            f"🏠 *매물 업데이트*\n"
+            f"━━━━━━━━━━━━━━━\n"
+            f"⏰ {now.strftime('%Y-%m-%d %H:%M')}\n"
+            f"신규 거래 없음\n\n"
+            f"📊 [대시보드 보기]({DASHBOARD_URL})"
+        )
 
-    # ─── 수집 기간 계산 ───
-    max_days = filters.get("max_days_ago", 14)
-    date_from = (now - timedelta(days=max_days)).strftime("%m/%d")
-    date_to = now.strftime("%m/%d")
+    send_telegram(bot_token, chat_id, message)
+    print(f"  📤 텔레그램 알림 전송 완료")
 
-    # ─── 텔레그램 전송 ───
-    region_summary_lines = []
-    for region in regions:
-        rname = region["name"]
-        if rname in region_results:
-            count = len(region_results[rname]["trades"])
-            region_summary_lines.append(f"  • {rname}: {count}건")
-        else:
-            region_summary_lines.append(f"  • {rname}: 0건")
-
-    header = (
-        f"🏠 *부동산 실거래 리포트*\n"
-        f"━━━━━━━━━━━━━━━\n"
-        f"⏰ {now.strftime('%Y-%m-%d %H:%M')}\n"
-        f"📅 수집 기간: {date_from} ~ {date_to} 거래\n"
-        f"🆕 총 {total_new}건 (신규 거래)\n\n"
-        + "\n".join(region_summary_lines) +
-        f"\n━━━━━━━━━━━━━━━\n\n"
-        + filter_text
-    )
-    send_telegram(bot_token, chat_id, header)
-
+    # ─── data.json용 데이터 수집 ───
     if region_results:
         for rname, rdata in region_results.items():
             complex_groups = group_by_complex(rdata["trades"])
-            message, data_items = build_region_summary(
+            data_items = build_region_data(
                 rname, complex_groups, kakao_key, coord_cache,
                 rdata["sgg_name"], api_key, apt_info_cache,
                 min_households, rdata["region_code"], apt_list_cache
             )
-            send_long_message(bot_token, chat_id, message)
-            print(f"  📤 {rname} 알림 전송")
-
-            # [v4] data.json용 아이템 수집 (중복 제거)
             for item in data_items:
                 item_key = f"{item['region']}_{item['name']}_{item['area_m2']}_{item['price']}_{item['floor']}_{item['trade_date']}"
                 if item_key not in existing_keys:
                     all_new_items.append(item)
                     existing_keys.add(item_key)
 
-    # [v4] data.json 업데이트
-    # 기존 데이터 + 신규 데이터 합치기
+    # ─── data.json 업데이트 ───
     all_properties = existing_properties + all_new_items
 
-    # 90일 이상 된 데이터 정리 (너무 오래된 건 제거)
     cutoff_date = (now - timedelta(days=90)).strftime("%Y-%m-%d")
     all_properties = [
         p for p in all_properties
         if p.get("trade_date", "9999") >= cutoff_date or not p.get("trade_date")
     ]
 
-    # 거래일 기준 최신순 정렬
     all_properties.sort(key=lambda x: x.get("trade_date", ""), reverse=True)
 
     data_json = {
