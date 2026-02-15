@@ -13,7 +13,7 @@ import os
 import requests
 import urllib.parse
 import xml.etree.ElementTree as ET
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 # ─── 경로 설정 ───
@@ -657,7 +657,8 @@ def main():
         key = f"{p['region']}_{p['name']}_{p['area_m2']}_{p['price']}_{p['floor']}_{p['trade_date']}"
         existing_keys.add(key)
 
-    now = datetime.now()
+    KST = timezone(timedelta(hours=9))
+    now = datetime.now(KST)
     months = [now.strftime("%Y%m"), (now - timedelta(days=30)).strftime("%Y%m")]
     months = list(dict.fromkeys(months))
 
