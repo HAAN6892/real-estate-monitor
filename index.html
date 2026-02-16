@@ -191,6 +191,7 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
 .prop-card:hover{border-color:var(--border-hover);box-shadow:0 4px 16px rgba(0,0,0,0.2)}
 .prop-card.highlight{border-color:var(--mode-accent)!important;box-shadow:0 0 16px rgba(37,99,235,0.4);transition:box-shadow 0.3s,border-color 0.3s}
 tr.highlight td{background:rgba(37,99,235,0.12)!important}
+@keyframes markerBounce{0%,100%{transform:translateY(0)}25%{transform:translateY(-12px)}50%{transform:translateY(0)}75%{transform:translateY(-6px)}}
 .pc-header{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 14px 0;gap:8px}
 .pc-name{font-size:14px;font-weight:700;line-height:1.3}
 .pc-badge{padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;white-space:nowrap;flex-shrink:0}
@@ -463,8 +464,8 @@ function focusCard(mKey){
   setTimeout(()=>{const el=document.querySelector('[data-prop-id="'+propId+'"]');if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});highlightEl(el);},need?120:20);
 }
 function highlightEl(el){document.querySelectorAll('.highlight').forEach(e=>e.classList.remove('highlight'));if(hlTimer)clearTimeout(hlTimer);el.classList.add('highlight');hlTimer=setTimeout(()=>{if(el.classList)el.classList.remove('highlight');},2500);}
-function bounceMarker(mKey){stopBounce();const m=markerMap[mKey];if(m)m.setAnimation(kakao.maps.Animation.BOUNCE);}
-function stopBounce(){Object.values(markerMap).forEach(m=>{try{if(m.getAnimation())m.setAnimation(null);}catch(e){}});}
+function bounceMarker(mKey){stopBounce();const m=markerMap[mKey];if(m&&m.a)m.a.style.animation='markerBounce 0.6s ease infinite';}
+function stopBounce(){Object.values(markerMap).forEach(m=>{try{if(m.a)m.a.style.animation='';}catch(e){}});}
 function renderBuyCards(items,eq,mr){
   const cg=document.getElementById('propertyCards');cg.innerHTML='';
   items.forEach(p=>{const tags=[];if(p.area_py)tags.push(p.area_py+'평'+(p.area?'('+p.area+')':''));if(p.built_year)tags.push(p.built_year+'년');if(p.households)tags.push(p.households+'세대');
