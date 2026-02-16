@@ -9,5 +9,6 @@
   "mgmt": 35,
   "ltv": 70,
   "dsr": 40,
-  "houseCount": 1
+  "houseCount": 1,
+  "married": true
 }
