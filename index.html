@@ -179,7 +179,7 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
 .split-map #mapContainer{width:100%;height:100%;border-radius:10px;border:1px solid var(--border);background:var(--surface2)}
 .map-legend{position:absolute;bottom:8px;left:8px;right:8px;font-size:10px;color:var(--text);display:flex;gap:10px;flex-wrap:wrap;background:rgba(13,13,20,0.85);padding:6px 10px;border-radius:6px;backdrop-filter:blur(4px)}
 .split-list{flex:1;height:calc(100vh - 300px);min-height:400px;overflow-y:auto;overflow-x:hidden;min-width:0;padding-right:4px}
-.split-list .card-grid{grid-template-columns:1fr}
+.split-list .card-grid{grid-template-columns:1fr;gap:6px}
 .split-list .pagination-bar{position:sticky;bottom:0;z-index:2}
 .map-info-badge{position:absolute;top:8px;right:8px;background:rgba(13,13,20,0.85);color:var(--text-mid);font-size:11px;padding:4px 10px;border-radius:6px;z-index:1;backdrop-filter:blur(4px)}
 .view-toggle{display:flex;gap:2px;margin-left:auto}
@@ -194,6 +194,23 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
 @keyframes markerBounce{0%,100%{transform:translateY(0)}25%{transform:translateY(-12px)}50%{transform:translateY(0)}75%{transform:translateY(-6px)}}
 .map-bounds-toggle{position:absolute;top:8px;left:8px;background:rgba(13,13,20,0.85);color:var(--text-mid);font-size:11px;padding:4px 10px;border-radius:6px;z-index:1;backdrop-filter:blur(4px);cursor:pointer;display:flex;align-items:center;gap:5px;user-select:none}
 .map-bounds-toggle input{accent-color:var(--mode-accent);cursor:pointer}
+.pc-compact{padding:10px 12px}
+.pc-compact .pc-line{display:flex;align-items:center;gap:6px;line-height:1.4}
+.pc-compact .pc-line+.pc-line{margin-top:3px}
+.pc-compact .pc-badge-sm{padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.pc-compact .pc-badge-sm.ok{background:var(--green-dim);color:var(--green)}
+.pc-compact .pc-badge-sm.warn{background:var(--yellow-dim);color:var(--yellow)}
+.pc-compact .pc-badge-sm.danger{background:var(--red-dim);color:var(--red)}
+.pc-compact .pc-cname{font-size:13px;font-weight:700;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pc-compact .pc-cregion{font-size:11px;color:var(--text-dim);white-space:nowrap;flex-shrink:0}
+.pc-compact .pc-cmeta{font-size:11px;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pc-compact .pc-cprice{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--mode-accent);white-space:nowrap}
+.pc-compact .pc-cdetails{font-size:11px;color:var(--text-mid);flex:1;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc-compact .pc-cfoot{display:flex;justify-content:space-between;align-items:center;margin-top:4px;padding-top:4px;border-top:1px solid var(--border)}
+.pc-compact .pc-links{display:flex;gap:3px}
+.pc-compact .link-icon{width:22px;height:22px;font-size:11px}
+.pc-compact .expand-btn{font-size:10px;padding:3px 8px}
+.pc-compact .pc-history{padding:4px 0 0}
 .pc-header{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 14px 0;gap:8px}
 .pc-name{font-size:14px;font-weight:700;line-height:1.3}
 .pc-badge{padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;white-space:nowrap;flex-shrink:0}
@@ -213,9 +230,36 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
 .pc-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-top:1px solid var(--border)}
 .pc-links{display:flex;gap:4px}
 .pc-history{padding:0 14px 14px}
+/* PC table: hide 연식/세대, compact */
+@media(min-width:1025px){
+  .split-list table{font-size:12px}
+  .split-list th,.split-list td{padding:7px 8px}
+  #buyTableWrap th:nth-child(8),#buyTableWrap td:nth-child(8),#buyTableWrap th:nth-child(9),#buyTableWrap td:nth-child(9){display:none}
+  #rentTableWrapInner th:nth-child(9),#rentTableWrapInner td:nth-child(9){display:none}
+  .col-name{min-width:160px}
+}
+/* Tablet */
+@media(min-width:769px) and (max-width:1024px){
+  .split-map{flex:0 0 50%}
+  .split-list table{font-size:12px}
+  .split-list th,.split-list td{padding:6px 6px}
+  #buyTableWrap th:nth-child(3),#buyTableWrap td:nth-child(3),#buyTableWrap th:nth-child(7),#buyTableWrap td:nth-child(7),#buyTableWrap th:nth-child(8),#buyTableWrap td:nth-child(8),#buyTableWrap th:nth-child(9),#buyTableWrap td:nth-child(9),#buyTableWrap th:nth-child(10),#buyTableWrap td:nth-child(10){display:none}
+  #rentTableWrapInner th:nth-child(3),#rentTableWrapInner td:nth-child(3),#rentTableWrapInner th:nth-child(7),#rentTableWrapInner td:nth-child(7),#rentTableWrapInner th:nth-child(8),#rentTableWrapInner td:nth-child(8),#rentTableWrapInner th:nth-child(9),#rentTableWrapInner td:nth-child(9),#rentTableWrapInner th:nth-child(10),#rentTableWrapInner td:nth-child(10){display:none}
+  .col-name{min-width:120px}
+  .stats-row{grid-template-columns:repeat(2,1fr);gap:8px}.stat-value{font-size:18px}
+  .loan-grid,.rent-loan-grid{grid-template-columns:1fr}.policy-grid{grid-template-columns:1fr}
+}
+/* Mobile */
+.mobile-split-tabs{display:none}
 @media(max-width:768px){
-  .split-layout{flex-direction:column;height:auto}
-  .split-map{flex:none;height:300px;min-height:300px}
+  .mobile-split-tabs{display:flex;gap:0;margin-bottom:8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  .mobile-split-tab{flex:1;background:none;border:none;color:var(--text-dim);padding:10px 0;font-size:13px;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all 0.2s;text-align:center}
+  .mobile-split-tab:hover{color:var(--text-mid)}
+  .mobile-split-tab.active{background:var(--mode-accent);color:#fff}
+  .split-layout{flex-direction:column;height:auto;gap:0}
+  .split-map{flex:none;height:calc(100vh - 220px);min-height:300px}
+  .split-layout.mobile-list .split-map{display:none}
+  .split-layout.mobile-map .split-list{display:none}
   .split-list{height:auto;min-height:auto;overflow-y:visible}
   .split-list .card-grid{grid-template-columns:1fr}
   .main{padding:12px 10px}.stats-row{grid-template-columns:repeat(2,1fr);gap:8px}.stat-value{font-size:18px}
@@ -231,10 +275,13 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
   td::before{content:attr(data-label);display:block;font-size:10px;color:var(--text-dim);margin-bottom:1px}
   .marriage-status-bar{flex-direction:column;align-items:flex-start;gap:8px}
   .card-grid{grid-template-columns:1fr}
-  .filter-bar{gap:4px}
-  .filter-bar .filter-select{flex:1;min-width:0;font-size:11px;padding:6px 6px}
-  .filter-bar .search-input{flex:1 1 100%;order:10;min-width:0}
+  .filter-bar{gap:4px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:thin}
+  .filter-bar .filter-select{flex:0 0 auto;min-width:0;font-size:11px;padding:6px 6px}
+  .filter-bar .search-input{flex:0 0 140px;min-width:0}
   .filter-bar-divider{display:none}
+  .mobile-map-popup{position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--surface);border-top:1px solid var(--border);border-radius:14px 14px 0 0;padding:12px 16px;transform:translateY(100%);transition:transform 0.25s ease;box-shadow:0 -4px 20px rgba(0,0,0,0.3)}
+  .mobile-map-popup.show{transform:translateY(0)}
+  .mobile-map-popup .pc-compact{padding:0}
 }
 </style>
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=12e8b95a1df898f6b847892500770551&autoload=false&libraries=services"></script>
@@ -310,6 +357,7 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
       </div>
     </div>
     <div class="split-layout" id="splitLayout">
+      <div class="mobile-split-tabs" id="mobileSplitTabs"><button class="mobile-split-tab active" data-split="map" onclick="switchMobileSplit('map')">🗺 지도</button><button class="mobile-split-tab" data-split="list" onclick="switchMobileSplit('list')">📋 리스트</button></div>
       <div class="split-map">
         <div id="mapContainer"></div>
         <div class="map-info-badge" id="mapBadge">로딩 중...</div>
@@ -428,7 +476,7 @@ function onRentTypeChange(){
 function setRV(id,v){const s=document.getElementById(id),i=document.getElementById(id+'Val');if(s)s.value=v;if(i)i.value=v;}
 function toggleAreaUnit(){areaUnit=areaUnit==='py'?'m2':'py';document.getElementById('areaUnitLabel').textContent=areaUnit==='py'?'평':'㎡';update();}
 function fmtArea(p){return areaUnit==='py'?(p.area_py?p.area_py+'평':p.area):p.area;}
-function toggleHistory(btn){const h=btn.nextElementSibling;if(h&&h.classList.contains('trade-history')){h.classList.toggle('open');btn.textContent=h.classList.contains('open')?'▼ 거래내역 접기':'▶ 거래내역 '+h.querySelectorAll('.trade-row').length+'건';}}
+function toggleHistory(btn){let h=btn.closest('.prop-card,tr')?.querySelector('.trade-history');if(!h)h=btn.nextElementSibling;if(!h||!h.classList.contains('trade-history'))return;h.classList.toggle('open');btn.textContent=h.classList.contains('open')?'▼ 거래내역 접기':'▶ 거래내역 '+h.querySelectorAll('.trade-row').length+'건';}
 function switchTab(tabId){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
@@ -471,29 +519,42 @@ function bounceMarker(mKey){stopBounce();const m=markerMap[mKey];if(m&&m.a)m.a.s
 function stopBounce(){Object.values(markerMap).forEach(m=>{try{if(m.a)m.a.style.animation='';}catch(e){}});}
 function renderBuyCards(items,eq,mr){
   const cg=document.getElementById('propertyCards');cg.innerHTML='';
-  items.forEach(p=>{const tags=[];if(p.area_py)tags.push(p.area_py+'평'+(p.area?'('+p.area+')':''));if(p.built_year)tags.push(p.built_year+'년');if(p.households)tags.push(p.households+'세대');
+  items.forEach(p=>{
     const bc=p.verdict==='매수가능'?'ok':p.verdict==='빠듯함'?'warn':'danger';
-    const stInfo=p.station_name?(p.line?p.line+' ':'')+'🚇 '+p.station_name+(p.walk_min?' '+p.walk_min+'분':''):'역정보 없음';
-    const tBtn=p.trade_count>1?'<button class="expand-btn" onclick="toggleHistory(this)">▼ 거래내역 '+p.trade_count+'건</button>':'';
+    const meta=[];
+    if(p.station_name)meta.push((p.line?p.line+' ':'')+'도보 '+(p.walk_min||'?')+'분');
+    if(p.built_year)meta.push(p.built_year+'년');
+    if(p.area_py)meta.push(p.area_py+'평'+(p.area?'('+p.area+')':''));
+    if(p.households)meta.push(p.households+'세대');
+    const mColor=p.pMonthly>mr?'var(--red)':p.pMonthly>mr*0.85?'var(--yellow)':'var(--green)';
+    const details='대출 '+fmtShort(p.pLoan)+' · 자기 '+fmtShort(p.pEquityNeeded)+' · <span style="color:'+mColor+'">월 '+p.pMonthly+'만</span>';
+    const tBtn=p.trade_count>1?'<button class="expand-btn" onclick="toggleHistory(this)">▶ 거래내역 '+p.trade_count+'건</button>':'';
     let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.price-p.trades[i+1].price;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'')+'</span><span class="trade-price">'+fmtShort(t.price)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span></div>'+rows+'</div>';}
-    const card=document.createElement('div');card.className='prop-card';card.dataset.propId=getPropId(p);
+    const card=document.createElement('div');card.className='prop-card pc-compact';card.dataset.propId=getPropId(p);
     card.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));card.addEventListener('mouseleave',()=>stopBounce());
-    card.innerHTML='<div class="pc-header"><div class="pc-name">'+p.name+'</div><div class="pc-badge '+bc+'">'+p.verdict+'</div></div><div class="pc-sub">'+p.region+' '+p.dong+' · '+stInfo+'</div><div class="pc-tags">'+tags.map(t=>'<span class="pc-tag">'+t+'</span>').join('')+'</div><div class="pc-price">매매 '+fmtShort(p.price)+(p.trade_count>1?'<div class="pc-price-sub">'+fmtShort(p.min_price)+'~'+fmtShort(p.max_price)+' ('+p.trade_count+'건)</div>':'')+'</div><div class="pc-detail"><div class="pc-detail-item"><div class="pc-detail-label">💰 대출</div><div class="pc-detail-value">'+fmtShort(p.pLoan)+'</div></div><div class="pc-detail-item"><div class="pc-detail-label">🏦 필요자금</div><div class="pc-detail-value" style="color:'+(p.pEquityNeeded>eq?'var(--red)':'var(--text)')+'">'+fmtShort(p.pEquityNeeded)+'</div></div><div class="pc-detail-item pc-detail-full"><div class="pc-detail-label">📊 월 상환</div><div class="pc-detail-value" style="color:'+(p.pMonthly>mr?'var(--red)':p.pMonthly>mr*0.85?'var(--yellow)':'var(--green)')+'">약 '+p.pMonthly+'만원</div></div></div><div class="pc-footer"><div class="pc-links">'+makeLinks(p)+'</div>'+tBtn+'</div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
+    card.innerHTML='<div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">매매 '+fmtShort(p.price)+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span><div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
     cg.appendChild(card);
   });
 }
 function renderRentCards(items,equity,budget){
   const cg=document.getElementById('rentPropertyCards');cg.innerHTML='';
-  items.forEach(p=>{const tags=[];if(p.area_py)tags.push(p.area_py+'평'+(p.area?'('+p.area+')':''));if(p.built_year)tags.push(p.built_year+'년');if(p.households)tags.push(p.households+'세대');
+  items.forEach(p=>{
     const bc=p.verdict==='가능'?'ok':p.verdict==='빠듯함'?'warn':'danger';
-    const stInfo=p.station_name?(p.line?p.line+' ':'')+'🚇 '+p.station_name+(p.walk_min?' '+p.walk_min+'분':''):'역정보 없음';
-    const typeLabel=p.rent_type==='월세'?'월세':'전세';
-    const tBtn=p.trade_count>1?'<button class="expand-btn" onclick="toggleHistory(this)">▼ 거래내역 '+p.trade_count+'건</button>':'';
-    let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.deposit-p.trades[i+1].deposit;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'')+'</span><span class="trade-price">'+fmtShort(t.deposit)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span></div>'+rows+'</div>';}
+    const typeIcon=p.rent_type==='월세'?'💳':'🔑';
+    const meta=[];
+    if(p.station_name)meta.push((p.line?p.line+' ':'')+'도보 '+(p.walk_min||'?')+'분');
+    if(p.built_year)meta.push(p.built_year+'년');
+    if(p.area_py)meta.push(p.area_py+'평'+(p.area?'('+p.area+')':''));
+    if(p.households)meta.push(p.households+'세대');
     const needEq=Math.max(0,p.deposit-budget+equity);const loanAmt=p.deposit-needEq;const rr=getVal('rentRate');const mi=Math.round(loanAmt*rr/100/12);
-    const card=document.createElement('div');card.className='prop-card';card.dataset.propId=getPropId(p);
+    const miColor=mi<=50?'var(--green)':mi<=80?'var(--yellow)':'var(--red)';
+    const priceStr=p.rent_type==='월세'?'월세 '+fmtShort(p.deposit)+'/'+p.monthly_rent+'만':'전세 '+fmtShort(p.deposit);
+    const details='대출 '+fmtShort(loanAmt)+' · 자기 '+fmtShort(needEq)+' · <span style="color:'+miColor+'">이자 '+mi+'만</span>';
+    const tBtn=p.trade_count>1?'<button class="expand-btn" onclick="toggleHistory(this)">▶ 거래내역 '+p.trade_count+'건</button>':'';
+    let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.deposit-p.trades[i+1].deposit;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'')+'</span><span class="trade-price">'+fmtShort(t.deposit)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span></div>'+rows+'</div>';}
+    const card=document.createElement('div');card.className='prop-card pc-compact';card.dataset.propId=getPropId(p);
     card.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));card.addEventListener('mouseleave',()=>stopBounce());
-    card.innerHTML='<div class="pc-header"><div class="pc-name">'+p.name+'</div><div class="pc-badge '+bc+'">'+p.verdict+'</div></div><div class="pc-sub">'+p.region+' '+p.dong+' · '+stInfo+'</div><div class="pc-tags"><span class="pc-tag">'+(p.rent_type==='월세'?'💳 월세':'🔑 전세')+'</span>'+tags.map(t=>'<span class="pc-tag">'+t+'</span>').join('')+'</div><div class="pc-price">'+typeLabel+' '+fmtShort(p.deposit)+(p.monthly_rent>0?' / '+p.monthly_rent+'만':'')+(p.trade_count>1?'<div class="pc-price-sub">'+fmtShort(p.min_deposit)+'~'+fmtShort(p.max_deposit)+' ('+p.trade_count+'건)</div>':'')+'</div><div class="pc-detail"><div class="pc-detail-item"><div class="pc-detail-label">💰 대출</div><div class="pc-detail-value">'+fmtShort(loanAmt)+'</div></div><div class="pc-detail-item"><div class="pc-detail-label">🏦 자기자금</div><div class="pc-detail-value">'+fmtShort(needEq)+'</div></div><div class="pc-detail-item pc-detail-full"><div class="pc-detail-label">📊 월 이자</div><div class="pc-detail-value" style="color:'+(mi<=50?'var(--green)':mi<=80?'var(--yellow)':'var(--red)')+'">약 '+mi+'만원</div></div></div><div class="pc-footer"><div class="pc-links">'+makeLinks(p)+'</div>'+tBtn+'</div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
+    card.innerHTML='<div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+typeIcon+' '+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceStr+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span><div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
     cg.appendChild(card);
   });
 }
@@ -788,6 +849,7 @@ function updateMapMarkers(){
     const priceStr=currentMode==='buy'?fmtShort(p.price):fmtShort(p.deposit);
     const label=currentMode==='buy'?'매매 ':'보증금 ';
     kakao.maps.event.addListener(marker,'click',()=>{
+      if(isMobile()){showMobileMapPopup(p);return;}
       mapInfoWindow.setContent('<div style="padding:8px 12px;font-size:12px;line-height:1.5;max-width:220px"><strong>'+p.name+'</strong><br><span style="color:#666">'+p.region+' · '+p.area+'</span><br><span style="font-weight:700">'+label+priceStr+'</span>'+(p.station?' · '+p.station:'')+'</div>');
       mapInfoWindow.open(kakaoMap,marker);
       focusCard(mKey);
@@ -797,8 +859,39 @@ function updateMapMarkers(){
   });
   document.getElementById('mapBadge').textContent=cnt+'개 매물 표시';
 }
-window.addEventListener('resize',()=>{if(kakaoMap)kakaoMap.relayout();});
-loadSettings().then(()=>loadData().then(()=>initMapIfNeeded()));
+let mobileSplitMode='map';
+function isMobile(){return window.innerWidth<=768;}
+function switchMobileSplit(mode){
+  mobileSplitMode=mode;
+  const sl=document.getElementById('splitLayout');
+  document.querySelectorAll('.mobile-split-tab').forEach(b=>b.classList.toggle('active',b.dataset.split===mode));
+  sl.classList.remove('mobile-map','mobile-list');
+  sl.classList.add('mobile-'+mode);
+  if(mode==='map'&&kakaoMap)setTimeout(()=>kakaoMap.relayout(),100);
+  const popup=document.getElementById('mobileMapPopup');if(popup)popup.classList.remove('show');
+}
+function showMobileMapPopup(p){
+  const popup=document.getElementById('mobileMapPopup'),content=document.getElementById('mobileMapPopupContent');
+  const bc=currentMode==='buy'?(p.verdict==='매수가능'?'ok':p.verdict==='빠듯함'?'warn':'danger'):(p.verdict==='가능'?'ok':p.verdict==='빠듯함'?'warn':'danger');
+  const priceLabel=currentMode==='buy'?'매매 ':'전세 ';
+  const priceVal=currentMode==='buy'?p.price:p.deposit;
+  const meta=[];if(p.area)meta.push(p.area);if(p.station_name)meta.push(p.station_name+(p.walk_min?' '+p.walk_min+'분':''));
+  content.innerHTML='<div class="pc-compact"><div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceLabel+fmtShort(priceVal)+'</span><span class="pc-cdetails">'+meta.join(' · ')+'</span></div><div class="pc-links" style="margin-top:6px">'+makeLinks(p)+'</div></div>';
+  popup.classList.add('show');
+  setTimeout(()=>{document.addEventListener('click',dismissMobilePopup,{once:true});},100);
+}
+function dismissMobilePopup(e){const popup=document.getElementById('mobileMapPopup');if(popup&&!popup.contains(e.target))popup.classList.remove('show');}
+window.addEventListener('resize',()=>{
+  if(kakaoMap)kakaoMap.relayout();
+  const sl=document.getElementById('splitLayout');
+  if(window.innerWidth>768){sl.classList.remove('mobile-map','mobile-list');}
+  else if(!sl.classList.contains('mobile-map')&&!sl.classList.contains('mobile-list')){sl.classList.add('mobile-map');}
+});
+loadSettings().then(()=>loadData().then(()=>{
+  initMapIfNeeded();
+  if(isMobile())document.getElementById('splitLayout').classList.add('mobile-map');
+}));
 </script>
+<div class="mobile-map-popup" id="mobileMapPopup"><div id="mobileMapPopupContent"></div></div>
 </body>
 </html>
