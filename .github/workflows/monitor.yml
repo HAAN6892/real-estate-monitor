@@ -45,23 +45,38 @@ jobs:
                   "max_price": 60000,
                   "min_floor": 1,
                   "max_build_year": 9999,
-                  "min_households": 200
+                  "min_households": 200,
+                  "max_days_ago": 14,
+                  "rent": {
+                      "min_deposit": 0,
+                      "max_deposit": 50000,
+                      "type": "all",
+                      "max_days_ago": 30
+                  }
               },
               "regions": [
                   {"name": "서울 강남구", "code": "11680", "sgg_name": "서울 강남구"},
                   {"name": "서울 서초구", "code": "11650", "sgg_name": "서울 서초구"},
                   {"name": "서울 송파구", "code": "11710", "sgg_name": "서울 송파구"},
                   {"name": "서울 강동구", "code": "11740", "sgg_name": "서울 강동구"},
+                  {"name": "서울 동작구", "code": "11590", "sgg_name": "서울 동작구"},
+                  {"name": "서울 관악구", "code": "11620", "sgg_name": "서울 관악구"},
                   {"name": "경기 과천시", "code": "41290", "sgg_name": "경기 과천시"},
+                  {"name": "경기 광명시", "code": "41210", "sgg_name": "경기 광명시"},
                   {"name": "경기 안양 만안구", "code": "41171", "sgg_name": "경기 안양시 만안구"},
                   {"name": "경기 안양 동안구", "code": "41173", "sgg_name": "경기 안양시 동안구"},
+                  {"name": "경기 군포시", "code": "41410", "sgg_name": "경기 군포시"},
+                  {"name": "경기 의왕시", "code": "41430", "sgg_name": "경기 의왕시"},
                   {"name": "경기 성남 수정구", "code": "41131", "sgg_name": "경기 성남시 수정구"},
                   {"name": "성남 중원구", "code": "41133", "sgg_name": "경기 성남시 중원구"},
                   {"name": "성남 분당구", "code": "41135", "sgg_name": "경기 성남시 분당구"},
                   {"name": "경기 하남시", "code": "41450", "sgg_name": "경기 하남시"},
+                  {"name": "경기 구리시", "code": "41310", "sgg_name": "경기 구리시"},
                   {"name": "용인 수지구", "code": "41465", "sgg_name": "경기 용인시 수지구"},
                   {"name": "용인 기흥구", "code": "41463", "sgg_name": "경기 용인시 기흥구"},
-                  {"name": "경기 광주시", "code": "41610", "sgg_name": "경기 광주시"}
+                  {"name": "경기 광주시", "code": "41610", "sgg_name": "경기 광주시"},
+                  {"name": "수원 영통구", "code": "41117", "sgg_name": "경기 수원시 영통구"},
+                  {"name": "수원 장안구", "code": "41111", "sgg_name": "경기 수원시 장안구"}
               ],
               "schedule": {
                   "run_times": ["08:00", "20:00"]
@@ -70,14 +85,16 @@ jobs:
           with open("config.json", "w", encoding="utf-8") as f:
               json.dump(config, f, ensure_ascii=False, indent=2)
           print("config.json 생성 완료")
+          print(f"지역: {len(config['regions'])}개")
           EOF
 
       - name: 모니터링 실행
         run: python main.py
 
-      - name: data.json 커밋 및 푸시
+      - name: 데이터 커밋
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data.json
-          git diff --cached --quiet && echo "변경사항 없음" || (git commit -m "📊 data.json 업데이트 $(date +'%Y-%m-%d %H:%M')" && git push)
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data.json data-rent.json sent_history.json sent_history_rent.json coord_cache.json apt_info_cache.json 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "📊 데이터 업데이트 $(date +'%Y-%m-%d %H:%M')"
+          git push || true
