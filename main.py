@@ -795,6 +795,18 @@ def main():
         key = f"{p['region']}_{p['name']}_{p['area_m2']}_{p['deposit']}_{p.get('monthly_rent',0)}_{p['floor']}_{p['trade_date']}"
         existing_rent_keys.add(key)
 
+    # 기존 데이터에 좌표 백필
+    for props in [existing_properties, existing_rent_properties]:
+        for p in props:
+            if p.get("lat") and p.get("lon"):
+                continue
+            suffix = f"{p.get('dong', '')} {p['name']}"
+            for cache_key, coord_val in coord_cache.items():
+                if cache_key.endswith(suffix):
+                    p["lat"] = coord_val["lat"]
+                    p["lon"] = coord_val["lon"]
+                    break
+
     KST = timezone(timedelta(hours=9))
     now = datetime.now(KST)
     months = [now.strftime("%Y%m"), (now - timedelta(days=30)).strftime("%Y%m")]
