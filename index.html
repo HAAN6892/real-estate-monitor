@@ -170,6 +170,10 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
 .trade-date{color:var(--text-dim);min-width:75px}.trade-price{font-family:var(--mono);font-weight:600;min-width:85px}.trade-floor{color:var(--text-mid);min-width:30px}
 .trade-delta{font-family:var(--mono);font-size:10px;min-width:60px}.trade-delta.up{color:var(--red)}.trade-delta.down{color:var(--green)}.trade-delta.same{color:var(--text-dim)}
 .expand-btn{cursor:pointer;color:var(--mode-accent);font-size:10px;background:none;border:none;padding:0;font-family:'Noto Sans KR',sans-serif}.expand-btn:hover{opacity:0.8}
+.filter-bar{display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.filter-bar .search-input{min-width:100px;flex:0 1 160px;padding:7px 10px;font-size:12px}
+.filter-bar-divider{width:1px;height:24px;background:var(--border);flex-shrink:0;margin:0 2px}
+.filter-select.active{border-color:var(--mode-accent);background:var(--mode-accent-light);color:var(--text)}
 .view-toggle{display:flex;gap:2px;margin-left:auto}
 .view-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);width:32px;height:32px;border-radius:6px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-family:var(--mono)}
 .view-btn:hover{border-color:var(--mode-accent);color:var(--text-mid)}
@@ -211,6 +215,10 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
   td::before{content:attr(data-label);display:block;font-size:10px;color:var(--text-dim);margin-bottom:1px}
   .marriage-status-bar{flex-direction:column;align-items:flex-start;gap:8px}
   .card-grid{grid-template-columns:1fr}
+  .filter-bar{gap:4px}
+  .filter-bar .filter-select{flex:1;min-width:0;font-size:11px;padding:6px 6px}
+  .filter-bar .search-input{flex:1 1 100%;order:10;min-width:0}
+  .filter-bar-divider{display:none}
 }
 </style>
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=12e8b95a1df898f6b847892500770551&autoload=false&libraries=services"></script>
@@ -276,9 +284,7 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
   </div>
   <div class="tab-content active" id="tab-properties">
     <div class="buy-only"><div class="section" style="margin-top:0"><div class="section-header"><div class="section-title">🏘️ 관심 매물 시뮬레이션</div><div class="section-badge" id="propertyBadge">데이터 없음</div></div>
-      <div class="table-controls"><input type="text" class="search-input" id="searchInput" placeholder="단지명, 지역, 동 검색..."><select class="filter-select" id="regionFilter"><option value="">전체 지역</option></select></div>
-      <div class="filter-row"><span class="filter-label">판정</span><div class="filter-chip-group" id="verdictChips"><button class="filter-chip active" data-val="" onclick="setVerdictFilter(this)">전체</button><button class="filter-chip" data-val="매수가능" onclick="setVerdictFilter(this)">✅ 매수가능</button><button class="filter-chip" data-val="빠듯함" onclick="setVerdictFilter(this)">⚠️ 빠듯함</button><button class="filter-chip" data-val="상환초과" onclick="setVerdictFilter(this)">🔴 상환초과</button><button class="filter-chip" data-val="자금부족" onclick="setVerdictFilter(this)">🔴 자금부족</button></div></div>
-      <div class="filter-row"><span class="filter-label">정렬</span><div class="filter-chip-group"><button class="filter-chip active" data-sort="price-asc" onclick="setSort(this)">가격↑</button><button class="filter-chip" data-sort="price-desc" onclick="setSort(this)">가격↓</button><button class="filter-chip" data-sort="walk" onclick="setSort(this)">역세권순</button></div><div class="view-toggle"><button class="view-btn active" data-view="card" onclick="setView('card')" title="카드형">▦</button><button class="view-btn" data-view="table" onclick="setView('table')" title="테이블형">≡</button></div></div>
+      <div class="filter-bar"><select class="filter-select" id="regionFilter" onchange="onBuyFilterChange()"><option value="">전체 지역</option></select><select class="filter-select" id="areaFilter" onchange="onBuyFilterChange()"><option value="">전체 면적</option><option value="small">소형 (~18평)</option><option value="mid">중형 (18~25평)</option><option value="large">대형 (25평+)</option></select><select class="filter-select" id="buyVerdictSelect" onchange="onBuyFilterChange()"><option value="">전체 판정</option><option value="매수가능">✅ 매수가능</option><option value="빠듯함">⚠️ 빠듯함</option><option value="상환초과">🔴 상환초과</option><option value="자금부족">🔴 자금부족</option></select><div class="filter-bar-divider"></div><select class="filter-select" id="buySortSelect" onchange="onBuyFilterChange()"><option value="value">⭐ 가성비순</option><option value="price-asc">가격↑</option><option value="price-desc">가격↓</option><option value="area-desc">면적↓</option><option value="walk">역세권순</option><option value="latest">최신거래순</option></select><input type="text" class="search-input" id="searchInput" placeholder="🔍 검색..." oninput="onBuyFilterChange()"><div class="filter-bar-divider"></div><div class="view-toggle"><button class="view-btn active" data-view="card" onclick="setView('card')" title="카드형">▦</button><button class="view-btn" data-view="table" onclick="setView('table')" title="테이블형">≡</button></div></div>
       <div class="card-grid" id="propertyCards"></div>
       <div class="table-wrap" id="buyTableWrap" style="display:none"><table><thead><tr><th class="col-verdict">판정</th><th class="col-name">단지명</th><th class="col-region">지역</th><th class="col-area"><span class="area-toggle" onclick="toggleAreaUnit()" title="클릭하여 전환">면적 <span id="areaUnitLabel">평</span></span></th><th class="col-price">매매가</th><th class="col-monthly">월상환</th><th style="min-width:70px">역세권</th><th style="min-width:50px">연식</th><th style="min-width:50px">세대</th><th class="col-link">링크</th></tr></thead><tbody id="propertyBody"></tbody></table></div>
       <div class="pagination-bar"><div style="display:flex;align-items:center;gap:8px;"><span>표시 건수</span><select class="page-size-select" id="pageSizeSelect" onchange="changePageSize(this.value)"><option value="20" selected>20개</option><option value="30">30개</option><option value="40">40개</option><option value="50">50개</option></select></div><div class="page-info" id="pageInfo"></div><div class="page-btns" id="pageBtns"></div></div>
@@ -286,10 +292,7 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
     <div class="rent-only" id="rentPropertySection">
       <!-- 전세 데이터 있을 때 표시되는 테이블 -->
       <div id="rentTableWrap" style="display:none"><div class="section" style="margin-top:0"><div class="section-header"><div class="section-title">🔑 전세 실거래 현황</div><div class="section-badge" id="rentPropertyBadge">데이터 없음</div></div>
-        <div class="table-controls"><input type="text" class="search-input" id="rentSearchInput" placeholder="단지명, 지역, 동 검색..."><select class="filter-select" id="rentRegionFilter"><option value="">전체 지역</option></select></div>
-        <div class="filter-row"><span class="filter-label">유형</span><div class="filter-chip-group" id="rentTypeChips"><button class="filter-chip active" data-val="" onclick="setRentTypeFilter(this)">전체</button><button class="filter-chip" data-val="전세" onclick="setRentTypeFilter(this)">🔑 전세</button><button class="filter-chip" data-val="월세" onclick="setRentTypeFilter(this)">💳 월세</button></div></div>
-        <div class="filter-row"><span class="filter-label">판정</span><div class="filter-chip-group" id="rentVerdictChips"><button class="filter-chip active" data-val="" onclick="setRentVerdictFilter(this)">전체</button><button class="filter-chip" data-val="가능" onclick="setRentVerdictFilter(this)">✅ 가능</button><button class="filter-chip" data-val="빠듯함" onclick="setRentVerdictFilter(this)">⚠️ 빠듯함</button><button class="filter-chip" data-val="예산초과" onclick="setRentVerdictFilter(this)">🔴 예산초과</button></div></div>
-        <div class="filter-row"><span class="filter-label">정렬</span><div class="filter-chip-group"><button class="filter-chip active" data-sort="price-asc" onclick="setRentSort(this)">보증금↑</button><button class="filter-chip" data-sort="price-desc" onclick="setRentSort(this)">보증금↓</button><button class="filter-chip" data-sort="walk" onclick="setRentSort(this)">역세권순</button></div><div class="view-toggle"><button class="view-btn active" data-view="card" onclick="setView('card')" title="카드형">▦</button><button class="view-btn" data-view="table" onclick="setView('table')" title="테이블형">≡</button></div></div>
+        <div class="filter-bar"><select class="filter-select" id="rentRegionFilter" onchange="onRentFilterChange()"><option value="">전체 지역</option></select><select class="filter-select" id="rentAreaFilter" onchange="onRentFilterChange()"><option value="">전체 면적</option><option value="small">소형 (~18평)</option><option value="mid">중형 (18~25평)</option><option value="large">대형 (25평+)</option></select><select class="filter-select" id="rentVerdictSelect" onchange="onRentFilterChange()"><option value="">전체 판정</option><option value="가능">✅ 가능</option><option value="빠듯함">⚠️ 빠듯함</option><option value="예산초과">🔴 예산초과</option></select><select class="filter-select" id="rentTypeSelect" onchange="onRentFilterChange()"><option value="">전체 유형</option><option value="전세">🔑 전세</option><option value="월세">💳 월세</option></select><div class="filter-bar-divider"></div><select class="filter-select" id="rentSortSelect" onchange="onRentFilterChange()"><option value="value">⭐ 가성비순</option><option value="price-asc">보증금↑</option><option value="price-desc">보증금↓</option><option value="area-desc">면적↓</option><option value="walk">역세권순</option><option value="latest">최신거래순</option></select><input type="text" class="search-input" id="rentSearchInput" placeholder="🔍 검색..." oninput="onRentFilterChange()"><div class="filter-bar-divider"></div><div class="view-toggle"><button class="view-btn active" data-view="card" onclick="setView('card')" title="카드형">▦</button><button class="view-btn" data-view="table" onclick="setView('table')" title="테이블형">≡</button></div></div>
         <div class="card-grid" id="rentPropertyCards"></div>
         <div class="table-wrap" id="rentTableWrapInner" style="display:none"><table><thead><tr><th class="col-verdict">판정</th><th class="col-name">단지명</th><th class="col-region">지역</th><th class="col-area">면적</th><th style="min-width:50px">유형</th><th class="col-price">보증금</th><th style="min-width:60px">월세</th><th style="min-width:70px">역세권</th><th style="min-width:50px">연식</th><th class="col-link">링크</th></tr></thead><tbody id="rentPropertyBody"></tbody></table></div>
         <div class="pagination-bar"><div style="display:flex;align-items:center;gap:8px;"><span>표시 건수</span><select class="page-size-select" id="rentPageSizeSelect" onchange="changeRentPageSize(this.value)"><option value="20" selected>20개</option><option value="30">30개</option><option value="40">40개</option><option value="50">50개</option></select></div><div class="page-info" id="rentPageInfo"></div><div class="page-btns" id="rentPageBtns"></div></div>
@@ -362,7 +365,7 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
   </div>
 </div>
 <script>
-let currentMode='buy',isMarried=true,PROPERTIES=[],RENT_PROPERTIES=[],DATA_LOADED=false,RENT_DATA_LOADED=false,DATA_UPDATED_AT='',RENT_UPDATED_AT='',currentSort='price-asc',rentSort='price-asc',searchQuery='',regionFilterVal='',verdictFilterVal='',rentTypeFilterVal='',rentVerdictFilterVal='',areaUnit='py',pageSize=20,currentPage=1,rentPage=1,currentView='card';
+let currentMode='buy',isMarried=true,PROPERTIES=[],RENT_PROPERTIES=[],DATA_LOADED=false,RENT_DATA_LOADED=false,DATA_UPDATED_AT='',RENT_UPDATED_AT='',currentSort='value',rentSort='value',searchQuery='',regionFilterVal='',verdictFilterVal='',rentTypeFilterVal='',rentVerdictFilterVal='',areaUnit='py',pageSize=20,currentPage=1,rentPage=1,currentView='card';
 
 function setMarriage(married){
   isMarried=married;
@@ -433,6 +436,10 @@ function setVerdictFilter(btn){document.querySelectorAll('#verdictChips .filter-
 function setRentTypeFilter(btn){document.querySelectorAll('#rentTypeChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');rentTypeFilterVal=btn.dataset.val;rentPage=1;update();}
 function setRentVerdictFilter(btn){document.querySelectorAll('#rentVerdictChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');rentVerdictFilterVal=btn.dataset.val;rentPage=1;update();}
 function setView(v){currentView=v;document.querySelectorAll('.view-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));update();}
+function onBuyFilterChange(){currentPage=1;update();}
+function onRentFilterChange(){rentPage=1;update();}
+function highlightSelects(){document.querySelectorAll('.filter-bar .filter-select').forEach(s=>{s.classList.toggle('active',s.selectedIndex>0);});}
+function areaMatch(py,val){if(!val)return true;const p=parseFloat(py)||0;if(val==='small')return p<=18;if(val==='mid')return p>18&&p<=25;if(val==='large')return p>25;return true;}
 function renderBuyCards(items,eq,mr){
   const cg=document.getElementById('propertyCards');cg.innerHTML='';
   items.forEach(p=>{const tags=[];if(p.area_py)tags.push(p.area_py+'평'+(p.area?'('+p.area+')':''));if(p.built_year)tags.push(p.built_year+'년');if(p.households)tags.push(p.households+'세대');
@@ -527,11 +534,18 @@ function updateBuy(){
   updatePropTable(eq,fL,eLTV,rate,term,mr);
 }
 function updatePropTable(eq,fL,eLTV,rate,term,mr){
-  searchQuery=document.getElementById('searchInput').value.toLowerCase();regionFilterVal=document.getElementById('regionFilter').value;
-  let f=PROPERTIES.filter(p=>{if(searchQuery&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(searchQuery))return false;if(regionFilterVal&&p.region!==regionFilterVal)return false;return true;});
-  if(currentSort==='price-asc')f.sort((a,b)=>a.price-b.price);else if(currentSort==='price-desc')f.sort((a,b)=>b.price-a.price);else if(currentSort==='walk')f.sort((a,b)=>(a.walk_min||999)-(b.walk_min||999));
-  const wv=f.map(p=>{const pL=p.regulated?Math.min(eLTV,50):eLTV,pLn=Math.min(Math.floor(p.price*pL/100),fL),pEq=p.price-pLn,pM=Math.floor(monthlyPayment(pLn,rate,term));let v,vt;if(pEq>eq){v='자금부족';vt='tag-danger';}else if(pM>mr){v='상환초과';vt='tag-danger';}else if(pM>mr*0.85){v='빠듯함';vt='tag-warn';}else{v='매수가능';vt='tag-ok';}return{...p,pLTV:pL,pLoan:pLn,pEquityNeeded:pEq,pMonthly:pM,verdict:v,verdictTag:vt};}).filter(p=>!verdictFilterVal||p.verdict===verdictFilterVal);
-  const ti=wv.length,tp=Math.max(1,Math.ceil(ti/pageSize));if(currentPage>tp)currentPage=tp;const si=(currentPage-1)*pageSize,pi=wv.slice(si,si+pageSize);
+  const sq=document.getElementById('searchInput').value.toLowerCase(),rv=document.getElementById('regionFilter').value,av=(document.getElementById('areaFilter')||{}).value||'',vv=(document.getElementById('buyVerdictSelect')||{}).value||'',sv=(document.getElementById('buySortSelect')||{}).value||'value';
+  let f=PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq))return false;if(rv&&p.region!==rv)return false;if(!areaMatch(p.area_py,av))return false;return true;});
+  const wv=f.map(p=>{const pL=p.regulated?Math.min(eLTV,50):eLTV,pLn=Math.min(Math.floor(p.price*pL/100),fL),pEq=p.price-pLn,pM=Math.floor(monthlyPayment(pLn,rate,term));let v,vt;if(pEq>eq){v='자금부족';vt='tag-danger';}else if(pM>mr){v='상환초과';vt='tag-danger';}else if(pM>mr*0.85){v='빠듯함';vt='tag-warn';}else{v='매수가능';vt='tag-ok';}return{...p,pLTV:pL,pLoan:pLn,pEquityNeeded:pEq,pMonthly:pM,verdict:v,verdictTag:vt};});
+  const filtered=vv?wv.filter(p=>p.verdict===vv):wv;
+  const vo={'매수가능':0,'빠듯함':1,'상환초과':2,'자금부족':2};
+  if(sv==='value')filtered.sort((a,b)=>(vo[a.verdict]??9)-(vo[b.verdict]??9)||(parseFloat(b.area_py)||0)-(parseFloat(a.area_py)||0));
+  else if(sv==='price-asc')filtered.sort((a,b)=>a.price-b.price);else if(sv==='price-desc')filtered.sort((a,b)=>b.price-a.price);
+  else if(sv==='area-desc')filtered.sort((a,b)=>(parseFloat(b.area_py)||0)-(parseFloat(a.area_py)||0));
+  else if(sv==='walk')filtered.sort((a,b)=>(a.walk_min||999)-(b.walk_min||999));
+  else if(sv==='latest')filtered.sort((a,b)=>(b.latest_date||'').localeCompare(a.latest_date||''));
+  highlightSelects();
+  const ti=filtered.length,tp=Math.max(1,Math.ceil(ti/pageSize));if(currentPage>tp)currentPage=tp;const si=(currentPage-1)*pageSize,pi=filtered.slice(si,si+pageSize);
   const cardEl=document.getElementById('propertyCards'),tableEl=document.getElementById('buyTableWrap');
   if(currentView==='card'){cardEl.style.display='';tableEl.style.display='none';renderBuyCards(pi,eq,mr);}
   else{cardEl.style.display='none';tableEl.style.display='';
@@ -572,10 +586,17 @@ function updateRentTable(equity,budget){
   if(placeholder)placeholder.style.display='none';if(tableWrap)tableWrap.style.display='';
   const tabBtnProp=document.getElementById('tabBtnProperties');tabBtnProp.style.display='';tabBtnProp.textContent='📊 전세 실거래';
   const sq=(document.getElementById('rentSearchInput')||{}).value||'';const rf=(document.getElementById('rentRegionFilter')||{}).value||'';
-  let f=RENT_PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq.toLowerCase()))return false;if(rf&&p.region!==rf)return false;if(rentTypeFilterVal&&p.rent_type!==rentTypeFilterVal)return false;return true;});
-  if(rentSort==='price-asc')f.sort((a,b)=>a.deposit-b.deposit);else if(rentSort==='price-desc')f.sort((a,b)=>b.deposit-a.deposit);else if(rentSort==='walk')f.sort((a,b)=>(a.walk_min||999)-(b.walk_min||999));
+  const rav=(document.getElementById('rentAreaFilter')||{}).value||'',rvv=(document.getElementById('rentVerdictSelect')||{}).value||'',rtv=(document.getElementById('rentTypeSelect')||{}).value||'',rsv=(document.getElementById('rentSortSelect')||{}).value||'value';
+  let f=RENT_PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq.toLowerCase()))return false;if(rf&&p.region!==rf)return false;if(rtv&&p.rent_type!==rtv)return false;if(!areaMatch(p.area_py,rav))return false;return true;});
   const wv=f.map(p=>{let v,vt;if(p.deposit>budget){v='예산초과';vt='tag-danger';}else if(p.deposit>budget*0.9){v='빠듯함';vt='tag-warn';}else{v='가능';vt='tag-ok';}return{...p,verdict:v,verdictTag:vt};});
-  const filtered=rentVerdictFilterVal?wv.filter(p=>p.verdict===rentVerdictFilterVal):wv;
+  const filtered=rvv?wv.filter(p=>p.verdict===rvv):wv;
+  const rvo={'가능':0,'빠듯함':1,'예산초과':2};
+  if(rsv==='value')filtered.sort((a,b)=>(rvo[a.verdict]??9)-(rvo[b.verdict]??9)||(parseFloat(b.area_py)||0)-(parseFloat(a.area_py)||0));
+  else if(rsv==='price-asc')filtered.sort((a,b)=>a.deposit-b.deposit);else if(rsv==='price-desc')filtered.sort((a,b)=>b.deposit-a.deposit);
+  else if(rsv==='area-desc')filtered.sort((a,b)=>(parseFloat(b.area_py)||0)-(parseFloat(a.area_py)||0));
+  else if(rsv==='walk')filtered.sort((a,b)=>(a.walk_min||999)-(b.walk_min||999));
+  else if(rsv==='latest')filtered.sort((a,b)=>(b.latest_date||'').localeCompare(a.latest_date||''));
+  highlightSelects();
   const ti=filtered.length,tp=Math.max(1,Math.ceil(ti/pageSize));if(rentPage>tp)rentPage=tp;const si=(rentPage-1)*pageSize,pi=filtered.slice(si,si+pageSize);
   const cardEl=document.getElementById('rentPropertyCards'),tableEl=document.getElementById('rentTableWrapInner');
   if(currentView==='card'){cardEl.style.display='';tableEl.style.display='none';renderRentCards(pi,equity,budget);}
