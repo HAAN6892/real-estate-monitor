@@ -192,6 +192,8 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
 .prop-card.highlight{border-color:var(--mode-accent)!important;box-shadow:0 0 16px rgba(37,99,235,0.4);transition:box-shadow 0.3s,border-color 0.3s}
 tr.highlight td{background:rgba(37,99,235,0.12)!important}
 @keyframes markerBounce{0%,100%{transform:translateY(0)}25%{transform:translateY(-12px)}50%{transform:translateY(0)}75%{transform:translateY(-6px)}}
+.map-bounds-toggle{position:absolute;top:8px;left:8px;background:rgba(13,13,20,0.85);color:var(--text-mid);font-size:11px;padding:4px 10px;border-radius:6px;z-index:1;backdrop-filter:blur(4px);cursor:pointer;display:flex;align-items:center;gap:5px;user-select:none}
+.map-bounds-toggle input{accent-color:var(--mode-accent);cursor:pointer}
 .pc-header{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 14px 0;gap:8px}
 .pc-name{font-size:14px;font-weight:700;line-height:1.3}
 .pc-badge{padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;white-space:nowrap;flex-shrink:0}
@@ -311,6 +313,7 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
       <div class="split-map">
         <div id="mapContainer"></div>
         <div class="map-info-badge" id="mapBadge">로딩 중...</div>
+        <label class="map-bounds-toggle" id="mapBoundsToggle"><input type="checkbox" id="mapBoundsCheck" checked onchange="toggleMapBounds(this.checked)"><span>지도 영역 내만 표시</span></label>
         <div class="map-legend"><span>🟢 매수/전세 가능</span><span>🟡 빠듯함</span><span>🔴 자금부족/예산초과</span><span>🔵 역 위치</span></div>
       </div>
       <div class="split-list" id="splitList">
@@ -567,7 +570,8 @@ function updatePropTable(eq,fL,eLTV,rate,term,mr){
   const sq=document.getElementById('searchInput').value.toLowerCase(),rv=document.getElementById('regionFilter').value,av=(document.getElementById('areaFilter')||{}).value||'',vv=(document.getElementById('buyVerdictSelect')||{}).value||'',sv=(document.getElementById('buySortSelect')||{}).value||'value';
   let f=PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq))return false;if(rv&&p.region!==rv)return false;if(!areaMatch(p.area_py,av))return false;return true;});
   const wv=f.map(p=>{const pL=p.regulated?Math.min(eLTV,50):eLTV,pLn=Math.min(Math.floor(p.price*pL/100),fL),pEq=p.price-pLn,pM=Math.floor(monthlyPayment(pLn,rate,term));let v,vt;if(pEq>eq){v='자금부족';vt='tag-danger';}else if(pM>mr){v='상환초과';vt='tag-danger';}else if(pM>mr*0.85){v='빠듯함';vt='tag-warn';}else{v='매수가능';vt='tag-ok';}return{...p,pLTV:pL,pLoan:pLn,pEquityNeeded:pEq,pMonthly:pM,verdict:v,verdictTag:vt};});
-  const filtered=vv?wv.filter(p=>p.verdict===vv):wv;
+  let filtered=vv?wv.filter(p=>p.verdict===vv):wv;
+  if(mapBoundsFilter&&mapBounds)filtered=filtered.filter(p=>inBounds(p));
   const vo={'매수가능':0,'빠듯함':1,'상환초과':2,'자금부족':2};
   if(sv==='value')filtered.sort((a,b)=>(vo[a.verdict]??9)-(vo[b.verdict]??9)||(parseFloat(b.area_py)||0)-(parseFloat(a.area_py)||0));
   else if(sv==='price-asc')filtered.sort((a,b)=>a.price-b.price);else if(sv==='price-desc')filtered.sort((a,b)=>b.price-a.price);
@@ -589,7 +593,7 @@ function updatePropTable(eq,fL,eLTV,rate,term,mr){
     tr.innerHTML='<td data-label="판정"><span class="tag '+p.verdictTag+'">'+p.verdict+'</span></td><td data-label="단지명"><strong>'+p.name+'</strong><br><span style="font-size:10px;color:var(--text-dim)">'+(p.line?p.line+' ':'')+p.station+(ex.length?' · '+ex.join(' · '):'')+'</span><br>'+tBtn+hH+'</td><td data-label="지역"><span class="tag tag-region">'+p.region+'</span></td><td data-label="면적">'+fmtArea(p)+'</td><td data-label="매매가" class="mono">'+fmtShort(p.price)+'</td><td data-label="월상환" class="mono" style="color:'+(p.pMonthly>mr?'var(--red)':p.pMonthly>mr*0.85?'var(--yellow)':'var(--green)')+'">'+p.pMonthly+'만</td><td data-label="역세권">'+stTxt+'</td><td data-label="연식">'+(p.built_year||'—')+'</td><td data-label="세대">'+(p.households||'—')+'</td><td data-label="링크"><div class="link-icons">'+makeLinks(p)+'</div></td>';
     tb.appendChild(tr);
   });}
-  document.getElementById('propertyBadge').textContent=DATA_LOADED?ti+'/'+PROPERTIES.length+'개 표시':'데이터 없음';
+  document.getElementById('propertyBadge').textContent=DATA_LOADED?(mapBoundsFilter&&mapBounds?'지도 영역 내 '+ti+'건':ti+'/'+PROPERTIES.length+'개 표시'):'데이터 없음';
   document.getElementById('pageInfo').textContent=ti>0?(si+1)+'-'+Math.min(si+pageSize,ti)+' / '+ti+'건':'0건';
   const pb=document.getElementById('pageBtns');pb.innerHTML='';
   if(tp>1){const pv=document.createElement('button');pv.className='page-btn';pv.textContent='◀';pv.disabled=currentPage<=1;pv.onclick=()=>{currentPage--;update();};pb.appendChild(pv);for(let i=1;i<=tp;i++){if(tp>7&&i>2&&i<tp-1&&Math.abs(i-currentPage)>1){if(i===3||i===tp-2){const d=document.createElement('span');d.className='page-info';d.textContent='…';pb.appendChild(d);}continue;}const b=document.createElement('button');b.className='page-btn'+(i===currentPage?' active':'');b.textContent=i;b.onclick=()=>{currentPage=i;update();};pb.appendChild(b);}const nx=document.createElement('button');nx.className='page-btn';nx.textContent='▶';nx.disabled=currentPage>=tp;nx.onclick=()=>{currentPage++;update();};pb.appendChild(nx);}
@@ -621,7 +625,8 @@ function updateRentTable(equity,budget){
   const rav=(document.getElementById('rentAreaFilter')||{}).value||'',rvv=(document.getElementById('rentVerdictSelect')||{}).value||'',rtv=(document.getElementById('rentTypeSelect')||{}).value||'',rsv=(document.getElementById('rentSortSelect')||{}).value||'value';
   let f=RENT_PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq.toLowerCase()))return false;if(rf&&p.region!==rf)return false;if(rtv&&p.rent_type!==rtv)return false;if(!areaMatch(p.area_py,rav))return false;return true;});
   const wv=f.map(p=>{let v,vt;if(p.deposit>budget){v='예산초과';vt='tag-danger';}else if(p.deposit>budget*0.9){v='빠듯함';vt='tag-warn';}else{v='가능';vt='tag-ok';}return{...p,verdict:v,verdictTag:vt};});
-  const filtered=rvv?wv.filter(p=>p.verdict===rvv):wv;
+  let filtered=rvv?wv.filter(p=>p.verdict===rvv):wv;
+  if(mapBoundsFilter&&mapBounds)filtered=filtered.filter(p=>inBounds(p));
   const rvo={'가능':0,'빠듯함':1,'예산초과':2};
   if(rsv==='value')filtered.sort((a,b)=>(rvo[a.verdict]??9)-(rvo[b.verdict]??9)||(parseFloat(b.area_py)||0)-(parseFloat(a.area_py)||0));
   else if(rsv==='price-asc')filtered.sort((a,b)=>a.deposit-b.deposit);else if(rsv==='price-desc')filtered.sort((a,b)=>b.deposit-a.deposit);
@@ -644,7 +649,7 @@ function updateRentTable(equity,budget){
     tr.innerHTML='<td data-label="판정"><span class="tag '+p.verdictTag+'">'+p.verdict+'</span></td><td data-label="단지명"><strong>'+p.name+'</strong><br><span style="font-size:10px;color:var(--text-dim)">'+(p.line?p.line+' ':'')+p.station+(ex.length?' · '+ex.join(' · '):'')+'</span><br>'+tBtn+hH+'</td><td data-label="지역"><span class="tag tag-region">'+p.region+'</span></td><td data-label="면적">'+fmtArea(p)+'</td><td data-label="유형">'+typeTag+'</td><td data-label="보증금" class="mono">'+fmtShort(p.deposit)+'</td><td data-label="월세" class="mono">'+(p.monthly_rent>0?p.monthly_rent+'만':'—')+'</td><td data-label="역세권">'+stTxt+'</td><td data-label="연식">'+(p.built_year||'—')+'</td><td data-label="링크"><div class="link-icons">'+makeLinks(p)+'</div></td>';
     tb.appendChild(tr);
   });}
-  document.getElementById('rentPropertyBadge').textContent=ti+'/'+RENT_PROPERTIES.length+'개 표시';
+  document.getElementById('rentPropertyBadge').textContent=mapBoundsFilter&&mapBounds?'지도 영역 내 '+ti+'건':ti+'/'+RENT_PROPERTIES.length+'개 표시';
   document.getElementById('rentPageInfo').textContent=ti>0?(si+1)+'-'+Math.min(si+pageSize,ti)+' / '+ti+'건':'0건';
   const pb=document.getElementById('rentPageBtns');pb.innerHTML='';
   if(tp>1){const pv=document.createElement('button');pv.className='page-btn';pv.textContent='◀';pv.disabled=rentPage<=1;pv.onclick=()=>{rentPage--;update();};pb.appendChild(pv);for(let i=1;i<=tp;i++){if(tp>7&&i>2&&i<tp-1&&Math.abs(i-rentPage)>1){if(i===3||i===tp-2){const d=document.createElement('span');d.className='page-info';d.textContent='…';pb.appendChild(d);}continue;}const b=document.createElement('button');b.className='page-btn'+(i===rentPage?' active':'');b.textContent=i;b.onclick=()=>{rentPage=i;update();};pb.appendChild(b);}const nx=document.createElement('button');nx.className='page-btn';nx.textContent='▶';nx.disabled=rentPage>=tp;nx.onclick=()=>{rentPage++;update();};pb.appendChild(nx);}
@@ -699,7 +704,7 @@ const rsi=document.getElementById('rentSearchInput');if(rsi)rsi.addEventListener
 const rrf=document.getElementById('rentRegionFilter');if(rrf)rrf.addEventListener('change',()=>{rentPage=1;update();});
 
 // ─── 카카오맵 ───
-let kakaoMap=null,mapMarkers=[],mapInfoWindow=null,mapFilterVal='',mapInitialized=false,geocodingDone=false;
+let kakaoMap=null,mapMarkers=[],mapInfoWindow=null,mapFilterVal='',mapInitialized=false,geocodingDone=false,mapBoundsFilter=true,mapBounds=null;
 const MARKER_COLORS={ok:'#34d399',warn:'#fbbf24',danger:'#f87171',station:'#60a5fa'};
 const MAP_STATIONS=[
   {name:"강남",lat:37.4979,lon:127.0276},{name:"양재",lat:37.4842,lon:127.0353},{name:"판교",lat:37.3948,lon:127.1112},
@@ -708,6 +713,9 @@ const MAP_STATIONS=[
   {name:"광교중앙",lat:37.2886,lon:127.0492},{name:"모란",lat:37.4321,lon:127.1293},{name:"야탑",lat:37.4112,lon:127.1272}
 ];
 function setMapFilter(btn){document.querySelectorAll('#mapVerdictChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');mapFilterVal=btn.dataset.val;updateMapMarkers();}
+function toggleMapBounds(on){mapBoundsFilter=on;if(on&&kakaoMap){mapBounds=kakaoMap.getBounds();}else{mapBounds=null;}currentPage=1;rentPage=1;update();}
+function onMapIdle(){if(!mapBoundsFilter||!kakaoMap)return;mapBounds=kakaoMap.getBounds();currentPage=1;rentPage=1;update();}
+function inBounds(p){if(!mapBounds||!p.lat||!p.lon)return true;const sw=mapBounds.getSouthWest(),ne=mapBounds.getNorthEast();return p.lat>=sw.getLat()&&p.lat<=ne.getLat()&&p.lon>=sw.getLng()&&p.lon<=ne.getLng();}
 function geocodeUnmatchedProps(){
   if(geocodingDone)return;
   geocodingDone=true;
@@ -749,7 +757,7 @@ function initMapIfNeeded(){
   kakao.maps.load(()=>{
     const container=document.getElementById('mapContainer');
     kakaoMap=new kakao.maps.Map(container,{center:new kakao.maps.LatLng(37.38,127.08),level:8});
-    kakao.maps.event.addListener(kakaoMap,'idle',()=>{});
+    kakao.maps.event.addListener(kakaoMap,'idle',onMapIdle);
     mapInfoWindow=new kakao.maps.InfoWindow({zIndex:1});
     // 역 마커
     MAP_STATIONS.forEach(st=>{
