@@ -37,7 +37,9 @@
       "walk_min": 57,
       "trade_date": "2026-02-12",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%EB%8D%95%EB%8F%99%20%EA%B8%B0%ED%9D%A5%ED%91%B8%EB%A5%B4%EC%A7%80%EC%98%A4%ED%8F%AC%EB%A0%88%ED%94%BC%EC%8A%A4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.26749417453355,
+      "lon": 127.0979876848932
     },
     {
       "name": "무지개마을대림",
@@ -361,7 +363,9 @@
       "walk_min": 63,
       "trade_date": "2026-02-09",
       "link": "https://m.land.naver.com/search/result/%EC%83%81%ED%95%98%EB%8F%99%20%ED%92%8D%EB%A6%BC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.272638297560285,
+      "lon": 127.14003378938449
     },
     {
       "name": "동백역월드메르디앙아파트",
@@ -379,7 +383,9 @@
       "walk_min": 85,
       "trade_date": "2026-02-09",
       "link": "https://m.land.naver.com/search/result/%EC%A4%91%EB%8F%99%20%EB%8F%99%EB%B0%B1%EC%97%AD%EC%9B%94%EB%93%9C%EB%A9%94%EB%A5%B4%EB%94%94%EC%95%99%EC%95%84%ED%8C%8C%ED%8A%B8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.264704713391325,
+      "lon": 127.15376734184362
     },
     {
       "name": "경기광주역금호리첸시아",
@@ -397,7 +403,9 @@
       "walk_min": 3,
       "trade_date": "2026-02-09",
       "link": "https://m.land.naver.com/search/result/%EA%B2%BD%EC%95%88%EB%8F%99%20%EA%B2%BD%EA%B8%B0%EA%B4%91%EC%A3%BC%EC%97%AD%EA%B8%88%ED%98%B8%EB%A6%AC%EC%B2%B8%EC%8B%9C%EC%95%84",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.40823318920359,
+      "lon": 127.25626761276021
     },
     {
       "name": "금호(1차)",
@@ -739,7 +747,9 @@
       "walk_min": 16,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%ED%92%8D%EB%8D%95%EC%B2%9C%EB%8F%99%20%EC%82%BC%EC%9D%B5%EC%95%84%ED%8C%8C%ED%8A%B8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.331788997618894,
+      "lon": 127.09631651435129
     },
     {
       "name": "대우",
@@ -811,7 +821,9 @@
       "walk_min": 31,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EA%B0%88%EB%8F%99%20%EA%B0%88%ED%98%84%EB%A7%88%EC%9D%84%ED%98%84%EB%8C%80%ED%99%88%ED%83%80%EC%9A%B4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.282029316114254,
+      "lon": 127.10682681734335
     },
     {
       "name": "인정프린스",
@@ -847,7 +859,9 @@
       "walk_min": 27,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EA%B0%88%EB%8F%99%20%EC%96%91%ED%98%84%EB%A7%88%EC%9D%84%ED%92%8D%EB%A6%BC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.28406550241437,
+      "lon": 127.10700560984179
     },
     {
       "name": "초당마을삼부르네상스12단지아파트(코아루)",
@@ -883,7 +897,9 @@
       "walk_min": 63,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%83%81%EA%B0%88%EB%8F%99%20%EA%B8%88%ED%99%94%EB%A7%88%EC%9D%84%EC%A3%BC%EA%B3%B53%EB%8B%A8%EC%A7%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.26278553012382,
+      "lon": 127.10711979544422
     },
     {
       "name": "신미주",
@@ -919,7 +935,9 @@
       "walk_min": 77,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EB%B3%B4%EB%9D%BC%EB%8F%99%20%EC%9A%A9%EC%9D%B8%EB%B3%B4%EB%9D%BC%ED%9A%A8%EC%84%B1%ED%95%B4%EB%A7%81%ED%84%B4%ED%94%8C%EB%A0%88%EC%9D%B4%EC%8A%A4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.25458966327256,
+      "lon": 127.11479468235959
     },
     {
       "name": "동보",
@@ -973,7 +991,9 @@
       "walk_min": 39,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%9E%A5%EC%A7%80%EB%8F%99%20%ED%83%9C%EC%A0%84%EA%B2%BD%EB%82%A8%EC%95%84%EB%84%88%EC%8A%A4%EB%B9%8C%EC%8B%9C%EA%B7%B8%EB%8B%88%EC%B2%98",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.39122106465226,
+      "lon": 127.23455166385504
     },
     {
       "name": "힐스테이트태전(C6,1515~1520동)",
@@ -1387,7 +1407,9 @@
       "walk_min": 63,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EC%83%81%ED%95%98%EB%8F%99%20%ED%92%8D%EB%A6%BC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.272638297560285,
+      "lon": 127.14003378938449
     },
     {
       "name": "양현마을풍림",
@@ -1405,7 +1427,9 @@
       "walk_min": 27,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EA%B0%88%EB%8F%99%20%EC%96%91%ED%98%84%EB%A7%88%EC%9D%84%ED%92%8D%EB%A6%BC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.28406550241437,
+      "lon": 127.10700560984179
     },
     {
       "name": "서천2차IPARK",
@@ -1459,7 +1483,9 @@
       "walk_min": 77,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EB%B3%B4%EB%9D%BC%EB%8F%99%20%EC%9A%A9%EC%9D%B8%EB%B3%B4%EB%9D%BC%ED%9A%A8%EC%84%B1%ED%95%B4%EB%A7%81%ED%84%B4%ED%94%8C%EB%A0%88%EC%9D%B4%EC%8A%A4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.25458966327256,
+      "lon": 127.11479468235959
     },
     {
       "name": "힐스테이트태전6지구(1601동~1608동)",
@@ -1495,7 +1521,9 @@
       "walk_min": 55,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%ED%98%84%EB%8F%99%20%EC%8B%A0%ED%98%84%EB%9D%BC%EC%98%A8%ED%94%84%EB%9D%BC%EC%9D%B4%EB%B9%97",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.3569118643471,
+      "lon": 127.150403084775
     },
     {
       "name": "힐스테이트태전2차에듀포레C11BL",
@@ -1855,7 +1883,9 @@
       "walk_min": 63,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%83%81%ED%95%98%EB%8F%99%20%ED%92%8D%EB%A6%BC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.272638297560285,
+      "lon": 127.14003378938449
     },
     {
       "name": "두진",
@@ -1891,7 +1921,9 @@
       "walk_min": 27,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EA%B0%88%EB%8F%99%20%EC%96%91%ED%98%84%EB%A7%88%EC%9D%84%ED%92%8D%EB%A6%BC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.28406550241437,
+      "lon": 127.10700560984179
     },
     {
       "name": "기흥푸르지오포레피스",
@@ -1909,7 +1941,9 @@
       "walk_min": 57,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%EB%8D%95%EB%8F%99%20%EA%B8%B0%ED%9D%A5%ED%91%B8%EB%A5%B4%EC%A7%80%EC%98%A4%ED%8F%AC%EB%A0%88%ED%94%BC%EC%8A%A4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.26749417453355,
+      "lon": 127.0979876848932
     },
     {
       "name": "파크시엘",
@@ -1927,7 +1961,9 @@
       "walk_min": 22,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EA%B0%88%EB%8F%99%20%ED%8C%8C%ED%81%AC%EC%8B%9C%EC%97%98",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.28815739496825,
+      "lon": 127.11347999150753
     },
     {
       "name": "광주역우방아이유쉘1단지",
@@ -2125,7 +2161,9 @@
       "walk_min": 18,
       "trade_date": "2026-02-04",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EA%B0%88%EB%8F%99%20%EB%85%B9%EC%9B%90%EB%A7%88%EC%9D%84%EC%83%88%EC%B2%9C%EB%85%84%EA%B7%B8%EB%A6%B0%EB%B9%8C2%EB%8B%A8%EC%A7%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.28991758071977,
+      "lon": 127.11205265595396
     },
     {
       "name": "용인기흥효성해링턴플레이스",
@@ -2143,7 +2181,9 @@
       "walk_min": 62,
       "trade_date": "2026-02-04",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%EB%8D%95%EB%8F%99%20%EC%9A%A9%EC%9D%B8%EA%B8%B0%ED%9D%A5%ED%9A%A8%EC%84%B1%ED%95%B4%EB%A7%81%ED%84%B4%ED%94%8C%EB%A0%88%EC%9D%B4%EC%8A%A4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.26486436672898,
+      "lon": 127.09648600251971
     },
     {
       "name": "힐스테이트태전2차에듀포레C11BL",
@@ -2359,7 +2399,9 @@
       "walk_min": 69,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EB%B0%95%EB%8B%AC%EB%8F%99%20%ED%95%9C%EB%9D%BC%EB%B9%84%EB%B0%9C%EB%94%94",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.403182110106926,
+      "lon": 126.9018743035772
     },
     {
       "name": "안양동2차성원아파트",
@@ -2395,7 +2437,9 @@
       "walk_min": 57,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%EB%8D%95%EB%8F%99%20%EA%B8%B0%ED%9D%A5%ED%91%B8%EB%A5%B4%EC%A7%80%EC%98%A4%ED%8F%AC%EB%A0%88%ED%94%BC%EC%8A%A4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.26749417453355,
+      "lon": 127.0979876848932
     },
     {
       "name": "신흥덕롯데캐슬레이시티",
@@ -2413,7 +2457,9 @@
       "walk_min": 48,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EA%B0%88%EB%8F%99%20%EC%8B%A0%ED%9D%A5%EB%8D%95%EB%A1%AF%EB%8D%B0%EC%BA%90%EC%8A%AC%EB%A0%88%EC%9D%B4%EC%8B%9C%ED%8B%B0",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.27246014450936,
+      "lon": 127.10186251600761
     },
     {
       "name": "용인기흥효성해링턴플레이스",
@@ -2431,7 +2477,9 @@
       "walk_min": 62,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%EB%8D%95%EB%8F%99%20%EC%9A%A9%EC%9D%B8%EA%B8%B0%ED%9D%A5%ED%9A%A8%EC%84%B1%ED%95%B4%EB%A7%81%ED%84%B4%ED%94%8C%EB%A0%88%EC%9D%B4%EC%8A%A4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.26486436672898,
+      "lon": 127.09648600251971
     },
     {
       "name": "대명레이크빌",
@@ -2449,7 +2497,9 @@
       "walk_min": 62,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%EB%8D%95%EB%8F%99%20%EB%8C%80%EB%AA%85%EB%A0%88%EC%9D%B4%ED%81%AC%EB%B9%8C",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.26551627041971,
+      "lon": 127.09253536757586
     },
     {
       "name": "신현라온프라이빗",
@@ -2467,7 +2517,9 @@
       "walk_min": 55,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%ED%98%84%EB%8F%99%20%EC%8B%A0%ED%98%84%EB%9D%BC%EC%98%A8%ED%94%84%EB%9D%BC%EC%9D%B4%EB%B9%97",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.3569118643471,
+      "lon": 127.150403084775
     },
     {
       "name": "힐스테이트삼동역",
@@ -2485,7 +2537,9 @@
       "walk_min": 74,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%82%BC%EB%8F%99%20%ED%9E%90%EC%8A%A4%ED%85%8C%EC%9D%B4%ED%8A%B8%EC%82%BC%EB%8F%99%EC%97%AD",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.4097086409575,
+      "lon": 127.19837379530304
     },
     {
       "name": "주공3(886)",
@@ -2737,7 +2791,9 @@
       "walk_min": 18,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EA%B0%88%EB%8F%99%20%EB%85%B9%EC%9B%90%EB%A7%88%EC%9D%84%EC%83%88%EC%B2%9C%EB%85%84%EA%B7%B8%EB%A6%B0%EB%B9%8C2%EB%8B%A8%EC%A7%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.28991758071977,
+      "lon": 127.11205265595396
     },
     {
       "name": "모아미래도1단지아파트",
@@ -2755,7 +2811,9 @@
       "walk_min": 75,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EB%8F%99%EB%B0%B1%EB%8F%99%20%EB%AA%A8%EC%95%84%EB%AF%B8%EB%9E%98%EB%8F%841%EB%8B%A8%EC%A7%80%EC%95%84%ED%8C%8C%ED%8A%B8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.2831326140856,
+      "lon": 127.16067554846344
     },
     {
       "name": "동백호수공원두산위브더제니스",
@@ -2773,7 +2831,9 @@
       "walk_min": 66,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EB%8F%99%EB%B0%B1%EB%8F%99%20%EB%8F%99%EB%B0%B1%ED%98%B8%EC%88%98%EA%B3%B5%EC%9B%90%EB%91%90%EC%82%B0%EC%9C%84%EB%B8%8C%EB%8D%94%EC%A0%9C%EB%8B%88%EC%8A%A4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.2786796873301,
+      "lon": 127.150383721682
     },
     {
       "name": "교동마을신창무궁화타운",
@@ -2791,7 +2851,9 @@
       "walk_min": 26,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EB%A7%88%EB%B6%81%EB%8F%99%20%EA%B5%90%EB%8F%99%EB%A7%88%EC%9D%84%EC%8B%A0%EC%B0%BD%EB%AC%B4%EA%B6%81%ED%99%94%ED%83%80%EC%9A%B4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.30578267965559,
+      "lon": 127.12669482042593
     },
     {
       "name": "현진에버빌",
@@ -2845,7 +2907,9 @@
       "walk_min": 34,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%8C%8D%EB%A0%B9%EB%8F%99%20%EA%B4%91%EC%A3%BC%EC%97%AD%EB%8C%80%EA%B4%91%EB%A1%9C%EC%A0%9C%EB%B9%84%EC%95%99",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.39800634164677,
+      "lon": 127.2752376345165
     },
     {
       "name": "힐스테이트태전2차에듀포레C11BL",
@@ -2881,7 +2945,9 @@
       "walk_min": 39,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%9E%A5%EC%A7%80%EB%8F%99%20%ED%83%9C%EC%A0%84%EA%B2%BD%EB%82%A8%EC%95%84%EB%84%88%EC%8A%A4%EB%B9%8C%EC%8B%9C%EA%B7%B8%EB%8B%88%EC%B2%98",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.39122106465226,
+      "lon": 127.23455166385504
     },
     {
       "name": "나산",
@@ -2899,7 +2965,9 @@
       "walk_min": 12,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%86%A1%EC%A0%95%EB%8F%99%20%EB%82%98%EC%82%B0",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.41641413072185,
+      "lon": 127.25263659569016
     },
     {
       "name": "광주탄벌서희스타힐스1단지",
@@ -2917,7 +2985,9 @@
       "walk_min": 17,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%ED%83%84%EB%B2%8C%EB%8F%99%20%EA%B4%91%EC%A3%BC%ED%83%84%EB%B2%8C%EC%84%9C%ED%9D%AC%EC%8A%A4%ED%83%80%ED%9E%90%EC%8A%A41%EB%8B%A8%EC%A7%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.4097814795187,
+      "lon": 127.241553905635
     },
     {
       "name": "관악산휴먼시아2단지",
@@ -3151,7 +3221,9 @@
       "walk_min": 70,
       "trade_date": "2026-02-01",
       "link": "https://m.land.naver.com/search/result/%EC%84%9D%EC%88%98%EB%8F%99%20%EC%84%9D%EC%88%98%EA%B2%BD%EB%82%A8%EC%95%84%EB%84%88%EC%8A%A4%EB%B9%8C",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.41740058243767,
+      "lon": 126.91149395254429
     },
     {
       "name": "금화마을주공3단지",
@@ -3169,7 +3241,9 @@
       "walk_min": 63,
       "trade_date": "2026-02-01",
       "link": "https://m.land.naver.com/search/result/%EC%83%81%EA%B0%88%EB%8F%99%20%EA%B8%88%ED%99%94%EB%A7%88%EC%9D%84%EC%A3%BC%EA%B3%B53%EB%8B%A8%EC%A7%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.26278553012382,
+      "lon": 127.10711979544422
     },
     {
       "name": "동성",
@@ -3187,7 +3261,9 @@
       "walk_min": 116,
       "trade_date": "2026-02-01",
       "link": "https://m.land.naver.com/search/result/%EA%B3%A0%EB%A7%A4%EB%8F%99%20%EB%8F%99%EC%84%B1",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.23092803717778,
+      "lon": 127.11216813976993
     },
     {
       "name": "동성",
@@ -3205,7 +3281,9 @@
       "walk_min": 116,
       "trade_date": "2026-02-01",
       "link": "https://m.land.naver.com/search/result/%EA%B3%A0%EB%A7%A4%EB%8F%99%20%EB%8F%99%EC%84%B1",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.23092803717778,
+      "lon": 127.11216813976993
     },
     {
       "name": "신현라온프라이빗",
@@ -3223,7 +3301,9 @@
       "walk_min": 55,
       "trade_date": "2026-02-01",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%ED%98%84%EB%8F%99%20%EC%8B%A0%ED%98%84%EB%9D%BC%EC%98%A8%ED%94%84%EB%9D%BC%EC%9D%B4%EB%B9%97",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.3569118643471,
+      "lon": 127.150403084775
     },
     {
       "name": "초월역모아미래도파크힐스",
@@ -3241,7 +3321,9 @@
       "walk_min": 18,
       "trade_date": "2026-02-01",
       "link": "https://m.land.naver.com/search/result/%EC%B4%88%EC%9B%94%EC%9D%8D%20%EC%8C%8D%EB%8F%99%EB%A6%AC%20%EC%B4%88%EC%9B%94%EC%97%AD%EB%AA%A8%EC%95%84%EB%AF%B8%EB%9E%98%EB%8F%84%ED%8C%8C%ED%81%AC%ED%9E%90%EC%8A%A4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.37640676682615,
+      "lon": 127.29190113659828
     },
     {
       "name": "경기광주역금호리첸시아",
@@ -3259,7 +3341,9 @@
       "walk_min": 3,
       "trade_date": "2026-02-01",
       "link": "https://m.land.naver.com/search/result/%EA%B2%BD%EC%95%88%EB%8F%99%20%EA%B2%BD%EA%B8%B0%EA%B4%91%EC%A3%BC%EC%97%AD%EA%B8%88%ED%98%B8%EB%A6%AC%EC%B2%B8%EC%8B%9C%EC%95%84",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.40823318920359,
+      "lon": 127.25626761276021
     },
     {
       "name": "힐스테이트태전6지구(1601동~1608동)",
