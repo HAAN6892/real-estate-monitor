@@ -19,7 +19,9 @@
       "walk_min": 21,
       "trade_date": "2026-02-13",
       "link": "https://m.land.naver.com/search/result/%EC%A0%95%EC%9E%90%EB%8F%99%20%EB%B3%B4%EC%9D%80%EB%A7%A8%EC%85%98",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.29423433015384,
+      "lon": 127.00005413482002
     },
     {
       "name": "기흥푸르지오포레피스",
@@ -57,7 +59,9 @@
       "walk_min": 19,
       "trade_date": "2026-02-12",
       "link": "https://m.land.naver.com/search/result/%EB%8B%B9%EB%8F%99%20%EB%AC%B4%EC%A7%80%EA%B0%9C%EB%A7%88%EC%9D%84%EB%8C%80%EB%A6%BC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.349283716389046,
+      "lon": 126.93950986002667
     },
     {
       "name": "신나무실휴먼시아5단지",
@@ -93,7 +97,9 @@
       "walk_min": 35,
       "trade_date": "2026-02-12",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%ED%99%A9%EA%B3%A8%EB%A7%88%EC%9D%84%EC%A3%BC%EA%B3%B51",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.2633372286224,
+      "lon": 127.077967371498
     },
     {
       "name": "청명마을(주공)",
@@ -111,7 +117,9 @@
       "walk_min": 32,
       "trade_date": "2026-02-12",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%EC%B2%AD%EB%AA%85%EB%A7%88%EC%9D%84%28%EC%A3%BC%EA%B3%B5%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.258003907142296,
+      "lon": 127.07940026835954
     },
     {
       "name": "죽전현대1차",
@@ -129,7 +137,9 @@
       "walk_min": 30,
       "trade_date": "2026-02-11",
       "link": "https://m.land.naver.com/search/result/%EC%A3%BD%EC%A0%84%EB%8F%99%20%EC%A3%BD%EC%A0%84%ED%98%84%EB%8C%801%EC%B0%A8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.3322513820663,
+      "lon": 127.130061195669
     },
     {
       "name": "호수청구",
@@ -147,7 +157,9 @@
       "walk_min": 101,
       "trade_date": "2026-02-11",
       "link": "https://m.land.naver.com/search/result/%EA%B3%B5%EC%84%B8%EB%8F%99%20%ED%98%B8%EC%88%98%EC%B2%AD%EA%B5%AC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.240252821622924,
+      "lon": 127.10341386922454
     },
     {
       "name": "힐스테이트태전(C6,1515~1520동)",
@@ -201,7 +213,9 @@
       "walk_min": 69,
       "trade_date": "2026-02-11",
       "link": "https://m.land.naver.com/search/result/%EA%B0%88%EB%A7%A4%EB%8F%99%20%EC%97%98%EC%97%90%EC%9D%B4%EC%B9%98%EC%9D%B4%EC%8A%A4%ED%8A%B8%ED%9E%90",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.63465818857806,
+      "lon": 127.12105282548052
     },
     {
       "name": "석수지웰아파트",
@@ -219,7 +233,9 @@
       "walk_min": 95,
       "trade_date": "2026-02-10",
       "link": "https://m.land.naver.com/search/result/%EC%84%9D%EC%88%98%EB%8F%99%20%EC%84%9D%EC%88%98%EC%A7%80%EC%9B%B0%EC%95%84%ED%8C%8C%ED%8A%B8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.43361283169885,
+      "lon": 126.90597792142546
     },
     {
       "name": "삼성래미안",
@@ -237,7 +253,9 @@
       "walk_min": 81,
       "trade_date": "2026-02-10",
       "link": "https://m.land.naver.com/search/result/%EB%B3%B4%EB%9D%BC%EB%8F%99%20%EC%82%BC%EC%84%B1%EB%9E%98%EB%AF%B8%EC%95%88",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.251801549698996,
+      "lon": 127.10641892055541
     },
     {
       "name": "우림푸른마을",
@@ -255,7 +273,9 @@
       "walk_min": 31,
       "trade_date": "2026-02-10",
       "link": "https://m.land.naver.com/search/result/%EC%B4%88%EC%9B%94%EC%9D%8D%20%EB%8C%80%EC%8C%8D%EB%A0%B9%EB%A6%AC%20%EC%9A%B0%EB%A6%BC%ED%91%B8%EB%A5%B8%EB%A7%88%EC%9D%84",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.38597980396308,
+      "lon": 127.2938465544601
     },
     {
       "name": "엘에이치이스트힐",
@@ -273,7 +293,9 @@
       "walk_min": 69,
       "trade_date": "2026-02-10",
       "link": "https://m.land.naver.com/search/result/%EA%B0%88%EB%A7%A4%EB%8F%99%20%EC%97%98%EC%97%90%EC%9D%B4%EC%B9%98%EC%9D%B4%EC%8A%A4%ED%8A%B8%ED%9E%90",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.63465818857806,
+      "lon": 127.12105282548052
     },
     {
       "name": "황골마을주공1",
@@ -291,7 +313,9 @@
       "walk_min": 35,
       "trade_date": "2026-02-10",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%ED%99%A9%EA%B3%A8%EB%A7%88%EC%9D%84%EC%A3%BC%EA%B3%B51",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.2633372286224,
+      "lon": 127.077967371498
     },
     {
       "name": "e편한세상영통2차(2단지)",
@@ -309,7 +333,9 @@
       "walk_min": 21,
       "trade_date": "2026-02-10",
       "link": "https://m.land.naver.com/search/result/%EB%A7%9D%ED%8F%AC%EB%8F%99%20e%ED%8E%B8%ED%95%9C%EC%84%B8%EC%83%81%EC%98%81%ED%86%B52%EC%B0%A8%282%EB%8B%A8%EC%A7%80%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.240624522434445,
+      "lon": 127.0662895680979
     },
     {
       "name": "벽적골9단지주공",
@@ -327,7 +353,9 @@
       "walk_min": 13,
       "trade_date": "2026-02-10",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%EB%B2%BD%EC%A0%81%EA%B3%A89%EB%8B%A8%EC%A7%80%EC%A3%BC%EA%B3%B5",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.2474593018851,
+      "lon": 127.06565648263424
     },
     {
       "name": "삼성",
@@ -345,7 +373,9 @@
       "walk_min": 35,
       "trade_date": "2026-02-09",
       "link": "https://m.land.naver.com/search/result/%EC%95%88%EC%96%91%EB%8F%99%20%EC%82%BC%EC%84%B1",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.393993769806904,
+      "lon": 126.925737126805
     },
     {
       "name": "풍림",
@@ -423,7 +453,9 @@
       "walk_min": 17,
       "trade_date": "2026-02-09",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EB%A6%BC%EB%8F%99%20%EA%B8%88%ED%98%B8%281%EC%B0%A8%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.4651602980322,
+      "lon": 126.93773915557536
     },
     {
       "name": "주공4(885)",
@@ -459,7 +491,9 @@
       "walk_min": 35,
       "trade_date": "2026-02-09",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%ED%99%A9%EA%B3%A8%EB%A7%88%EC%9D%84%EC%A3%BC%EA%B3%B51",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.2633372286224,
+      "lon": 127.077967371498
     },
     {
       "name": "벽적골한신",
@@ -477,7 +511,9 @@
       "walk_min": 6,
       "trade_date": "2026-02-09",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%EB%B2%BD%EC%A0%81%EA%B3%A8%ED%95%9C%EC%8B%A0",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.2476465056295,
+      "lon": 127.059226460302
     },
     {
       "name": "황골마을한국",
@@ -495,7 +531,9 @@
       "walk_min": 45,
       "trade_date": "2026-02-09",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%ED%99%A9%EA%B3%A8%EB%A7%88%EC%9D%84%ED%95%9C%EA%B5%AD",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.2671016759958,
+      "lon": 127.083409847831
     },
     {
       "name": "황골마을(쌍용)",
@@ -513,7 +551,9 @@
       "walk_min": 40,
       "trade_date": "2026-02-09",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%ED%99%A9%EA%B3%A8%EB%A7%88%EC%9D%84%28%EC%8C%8D%EC%9A%A9%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.26321306808187,
+      "lon": 127.0829997147512
     },
     {
       "name": "벽적골주공휴먼시아8단지",
@@ -531,7 +571,9 @@
       "walk_min": 7,
       "trade_date": "2026-02-09",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%EB%B2%BD%EC%A0%81%EA%B3%A8%EC%A3%BC%EA%B3%B5%ED%9C%B4%EB%A8%BC%EC%8B%9C%EC%95%848%EB%8B%A8%EC%A7%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.25081952473587,
+      "lon": 127.06188566266972
     },
     {
       "name": "수원장안힐스테이트",
@@ -549,7 +591,9 @@
       "walk_min": 27,
       "trade_date": "2026-02-09",
       "link": "https://m.land.naver.com/search/result/%EC%9D%B4%EB%AA%A9%EB%8F%99%20%EC%88%98%EC%9B%90%EC%9E%A5%EC%95%88%ED%9E%90%EC%8A%A4%ED%85%8C%EC%9D%B4%ED%8A%B8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.312448637319164,
+      "lon": 126.98431065252564
     },
     {
       "name": "북수원리버파크",
@@ -567,7 +611,9 @@
       "walk_min": 18,
       "trade_date": "2026-02-09",
       "link": "https://m.land.naver.com/search/result/%EC%A0%95%EC%9E%90%EB%8F%99%20%EB%B6%81%EC%88%98%EC%9B%90%EB%A6%AC%EB%B2%84%ED%8C%8C%ED%81%AC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.30036773744181,
+      "lon": 126.98578845593381
     },
     {
       "name": "현대아파트",
@@ -585,7 +631,9 @@
       "walk_min": 72,
       "trade_date": "2026-02-08",
       "link": "https://m.land.naver.com/search/result/%EC%84%9D%EC%88%98%EB%8F%99%20%ED%98%84%EB%8C%80%EC%95%84%ED%8C%8C%ED%8A%B8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.41659475463011,
+      "lon": 126.9087069478629
     },
     {
       "name": "쌍용스윗닷홈2",
@@ -603,7 +651,9 @@
       "walk_min": 43,
       "trade_date": "2026-02-08",
       "link": "https://m.land.naver.com/search/result/%ED%83%9C%EC%A0%84%EB%8F%99%20%EC%8C%8D%EC%9A%A9%EC%8A%A4%EC%9C%97%EB%8B%B7%ED%99%882",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.38665712465319,
+      "lon": 127.23784371153572
     },
     {
       "name": "건영2",
@@ -639,7 +689,9 @@
       "walk_min": 14,
       "trade_date": "2026-02-08",
       "link": "https://m.land.naver.com/search/result/%EA%B8%88%EC%A0%95%EB%8F%99%20%EB%8B%A4%EC%82%B0%EC%A3%BC%EA%B3%B5%283%EB%8B%A8%EC%A7%80%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.35101536166322,
+      "lon": 126.9310345109326
     },
     {
       "name": "다산주공(3단지)",
@@ -657,7 +709,9 @@
       "walk_min": 14,
       "trade_date": "2026-02-08",
       "link": "https://m.land.naver.com/search/result/%EA%B8%88%EC%A0%95%EB%8F%99%20%EB%8B%A4%EC%82%B0%EC%A3%BC%EA%B3%B5%283%EB%8B%A8%EC%A7%80%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.35101536166322,
+      "lon": 126.9310345109326
     },
     {
       "name": "금호타운",
@@ -675,7 +729,9 @@
       "walk_min": 68,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EB%B0%95%EB%8B%AC%EB%8F%99%20%EA%B8%88%ED%98%B8%ED%83%80%EC%9A%B4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.39904432244945,
+      "lon": 126.90151378054522
     },
     {
       "name": "금호타운",
@@ -693,7 +749,9 @@
       "walk_min": 68,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EB%B0%95%EB%8B%AC%EB%8F%99%20%EA%B8%88%ED%98%B8%ED%83%80%EC%9A%B4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.39904432244945,
+      "lon": 126.90151378054522
     },
     {
       "name": "세양청마루",
@@ -711,7 +769,9 @@
       "walk_min": 26,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%95%88%EC%96%91%EB%8F%99%20%EC%84%B8%EC%96%91%EC%B2%AD%EB%A7%88%EB%A3%A8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.39124828631813,
+      "lon": 126.93159843745062
     },
     {
       "name": "대주파크빌",
@@ -729,7 +789,9 @@
       "walk_min": 73,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%84%9D%EC%88%98%EB%8F%99%20%EB%8C%80%EC%A3%BC%ED%8C%8C%ED%81%AC%EB%B9%8C",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.418711441369545,
+      "lon": 126.91013680306644
     },
     {
       "name": "삼익아파트",
@@ -767,7 +829,9 @@
       "walk_min": 77,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%83%81%ED%95%98%EB%8F%99%20%EB%8C%80%EC%9A%B0",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.262863284163195,
+      "lon": 127.1419851520014
     },
     {
       "name": "삼성래미안",
@@ -785,7 +849,9 @@
       "walk_min": 81,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EB%B3%B4%EB%9D%BC%EB%8F%99%20%EC%82%BC%EC%84%B1%EB%9E%98%EB%AF%B8%EC%95%88",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.251801549698996,
+      "lon": 127.10641892055541
     },
     {
       "name": "용인기흥 우방아이유쉘",
@@ -803,7 +869,9 @@
       "walk_min": 42,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EA%B0%88%EB%8F%99%20%EC%9A%A9%EC%9D%B8%EA%B8%B0%ED%9D%A5%20%EC%9A%B0%EB%B0%A9%EC%95%84%EC%9D%B4%EC%9C%A0%EC%89%98",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.27642147818552,
+      "lon": 127.10038513507989
     },
     {
       "name": "갈현마을현대홈타운",
@@ -841,7 +909,9 @@
       "walk_min": 88,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%83%81%ED%95%98%EB%8F%99%20%EC%9D%B8%EC%A0%95%ED%94%84%EB%A6%B0%EC%8A%A4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.25545080141721,
+      "lon": 127.14240973159102
     },
     {
       "name": "양현마을풍림",
@@ -879,7 +949,9 @@
       "walk_min": 89,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%A4%91%EB%8F%99%20%EC%B4%88%EB%8B%B9%EB%A7%88%EC%9D%84%EC%82%BC%EB%B6%80%EB%A5%B4%EB%84%A4%EC%83%81%EC%8A%A412%EB%8B%A8%EC%A7%80%EC%95%84%ED%8C%8C%ED%8A%B8%28%EC%BD%94%EC%95%84%EB%A3%A8%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.264316823164364,
+      "lon": 127.157530812716
     },
     {
       "name": "금화마을주공3단지",
@@ -917,7 +989,9 @@
       "walk_min": 37,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EA%B0%88%EB%8F%99%20%EC%8B%A0%EB%AF%B8%EC%A3%BC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.278460862663344,
+      "lon": 127.10720063861123
     },
     {
       "name": "용인보라효성해링턴플레이스",
@@ -955,7 +1029,9 @@
       "walk_min": 13,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%ED%83%84%EB%B2%8C%EB%8F%99%20%EB%8F%99%EB%B3%B4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.4153587028991,
+      "lon": 127.24897308343
     },
     {
       "name": "벽산블루밍",
@@ -973,7 +1049,9 @@
       "walk_min": 33,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%ED%9A%8C%EB%8D%95%EB%8F%99%20%EB%B2%BD%EC%82%B0%EB%B8%94%EB%A3%A8%EB%B0%8D",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.42769394950565,
+      "lon": 127.24623008757742
     },
     {
       "name": "태전경남아너스빌시그니처",
@@ -1047,7 +1125,9 @@
       "walk_min": 45,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%ED%83%9C%EC%A0%84%EB%8F%99%20%ED%83%9C%EC%A0%84%ED%9A%A8%EC%84%B1%ED%95%B4%EB%A7%81%ED%84%B4%ED%94%8C%EB%A0%88%EC%9D%B4%EC%8A%A4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.391819151185395,
+      "lon": 127.22820253183751
     },
     {
       "name": "삼성산주공(주공3단지)",
@@ -1065,7 +1145,9 @@
       "walk_min": 20,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EB%A6%BC%EB%8F%99%20%EC%82%BC%EC%84%B1%EC%82%B0%EC%A3%BC%EA%B3%B5%28%EC%A3%BC%EA%B3%B53%EB%8B%A8%EC%A7%80%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.4623316579349,
+      "lon": 126.926153373876
     },
     {
       "name": "주공1",
@@ -1083,7 +1165,9 @@
       "walk_min": 13,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EB%A6%BC%EB%8F%99%20%EC%A3%BC%EA%B3%B51",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.4662974091007,
+      "lon": 126.928265559883
     },
     {
       "name": "광복현대",
@@ -1101,7 +1185,9 @@
       "walk_min": 26,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%B2%A0%EC%82%B0%EB%8F%99%20%EA%B4%91%EB%B3%B5%ED%98%84%EB%8C%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.49065812446838,
+      "lon": 126.86704807777332
     },
     {
       "name": "삼성마을6단지",
@@ -1119,7 +1205,9 @@
       "walk_min": 34,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EB%B6%80%EA%B3%A1%EB%8F%99%20%EC%82%BC%EC%84%B1%EB%A7%88%EC%9D%846%EB%8B%A8%EC%A7%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.338883738934356,
+      "lon": 126.93076122914309
     },
     {
       "name": "무지개마을대림",
@@ -1137,7 +1225,9 @@
       "walk_min": 19,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EB%8B%B9%EB%8F%99%20%EB%AC%B4%EC%A7%80%EA%B0%9C%EB%A7%88%EC%9D%84%EB%8C%80%EB%A6%BC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.349283716389046,
+      "lon": 126.93950986002667
     },
     {
       "name": "일성",
@@ -1155,7 +1245,9 @@
       "walk_min": 7,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EA%B5%90%EB%AC%B8%EB%8F%99%20%EC%9D%BC%EC%84%B1",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.59454767625906,
+      "lon": 127.13778359419167
     },
     {
       "name": "우남",
@@ -1173,7 +1265,9 @@
       "walk_min": 9,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%ED%86%A0%ED%8F%89%EB%8F%99%20%EC%9A%B0%EB%82%A8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.59289495145854,
+      "lon": 127.15475371627767
     },
     {
       "name": "럭키",
@@ -1191,7 +1285,9 @@
       "walk_min": 16,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%88%98%ED%83%9D%EB%8F%99%20%EB%9F%AD%ED%82%A4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.59103855814259,
+      "lon": 127.14362643895198
     },
     {
       "name": "청명마을(주공)",
@@ -1209,7 +1305,9 @@
       "walk_min": 32,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%EC%B2%AD%EB%AA%85%EB%A7%88%EC%9D%84%28%EC%A3%BC%EA%B3%B5%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.258003907142296,
+      "lon": 127.07940026835954
     },
     {
       "name": "원천레이크파크",
@@ -1227,7 +1325,9 @@
       "walk_min": 30,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%9B%90%EC%B2%9C%EB%8F%99%20%EC%9B%90%EC%B2%9C%EB%A0%88%EC%9D%B4%ED%81%AC%ED%8C%8C%ED%81%AC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.268455890054014,
+      "lon": 127.06139275236099
     },
     {
       "name": "벽적골주공휴먼시아8단지",
@@ -1245,7 +1345,9 @@
       "walk_min": 7,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%EB%B2%BD%EC%A0%81%EA%B3%A8%EC%A3%BC%EA%B3%B5%ED%9C%B4%EB%A8%BC%EC%8B%9C%EC%95%848%EB%8B%A8%EC%A7%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.25081952473587,
+      "lon": 127.06188566266972
     },
     {
       "name": "화서역현대벽산",
@@ -1263,7 +1365,9 @@
       "walk_min": 17,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%A0%95%EC%9E%90%EB%8F%99%20%ED%99%94%EC%84%9C%EC%97%AD%ED%98%84%EB%8C%80%EB%B2%BD%EC%82%B0",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.29339813093089,
+      "lon": 126.99706772970536
     },
     {
       "name": "화서역현대벽산",
@@ -1281,7 +1385,9 @@
       "walk_min": 17,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%A0%95%EC%9E%90%EB%8F%99%20%ED%99%94%EC%84%9C%EC%97%AD%ED%98%84%EB%8C%80%EB%B2%BD%EC%82%B0",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.29339813093089,
+      "lon": 126.99706772970536
     },
     {
       "name": "백설마을삼환나우빌",
@@ -1299,7 +1405,9 @@
       "walk_min": 15,
       "trade_date": "2026-02-07",
       "link": "https://m.land.naver.com/search/result/%EC%A0%95%EC%9E%90%EB%8F%99%20%EB%B0%B1%EC%84%A4%EB%A7%88%EC%9D%84%EC%82%BC%ED%99%98%EB%82%98%EC%9A%B0%EB%B9%8C",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.29377251154207,
+      "lon": 126.98925881514016
     },
     {
       "name": "에스엠이로빌(379-0)",
@@ -1335,7 +1443,9 @@
       "walk_min": 65,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EC%84%9D%EC%88%98%EB%8F%99%20%EC%84%9D%EC%88%98e-%ED%8E%B8%ED%95%9C%EC%84%B8%EC%83%81",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.41498782675103,
+      "lon": 126.91417172341772
     },
     {
       "name": "한신휴플러스3차",
@@ -1353,7 +1463,9 @@
       "walk_min": 65,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EB%B0%95%EB%8B%AC%EB%8F%99%20%ED%95%9C%EC%8B%A0%ED%9C%B4%ED%94%8C%EB%9F%AC%EC%8A%A43%EC%B0%A8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.40490833267567,
+      "lon": 126.90615046610452
     },
     {
       "name": "더포레스트힐",
@@ -1371,7 +1483,9 @@
       "walk_min": 37,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EB%B9%84%EC%82%B0%EB%8F%99%20%EB%8D%94%ED%8F%AC%EB%A0%88%EC%8A%A4%ED%8A%B8%ED%9E%90",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.40623482032,
+      "lon": 126.932899536371
     },
     {
       "name": "삼성래미안",
@@ -1389,7 +1503,9 @@
       "walk_min": 81,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EB%B3%B4%EB%9D%BC%EB%8F%99%20%EC%82%BC%EC%84%B1%EB%9E%98%EB%AF%B8%EC%95%88",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.251801549698996,
+      "lon": 127.10641892055541
     },
     {
       "name": "풍림",
@@ -1447,7 +1563,9 @@
       "walk_min": 82,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EC%84%9C%EC%B2%9C%EB%8F%99%20%EC%84%9C%EC%B2%9C2%EC%B0%A8IPARK",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.2410009848257,
+      "lon": 127.07700330115719
     },
     {
       "name": "용인기흥 우방아이유쉘",
@@ -1465,7 +1583,9 @@
       "walk_min": 42,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EA%B0%88%EB%8F%99%20%EC%9A%A9%EC%9D%B8%EA%B8%B0%ED%9D%A5%20%EC%9A%B0%EB%B0%A9%EC%95%84%EC%9D%B4%EC%9C%A0%EC%89%98",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.27642147818552,
+      "lon": 127.10038513507989
     },
     {
       "name": "용인보라효성해링턴플레이스",
@@ -1559,7 +1679,9 @@
       "walk_min": 12,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EB%82%A8%ED%98%84%EB%8F%99%20%EB%8F%99%EC%86%A1%ED%95%98%EC%9D%B4%ED%81%B4%EB%9E%98%EC%8A%A4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.47410069786585,
+      "lon": 126.97242922320955
     },
     {
       "name": "주공(1단지)",
@@ -1577,7 +1699,9 @@
       "walk_min": 7,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EA%B8%88%EC%A0%95%EB%8F%99%20%EC%A3%BC%EA%B3%B5%281%EB%8B%A8%EC%A7%80%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.35759439776016,
+      "lon": 126.93700864050818
     },
     {
       "name": "신안모란",
@@ -1595,7 +1719,9 @@
       "walk_min": 14,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EC%82%B0%EB%B3%B8%EB%8F%99%20%EC%8B%A0%EC%95%88%EB%AA%A8%EB%9E%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.369881164612146,
+      "lon": 126.9311956178017
     },
     {
       "name": "엘에이치이스트힐",
@@ -1613,7 +1739,9 @@
       "walk_min": 69,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EA%B0%88%EB%A7%A4%EB%8F%99%20%EC%97%98%EC%97%90%EC%9D%B4%EC%B9%98%EC%9D%B4%EC%8A%A4%ED%8A%B8%ED%9E%90",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.63465818857806,
+      "lon": 127.12105282548052
     },
     {
       "name": "벽적골한신",
@@ -1631,7 +1759,9 @@
       "walk_min": 6,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%EB%B2%BD%EC%A0%81%EA%B3%A8%ED%95%9C%EC%8B%A0",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.2476465056295,
+      "lon": 127.059226460302
     },
     {
       "name": "현대힐스테이트",
@@ -1649,7 +1779,9 @@
       "walk_min": 15,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EB%A7%A4%ED%83%84%EB%8F%99%20%ED%98%84%EB%8C%80%ED%9E%90%EC%8A%A4%ED%85%8C%EC%9D%B4%ED%8A%B8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.271179078734235,
+      "lon": 127.0397273477579
     },
     {
       "name": "매탄레이크파크",
@@ -1667,7 +1799,9 @@
       "walk_min": 26,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EB%A7%A4%ED%83%84%EB%8F%99%20%EB%A7%A4%ED%83%84%EB%A0%88%EC%9D%B4%ED%81%AC%ED%8C%8C%ED%81%AC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.26606541883146,
+      "lon": 127.0559545450079
     },
     {
       "name": "e편한세상영통2차(1단지)",
@@ -1685,7 +1819,9 @@
       "walk_min": 20,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EB%A7%9D%ED%8F%AC%EB%8F%99%20e%ED%8E%B8%ED%95%9C%EC%84%B8%EC%83%81%EC%98%81%ED%86%B52%EC%B0%A8%281%EB%8B%A8%EC%A7%80%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.24052644545439,
+      "lon": 127.06440850611135
     },
     {
       "name": "영통자이",
@@ -1703,7 +1839,9 @@
       "walk_min": 20,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EB%A7%9D%ED%8F%AC%EB%8F%99%20%EC%98%81%ED%86%B5%EC%9E%90%EC%9D%B4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.23430056511126,
+      "lon": 127.05476244986816
     },
     {
       "name": "수원장안힐스테이트",
@@ -1721,7 +1859,9 @@
       "walk_min": 27,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EC%9D%B4%EB%AA%A9%EB%8F%99%20%EC%88%98%EC%9B%90%EC%9E%A5%EC%95%88%ED%9E%90%EC%8A%A4%ED%85%8C%EC%9D%B4%ED%8A%B8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.312448637319164,
+      "lon": 126.98431065252564
     },
     {
       "name": "동신2단지",
@@ -1739,7 +1879,9 @@
       "walk_min": 27,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EC%A0%95%EC%9E%90%EB%8F%99%20%EB%8F%99%EC%8B%A02%EB%8B%A8%EC%A7%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.3897113168011,
+      "lon": 127.127061769509
     },
     {
       "name": "청솔마을한라",
@@ -1757,7 +1899,9 @@
       "walk_min": 18,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EC%A0%95%EC%9E%90%EB%8F%99%20%EC%B2%AD%EC%86%94%EB%A7%88%EC%9D%84%ED%95%9C%EB%9D%BC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.3557767275232,
+      "lon": 127.10723374186057
     },
     {
       "name": "화서역 우방 센트럴파크",
@@ -1775,7 +1919,9 @@
       "walk_min": 13,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EC%A0%95%EC%9E%90%EB%8F%99%20%ED%99%94%EC%84%9C%EC%97%AD%20%EC%9A%B0%EB%B0%A9%20%EC%84%BC%ED%8A%B8%EB%9F%B4%ED%8C%8C%ED%81%AC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.29030938391131,
+      "lon": 126.99755052664662
     },
     {
       "name": "비단마을신명",
@@ -1793,7 +1939,9 @@
       "walk_min": 14,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EC%B2%9C%EC%B2%9C%EB%8F%99%20%EB%B9%84%EB%8B%A8%EB%A7%88%EC%9D%84%EC%8B%A0%EB%AA%85",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.301909751856144,
+      "lon": 126.98170959498373
     },
     {
       "name": "삼호진덕",
@@ -1811,7 +1959,9 @@
       "walk_min": 8,
       "trade_date": "2026-02-06",
       "link": "https://m.land.naver.com/search/result/%EC%B2%9C%EC%B2%9C%EB%8F%99%20%EC%82%BC%ED%98%B8%EC%A7%84%EB%8D%95",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.3020135355147,
+      "lon": 126.97744150208898
     },
     {
       "name": "한승미메이드",
@@ -1829,7 +1979,9 @@
       "walk_min": 30,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%95%88%EC%96%91%EB%8F%99%20%ED%95%9C%EC%8A%B9%EB%AF%B8%EB%A9%94%EC%9D%B4%EB%93%9C",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.39527741650402,
+      "lon": 126.9296512152542
     },
     {
       "name": "동부브리앙뜨",
@@ -1847,7 +1999,9 @@
       "walk_min": 17,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%84%B1%EB%82%A8%EB%8F%99%20%EB%8F%99%EB%B6%80%EB%B8%8C%EB%A6%AC%EC%95%99%EB%9C%A8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.43647441909171,
+      "lon": 127.14115767503293
     },
     {
       "name": "힉스유타워",
@@ -1865,7 +2019,9 @@
       "walk_min": 59,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%EB%8D%95%EB%8F%99%20%ED%9E%89%EC%8A%A4%EC%9C%A0%ED%83%80%EC%9B%8C",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.26843736128741,
+      "lon": 127.090312280601
     },
     {
       "name": "풍림",
@@ -1903,7 +2059,9 @@
       "walk_min": 55,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%EB%8D%95%EB%8F%99%20%EB%91%90%EC%A7%84",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.26877516575216,
+      "lon": 127.096142616945
     },
     {
       "name": "양현마을풍림",
@@ -1981,7 +2139,9 @@
       "walk_min": 27,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%96%91%EB%B2%8C%EB%8F%99%20%EA%B4%91%EC%A3%BC%EC%97%AD%EC%9A%B0%EB%B0%A9%EC%95%84%EC%9D%B4%EC%9C%A0%EC%89%981%EB%8B%A8%EC%A7%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.39356235851107,
+      "lon": 127.25895167545345
     },
     {
       "name": "힐스테이트태전2차에듀포레C11BL",
@@ -2017,7 +2177,9 @@
       "walk_min": 20,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EB%A6%BC%EB%8F%99%20%EC%82%BC%EC%84%B1%EC%82%B0%EC%A3%BC%EA%B3%B5%28%EC%A3%BC%EA%B3%B53%EB%8B%A8%EC%A7%80%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.4623316579349,
+      "lon": 126.926153373876
     },
     {
       "name": "청광",
@@ -2035,7 +2197,9 @@
       "walk_min": 18,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EB%A6%BC%EB%8F%99%20%EC%B2%AD%EA%B4%91",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.46761679878443,
+      "lon": 126.94195580126588
     },
     {
       "name": "주공2단지(874)",
@@ -2071,7 +2235,9 @@
       "walk_min": 17,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%A0%95%EC%9E%90%EB%8F%99%20%ED%99%94%EC%84%9C%EC%97%AD%ED%98%84%EB%8C%80%EB%B2%BD%EC%82%B0",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.29339813093089,
+      "lon": 126.99706772970536
     },
     {
       "name": "청솔마을한라",
@@ -2089,7 +2255,9 @@
       "walk_min": 18,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%A0%95%EC%9E%90%EB%8F%99%20%EC%B2%AD%EC%86%94%EB%A7%88%EC%9D%84%ED%95%9C%EB%9D%BC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.3557767275232,
+      "lon": 127.10723374186057
     },
     {
       "name": "꽃뫼마을신안",
@@ -2107,7 +2275,9 @@
       "walk_min": 15,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%A0%95%EC%9E%90%EB%8F%99%20%EA%BD%83%EB%AB%BC%EB%A7%88%EC%9D%84%EC%8B%A0%EC%95%88",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.29314928586794,
+      "lon": 126.99320617766723
     },
     {
       "name": "화서역파크뷰",
@@ -2125,7 +2295,9 @@
       "walk_min": 13,
       "trade_date": "2026-02-05",
       "link": "https://m.land.naver.com/search/result/%EC%A0%95%EC%9E%90%EB%8F%99%20%ED%99%94%EC%84%9C%EC%97%AD%ED%8C%8C%ED%81%AC%EB%B7%B0",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.29216517815042,
+      "lon": 126.99064846597399
     },
     {
       "name": "대주파크빌",
@@ -2143,7 +2315,9 @@
       "walk_min": 73,
       "trade_date": "2026-02-04",
       "link": "https://m.land.naver.com/search/result/%EC%84%9D%EC%88%98%EB%8F%99%20%EB%8C%80%EC%A3%BC%ED%8C%8C%ED%81%AC%EB%B9%8C",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.418711441369545,
+      "lon": 126.91013680306644
     },
     {
       "name": "녹원마을새천년그린빌2단지",
@@ -2255,7 +2429,9 @@
       "walk_min": 68,
       "trade_date": "2026-02-04",
       "link": "https://m.land.naver.com/search/result/%EB%8F%84%EB%A7%88%EA%B5%90%EB%8F%99%20%EA%B8%88%EA%B0%95%ED%8E%9C%ED%85%8C%EB%A6%AC%EC%9B%80%EC%84%BC%ED%8A%B8%EB%9F%B4%ED%8C%8C%ED%81%AC3%EC%B0%A8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.31634392756537,
+      "lon": 126.92550560361015
     },
     {
       "name": "두산",
@@ -2273,7 +2449,9 @@
       "walk_min": 26,
       "trade_date": "2026-02-04",
       "link": "https://m.land.naver.com/search/result/%EB%8B%B9%EB%8F%99%20%EB%91%90%EC%82%B0",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.34793796600447,
+      "lon": 126.94588985116012
     },
     {
       "name": "신나무실휴먼시아5단지",
@@ -2309,7 +2487,9 @@
       "walk_min": 6,
       "trade_date": "2026-02-04",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%EB%B2%BD%EC%A0%81%EA%B3%A8%EC%9A%B0%EC%84%B1",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.2476465056295,
+      "lon": 127.059226460302
     },
     {
       "name": "늘푸른벽산",
@@ -2327,7 +2507,9 @@
       "walk_min": 18,
       "trade_date": "2026-02-04",
       "link": "https://m.land.naver.com/search/result/%EB%A7%9D%ED%8F%AC%EB%8F%99%20%EB%8A%98%ED%91%B8%EB%A5%B8%EB%B2%BD%EC%82%B0",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.2401506836086,
+      "lon": 127.06105535463561
     },
     {
       "name": "서광교파크뷰",
@@ -2345,7 +2527,9 @@
       "walk_min": 32,
       "trade_date": "2026-02-04",
       "link": "https://m.land.naver.com/search/result/%EC%97%B0%EB%AC%B4%EB%8F%99%20%EC%84%9C%EA%B4%91%EA%B5%90%ED%8C%8C%ED%81%AC%EB%B7%B0",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.2980496570717,
+      "lon": 127.027817679631
     },
     {
       "name": "신일",
@@ -2363,7 +2547,9 @@
       "walk_min": 6,
       "trade_date": "2026-02-04",
       "link": "https://m.land.naver.com/search/result/%EC%9C%A8%EC%A0%84%EB%8F%99%20%EC%8B%A0%EC%9D%BC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.29965401530412,
+      "lon": 126.96715134179018
     },
     {
       "name": "석수e-편한세상",
@@ -2381,7 +2567,9 @@
       "walk_min": 65,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%84%9D%EC%88%98%EB%8F%99%20%EC%84%9D%EC%88%98e-%ED%8E%B8%ED%95%9C%EC%84%B8%EC%83%81",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.41498782675103,
+      "lon": 126.91417172341772
     },
     {
       "name": "한라비발디",
@@ -2419,7 +2607,9 @@
       "walk_min": 48,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%95%88%EC%96%91%EB%8F%99%20%EC%95%88%EC%96%91%EB%8F%992%EC%B0%A8%EC%84%B1%EC%9B%90%EC%95%84%ED%8C%8C%ED%8A%B8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.395779226166184,
+      "lon": 126.91577469069047
     },
     {
       "name": "기흥푸르지오포레피스",
@@ -2575,7 +2765,9 @@
       "walk_min": 16,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%88%98%ED%83%9D%EB%8F%99%20%EB%9F%AD%ED%82%A4",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.59103855814259,
+      "lon": 127.14362643895198
     },
     {
       "name": "주공1",
@@ -2593,7 +2785,9 @@
       "walk_min": 27,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%9D%B8%EC%B0%BD%EB%8F%99%20%EC%A3%BC%EA%B3%B51",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.609298012715236,
+      "lon": 127.13912229113005
     },
     {
       "name": "토평주공",
@@ -2611,7 +2805,9 @@
       "walk_min": 5,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%88%98%ED%83%9D%EB%8F%99%20%ED%86%A0%ED%8F%89%EC%A3%BC%EA%B3%B5",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.59522638653914,
+      "lon": 127.15223570259595
     },
     {
       "name": "(625-0)",
@@ -2629,7 +2825,9 @@
       "walk_min": 7,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%88%98%ED%83%9D%EB%8F%99%20%28625-0%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.5965169131566,
+      "lon": 127.149171916297
     },
     {
       "name": "신나무실휴먼시아5단지",
@@ -2665,7 +2863,9 @@
       "walk_min": 35,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%ED%99%A9%EA%B3%A8%EB%A7%88%EC%9D%84%EC%A3%BC%EA%B3%B51",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.2633372286224,
+      "lon": 127.077967371498
     },
     {
       "name": "청명마을(주공)",
@@ -2683,7 +2883,9 @@
       "walk_min": 32,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%EC%B2%AD%EB%AA%85%EB%A7%88%EC%9D%84%28%EC%A3%BC%EA%B3%B5%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.258003907142296,
+      "lon": 127.07940026835954
     },
     {
       "name": "황골마을(쌍용)",
@@ -2701,7 +2903,9 @@
       "walk_min": 40,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%ED%99%A9%EA%B3%A8%EB%A7%88%EC%9D%84%28%EC%8C%8D%EC%9A%A9%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.26321306808187,
+      "lon": 127.0829997147512
     },
     {
       "name": "벽적골주공휴먼시아8단지",
@@ -2719,7 +2923,9 @@
       "walk_min": 7,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%EB%B2%BD%EC%A0%81%EA%B3%A8%EC%A3%BC%EA%B3%B5%ED%9C%B4%EB%A8%BC%EC%8B%9C%EC%95%848%EB%8B%A8%EC%A7%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.25081952473587,
+      "lon": 127.06188566266972
     },
     {
       "name": "신나무실신성",
@@ -2737,7 +2943,9 @@
       "walk_min": 13,
       "trade_date": "2026-02-03",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%EC%8B%A0%EB%82%98%EB%AC%B4%EC%8B%A4%EC%8B%A0%EC%84%B1",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.25439020398771,
+      "lon": 127.06552723115821
     },
     {
       "name": "석수e-편한세상",
@@ -2755,7 +2963,9 @@
       "walk_min": 65,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%84%9D%EC%88%98%EB%8F%99%20%EC%84%9D%EC%88%98e-%ED%8E%B8%ED%95%9C%EC%84%B8%EC%83%81",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.41498782675103,
+      "lon": 126.91417172341772
     },
     {
       "name": "현대아이파크",
@@ -2773,7 +2983,9 @@
       "walk_min": 71,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%84%9D%EC%88%98%EB%8F%99%20%ED%98%84%EB%8C%80%EC%95%84%EC%9D%B4%ED%8C%8C%ED%81%AC",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.40602583219584,
+      "lon": 126.90199709706363
     },
     {
       "name": "녹원마을새천년그린빌2단지",
@@ -2871,7 +3083,9 @@
       "walk_min": 30,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EA%B3%A4%EC%A7%80%EC%95%94%EC%9D%8D%20%EC%82%BC%EB%A6%AC%20%ED%98%84%EC%A7%84%EC%97%90%EB%B2%84%EB%B9%8C",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.35582475933928,
+      "lon": 127.32798125496996
     },
     {
       "name": "힐스테이트태전6(1609~1614동)",
@@ -3005,7 +3219,9 @@
       "walk_min": 29,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EB%A6%BC%EB%8F%99%20%EA%B4%80%EC%95%85%EC%82%B0%ED%9C%B4%EB%A8%BC%EC%8B%9C%EC%95%842%EB%8B%A8%EC%A7%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.45903694158076,
+      "lon": 126.91968237692367
     },
     {
       "name": "신안모란",
@@ -3023,7 +3239,9 @@
       "walk_min": 14,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%82%B0%EB%B3%B8%EB%8F%99%20%EC%8B%A0%EC%95%88%EB%AA%A8%EB%9E%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.369881164612146,
+      "lon": 126.9311956178017
     },
     {
       "name": "모락산현대",
@@ -3041,7 +3259,9 @@
       "walk_min": 29,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%98%A4%EC%A0%84%EB%8F%99%20%EB%AA%A8%EB%9D%BD%EC%82%B0%ED%98%84%EB%8C%80",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.36193747496342,
+      "lon": 126.96911093858208
     },
     {
       "name": "주공4-2",
@@ -3059,7 +3279,9 @@
       "walk_min": 20,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%9D%B8%EC%B0%BD%EB%8F%99%20%EC%A3%BC%EA%B3%B54-2",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.6074862066013,
+      "lon": 127.144305861253
     },
     {
       "name": "영풍마드레빌1차",
@@ -3077,7 +3299,9 @@
       "walk_min": 6,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%88%98%ED%83%9D%EB%8F%99%20%EC%98%81%ED%92%8D%EB%A7%88%EB%93%9C%EB%A0%88%EB%B9%8C1%EC%B0%A8",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.59475660666657,
+      "lon": 127.15321307661557
     },
     {
       "name": "주공6",
@@ -3095,7 +3319,9 @@
       "walk_min": 18,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%9D%B8%EC%B0%BD%EB%8F%99%20%EC%A3%BC%EA%B3%B56",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.60578661257406,
+      "lon": 127.1445743766352
     },
     {
       "name": "e편한세상영통2차(1단지)",
@@ -3113,7 +3339,9 @@
       "walk_min": 20,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EB%A7%9D%ED%8F%AC%EB%8F%99%20e%ED%8E%B8%ED%95%9C%EC%84%B8%EC%83%81%EC%98%81%ED%86%B52%EC%B0%A8%281%EB%8B%A8%EC%A7%80%29",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.24052644545439,
+      "lon": 127.06440850611135
     },
     {
       "name": "신나무실신성",
@@ -3131,7 +3359,9 @@
       "walk_min": 13,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%EC%8B%A0%EB%82%98%EB%AC%B4%EC%8B%A4%EC%8B%A0%EC%84%B1",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.25439020398771,
+      "lon": 127.06552723115821
     },
     {
       "name": "삼성2",
@@ -3149,7 +3379,9 @@
       "walk_min": 13,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EB%A7%A4%ED%83%84%EB%8F%99%20%EC%82%BC%EC%84%B12",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.257645567153,
+      "lon": 127.053153831811
     },
     {
       "name": "벽적골롯데",
@@ -3167,7 +3399,9 @@
       "walk_min": 9,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%EB%B2%BD%EC%A0%81%EA%B3%A8%EB%A1%AF%EB%8D%B0",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.24724934332426,
+      "lon": 127.0623504928092
     },
     {
       "name": "밤꽃마을뜨란채",
@@ -3185,7 +3419,9 @@
       "walk_min": 12,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%9C%A8%EC%A0%84%EB%8F%99%20%EB%B0%A4%EA%BD%83%EB%A7%88%EC%9D%84%EB%9C%A8%EB%9E%80%EC%B1%84",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.30610942264409,
+      "lon": 126.96856528439923
     },
     {
       "name": "벽산블루밍",
@@ -3203,7 +3439,9 @@
       "walk_min": 31,
       "trade_date": "2026-02-02",
       "link": "https://m.land.naver.com/search/result/%EC%A0%95%EC%9E%90%EB%8F%99%20%EB%B2%BD%EC%82%B0%EB%B8%94%EB%A3%A8%EB%B0%8D",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.34227958740752,
+      "lon": 127.09863774709885
     },
     {
       "name": "석수경남아너스빌",
