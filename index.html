@@ -170,6 +170,7 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
 .trade-delta{font-family:var(--mono);font-size:10px;min-width:60px}.trade-delta.up{color:var(--red)}.trade-delta.down{color:var(--green)}.trade-delta.same{color:var(--text-dim)}
 .expand-btn{cursor:pointer;color:var(--accent2);font-size:10px;background:none;border:none;padding:0;font-family:'Noto Sans KR',sans-serif}.expand-btn:hover{color:var(--accent)}
 @media(max-width:768px){
+  #mapContainer{height:400px!important}
   .main{padding:12px 10px}.stats-row{grid-template-columns:repeat(2,1fr);gap:8px}.stat-value{font-size:18px}
   .loan-grid,.rent-loan-grid{grid-template-columns:1fr}.loan-big{font-size:20px}.policy-grid{grid-template-columns:1fr}
   .tl-item{flex-direction:column;gap:4px}.tl-date{min-width:auto}
@@ -184,6 +185,7 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
   .marriage-status-bar{flex-direction:column;align-items:flex-start;gap:8px}
 }
 </style>
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=12e8b95a1df898f6b847892500770551&autoload=false"></script>
 </head>
 <body>
 <div class="main" id="main">
@@ -241,6 +243,7 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
   </div>
   <div class="tab-nav" id="tabNav">
     <button class="tab-btn active" onclick="switchTab('properties')" id="tabBtnProperties">📊 매물 시뮬레이션</button>
+    <button class="tab-btn" onclick="switchTab('map')" id="tabBtnMap">🗺️ 지도</button>
     <button class="tab-btn" onclick="switchTab('policy')" id="tabBtnPolicy">📜 정책 · 대출</button>
   </div>
   <div class="tab-content active" id="tab-properties">
@@ -264,6 +267,21 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
       <!-- 전세 데이터 없을 때 표시되는 플레이스홀더 -->
       <div class="rent-placeholder" id="rentPlaceholder"><div class="rent-placeholder-icon">🔑</div><div class="rent-placeholder-title">전세 매물 데이터 준비 중</div><div class="rent-placeholder-desc">전월세 실거래 데이터 파이프라인을 구축 중입니다.<br>현재는 위 시뮬레이터와 정책대출 탭으로 전세 예산을 분석할 수 있습니다.<br>아래 사이트에서 전세 매물을 직접 탐색해보세요.</div>
         <div class="rent-placeholder-links"><a href="https://new.land.naver.com/" target="_blank" class="quick-link" style="flex:none"><span class="ql-icon">🟢</span><span class="ql-name">네이버 전세</span></a><a href="https://hogangnono.com/" target="_blank" class="quick-link" style="flex:none"><span class="ql-icon">🟡</span><span class="ql-name">호갱노노 전세</span></a><a href="https://asil.kr/" target="_blank" class="quick-link" style="flex:none"><span class="ql-icon">🔵</span><span class="ql-name">아실 전세</span></a></div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content" id="tab-map">
+    <div class="section" style="margin-top:0">
+      <div class="section-header"><div class="section-title">🗺️ 매물 위치 지도</div><div class="section-badge" id="mapBadge">로딩 중...</div></div>
+      <div class="filter-row"><span class="filter-label">표시</span><div class="filter-chip-group" id="mapVerdictChips">
+        <button class="filter-chip active" data-val="" onclick="setMapFilter(this)">전체</button>
+        <button class="filter-chip" data-val="ok" onclick="setMapFilter(this)">✅ 가능</button>
+        <button class="filter-chip" data-val="warn" onclick="setMapFilter(this)">⚠️ 빠듯함</button>
+        <button class="filter-chip" data-val="danger" onclick="setMapFilter(this)">🔴 불가</button>
+      </div></div>
+      <div id="mapContainer" style="width:100%;height:500px;border-radius:10px;border:1px solid var(--border);background:var(--surface2)"></div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:6px;display:flex;gap:12px;flex-wrap:wrap">
+        <span>🟢 매수/전세 가능</span><span>🟡 빠듯함</span><span>🔴 자금부족/예산초과</span><span>🔵 역 위치</span>
       </div>
     </div>
   </div>
@@ -363,6 +381,7 @@ function switchTab(tabId){
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
   document.getElementById('tab-'+tabId).classList.add('active');
   if(tabId==='properties')document.getElementById('tabBtnProperties').classList.add('active');
+  else if(tabId==='map'){document.getElementById('tabBtnMap').classList.add('active');initMapIfNeeded();}
   else document.getElementById('tabBtnPolicy').classList.add('active');
 }
 function changePageSize(v){pageSize=parseInt(v);currentPage=1;update();}
@@ -371,7 +390,7 @@ function getVal(id){const i=document.getElementById(id+'Val');if(i&&i.value!==''
 function fmtShort(n){if(n>=10000){const u=Math.floor(n/10000),m=n%10000;return m===0?u+'억':u+'억 '+m.toLocaleString()+'만';}return n.toLocaleString()+'만';}
 function monthlyPayment(p,r,y){if(p<=0)return 0;const mr=r/100/12,n=y*12;if(mr===0)return p/n;return p*mr*Math.pow(1+mr,n)/(Math.pow(1+mr,n)-1);}
 function maxLoanFromMonthly(m,r,y){const mr=r/100/12,n=y*12;if(mr===0)return m*n;return m*(Math.pow(1+mr,n)-1)/(mr*Math.pow(1+mr,n));}
-function makeLinks(p){const q=encodeURIComponent((p.dong||'')+' '+p.name);return '<a href="https://m.land.naver.com/search/result/'+q+'" target="_blank" class="link-icon" title="네이버 부동산">N</a><a href="https://kbland.kr/map?xy=37.5,127.0&search='+encodeURIComponent(p.name)+'" target="_blank" class="link-icon" title="KB부동산">K</a>';}
+function makeLinks(p){const q=encodeURIComponent((p.dong||'')+' '+p.name);return '<a href="https://m.land.naver.com/search/result/'+q+'" target="_blank" class="link-icon" title="네이버 부동산">N</a><a href="https://hogangnono.com/search/'+encodeURIComponent(p.name)+'" target="_blank" class="link-icon" title="호갱노노">H</a>';}
 function setSort(btn){btn.closest('.filter-chip-group').querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentSort=btn.dataset.sort;currentPage=1;update();}
 function setRentSort(btn){btn.closest('.filter-chip-group').querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');rentSort=btn.dataset.sort;rentPage=1;update();}
 function setVerdictFilter(btn){document.querySelectorAll('#verdictChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');verdictFilterVal=btn.dataset.val;currentPage=1;update();}
@@ -386,12 +405,12 @@ async function loadSettings(){
   }catch(e){console.warn('settings.json 없음, 기본값 사용');}
 }
 function groupProperties(raw){
-  const g={};raw.forEach(i=>{const k=i.region+'_'+i.name+'_'+i.area_m2;if(!g[k])g[k]={name:i.name,region:i.region,area:Math.round(i.area_m2)+'㎡',area_py:i.area_py,regulated:i.regulated||false,station:i.walk_min?'도보 '+i.walk_min+'분':'역정보 없음',station_name:i.station||'',line:i.line||'',walk_min:i.walk_min,dong:i.dong||'',built_year:i.built_year||0,households:i.households||0,link:i.link||'',prices:[],floors:[],dates:[],trades:[]};g[k].prices.push(i.price);g[k].floors.push(i.floor);g[k].dates.push(i.trade_date);g[k].trades.push({price:i.price,floor:i.floor,date:i.trade_date});});
-  return Object.values(g).map(v=>{const avg=Math.round(v.prices.reduce((a,b)=>a+b,0)/v.prices.length);const tr=v.trades.sort((a,b)=>(b.date||'').localeCompare(a.date||''));return{name:v.name,region:v.region,area:v.area,area_py:v.area_py,price:avg,regulated:v.regulated,station:v.station,station_name:v.station_name,line:v.line,walk_min:v.walk_min,dong:v.dong,built_year:v.built_year,households:v.households,link:v.link,trade_count:v.prices.length,min_price:Math.min(...v.prices),max_price:Math.max(...v.prices),latest_date:v.dates.sort().reverse()[0]||'',price_per_py:v.area_py>0?Math.round(avg/v.area_py):0,trades:tr};}).sort((a,b)=>a.price-b.price);
+  const g={};raw.forEach(i=>{const k=i.region+'_'+i.name+'_'+i.area_m2;if(!g[k])g[k]={name:i.name,region:i.region,area:Math.round(i.area_m2)+'㎡',area_py:i.area_py,regulated:i.regulated||false,station:i.walk_min?'도보 '+i.walk_min+'분':'역정보 없음',station_name:i.station||'',line:i.line||'',walk_min:i.walk_min,dong:i.dong||'',built_year:i.built_year||0,households:i.households||0,link:i.link||'',lat:i.lat||null,lon:i.lon||null,prices:[],floors:[],dates:[],trades:[]};g[k].prices.push(i.price);g[k].floors.push(i.floor);g[k].dates.push(i.trade_date);g[k].trades.push({price:i.price,floor:i.floor,date:i.trade_date});});
+  return Object.values(g).map(v=>{const avg=Math.round(v.prices.reduce((a,b)=>a+b,0)/v.prices.length);const tr=v.trades.sort((a,b)=>(b.date||'').localeCompare(a.date||''));return{name:v.name,region:v.region,area:v.area,area_py:v.area_py,price:avg,regulated:v.regulated,station:v.station,station_name:v.station_name,line:v.line,walk_min:v.walk_min,dong:v.dong,built_year:v.built_year,households:v.households,link:v.link,lat:v.lat,lon:v.lon,trade_count:v.prices.length,min_price:Math.min(...v.prices),max_price:Math.max(...v.prices),latest_date:v.dates.sort().reverse()[0]||'',price_per_py:v.area_py>0?Math.round(avg/v.area_py):0,trades:tr};}).sort((a,b)=>a.price-b.price);
 }
 function groupRentProperties(raw){
-  const g={};raw.forEach(i=>{const k=i.region+'_'+i.name+'_'+i.area_m2+'_'+(i.rent_type||'전세');if(!g[k])g[k]={name:i.name,region:i.region,area:Math.round(i.area_m2)+'㎡',area_py:i.area_py,rent_type:i.rent_type||'전세',station:i.walk_min?'도보 '+i.walk_min+'분':'역정보 없음',station_name:i.station||'',line:i.line||'',walk_min:i.walk_min,dong:i.dong||'',built_year:i.built_year||0,households:i.households||0,deposits:[],monthlys:[],floors:[],dates:[],trades:[]};g[k].deposits.push(i.deposit||0);g[k].monthlys.push(i.monthly_rent||0);g[k].floors.push(i.floor);g[k].dates.push(i.trade_date);g[k].trades.push({deposit:i.deposit||0,monthly:i.monthly_rent||0,floor:i.floor,date:i.trade_date});});
-  return Object.values(g).map(v=>{const avgD=Math.round(v.deposits.reduce((a,b)=>a+b,0)/v.deposits.length);const avgM=Math.round(v.monthlys.reduce((a,b)=>a+b,0)/v.monthlys.length);const tr=v.trades.sort((a,b)=>(b.date||'').localeCompare(a.date||''));return{name:v.name,region:v.region,area:v.area,area_py:v.area_py,rent_type:v.rent_type,deposit:avgD,monthly_rent:avgM,station:v.station,station_name:v.station_name,line:v.line,walk_min:v.walk_min,dong:v.dong,built_year:v.built_year,households:v.households,trade_count:v.deposits.length,min_deposit:Math.min(...v.deposits),max_deposit:Math.max(...v.deposits),latest_date:v.dates.sort().reverse()[0]||'',trades:tr};}).sort((a,b)=>a.deposit-b.deposit);
+  const g={};raw.forEach(i=>{const k=i.region+'_'+i.name+'_'+i.area_m2+'_'+(i.rent_type||'전세');if(!g[k])g[k]={name:i.name,region:i.region,area:Math.round(i.area_m2)+'㎡',area_py:i.area_py,rent_type:i.rent_type||'전세',station:i.walk_min?'도보 '+i.walk_min+'분':'역정보 없음',station_name:i.station||'',line:i.line||'',walk_min:i.walk_min,dong:i.dong||'',built_year:i.built_year||0,households:i.households||0,lat:i.lat||null,lon:i.lon||null,deposits:[],monthlys:[],floors:[],dates:[],trades:[]};g[k].deposits.push(i.deposit||0);g[k].monthlys.push(i.monthly_rent||0);g[k].floors.push(i.floor);g[k].dates.push(i.trade_date);g[k].trades.push({deposit:i.deposit||0,monthly:i.monthly_rent||0,floor:i.floor,date:i.trade_date});});
+  return Object.values(g).map(v=>{const avgD=Math.round(v.deposits.reduce((a,b)=>a+b,0)/v.deposits.length);const avgM=Math.round(v.monthlys.reduce((a,b)=>a+b,0)/v.monthlys.length);const tr=v.trades.sort((a,b)=>(b.date||'').localeCompare(a.date||''));return{name:v.name,region:v.region,area:v.area,area_py:v.area_py,rent_type:v.rent_type,deposit:avgD,monthly_rent:avgM,station:v.station,station_name:v.station_name,line:v.line,walk_min:v.walk_min,dong:v.dong,built_year:v.built_year,households:v.households,lat:v.lat,lon:v.lon,trade_count:v.deposits.length,min_deposit:Math.min(...v.deposits),max_deposit:Math.max(...v.deposits),latest_date:v.dates.sort().reverse()[0]||'',trades:tr};}).sort((a,b)=>a.deposit-b.deposit);
 }
 async function loadData(){
   try{const r=await fetch('data.json');if(!r.ok)throw 0;const d=await r.json();DATA_UPDATED_AT=d.updated_at||'';PROPERTIES=groupProperties(d.properties||[]);DATA_LOADED=true;
@@ -405,6 +424,7 @@ async function loadData(){
 function update(){
   if(currentMode==='buy')updateBuy();else updateRent();
   updatePolicy();updatePolicyTimeline();updateStatus();updateMarriageBar();
+  if(mapInitialized)updateMapMarkers();
 }
 function updateStatus(){
   const s=document.getElementById('dataStatus');
@@ -538,6 +558,76 @@ document.getElementById('searchInput').addEventListener('input',()=>{currentPage
 document.getElementById('regionFilter').addEventListener('change',()=>{currentPage=1;update();});
 const rsi=document.getElementById('rentSearchInput');if(rsi)rsi.addEventListener('input',()=>{rentPage=1;update();});
 const rrf=document.getElementById('rentRegionFilter');if(rrf)rrf.addEventListener('change',()=>{rentPage=1;update();});
+
+// ─── 카카오맵 ───
+let kakaoMap=null,mapMarkers=[],mapInfoWindow=null,mapFilterVal='',mapInitialized=false;
+const MARKER_COLORS={ok:'#34d399',warn:'#fbbf24',danger:'#f87171',station:'#60a5fa'};
+const MAP_STATIONS=[
+  {name:"강남",lat:37.4979,lon:127.0276},{name:"양재",lat:37.4842,lon:127.0353},{name:"판교",lat:37.3948,lon:127.1112},
+  {name:"정자",lat:37.3669,lon:127.1085},{name:"미금",lat:37.3510,lon:127.1095},{name:"동천",lat:37.3383,lon:127.1085},
+  {name:"수지구청",lat:37.3220,lon:127.0960},{name:"성복",lat:37.3114,lon:127.0786},{name:"상현",lat:37.3005,lon:127.0653},
+  {name:"광교중앙",lat:37.2886,lon:127.0492},{name:"모란",lat:37.4321,lon:127.1293},{name:"야탑",lat:37.4112,lon:127.1272}
+];
+function setMapFilter(btn){document.querySelectorAll('#mapVerdictChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');mapFilterVal=btn.dataset.val;updateMapMarkers();}
+function initMapIfNeeded(){
+  if(mapInitialized)return;
+  if(typeof kakao==='undefined'||!kakao.maps){document.getElementById('mapBadge').textContent='카카오맵 로딩 실패';return;}
+  kakao.maps.load(()=>{
+    const container=document.getElementById('mapContainer');
+    kakaoMap=new kakao.maps.Map(container,{center:new kakao.maps.LatLng(37.38,127.08),level:8});
+    kakao.maps.event.addListener(kakaoMap,'idle',()=>{});
+    mapInfoWindow=new kakao.maps.InfoWindow({zIndex:1});
+    // 역 마커
+    MAP_STATIONS.forEach(st=>{
+      const m=new kakao.maps.Marker({map:kakaoMap,position:new kakao.maps.LatLng(st.lat,st.lon),image:new kakao.maps.MarkerImage('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',new kakao.maps.Size(24,35))});
+      kakao.maps.event.addListener(m,'click',()=>{mapInfoWindow.setContent('<div style="padding:4px 8px;font-size:12px;white-space:nowrap">🚇 '+st.name+'역</div>');mapInfoWindow.open(kakaoMap,m);});
+    });
+    mapInitialized=true;
+    updateMapMarkers();
+  });
+}
+function getMarkerSVG(color){return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20C24 5.4 18.6 0 12 0z" fill="'+color+'"/><circle cx="12" cy="11" r="5" fill="white" opacity="0.9"/></svg>');}
+function updateMapMarkers(){
+  if(!kakaoMap)return;
+  mapMarkers.forEach(m=>m.setMap(null));mapMarkers=[];
+  const props=currentMode==='buy'?PROPERTIES:RENT_PROPERTIES;
+  if(!props||props.length===0){document.getElementById('mapBadge').textContent='매물 데이터 없음';return;}
+  // 판정 계산
+  const eq=currentMode==='buy'?Math.max(0,getVal('cash')-getVal('interior')):getVal('cash');
+  const rate=getVal('rate'),term=getVal('term'),mr=getVal('monthlyLimit')-getVal('mgmt'),lp=getVal('ltv');
+  const rr=getVal('rentRate'),rll=getVal('rentLoanLimit'),rlr=getVal('rentLoanRatio');
+  const rf2=rlr/100;let mbr2=rf2<1?eq/(1-rf2):eq+rll;const aL2=Math.min(Math.floor(mbr2*rf2),rll),budget2=eq+aL2;
+  // 중복 제거 (같은 단지 좌표)
+  const seen={};let cnt=0;
+  props.forEach(p=>{
+    if(!p.lat||!p.lon)return;
+    const k=p.name+'_'+p.region;if(seen[k])return;seen[k]=true;
+    let verdict;
+    if(currentMode==='buy'){
+      const eLTV=p.regulated?Math.min(lp,50):lp;
+      const dsrL=Math.floor(maxLoanFromMonthly((getVal('income1')+getVal('income2'))*getVal('dsr')/100/12,rate,term));
+      const mlL=Math.floor(maxLoanFromMonthly(mr,rate,term));
+      const ltvL=eLTV>0&&eLTV<100?Math.floor(eq/(1-eLTV/100)*eLTV/100):0;
+      const fL=Math.min(dsrL,mlL,ltvL);
+      const pLn=Math.min(Math.floor(p.price*eLTV/100),fL),pEq=p.price-pLn,pM=Math.floor(monthlyPayment(pLn,rate,term));
+      if(pEq>eq)verdict='danger';else if(pM>mr)verdict='danger';else if(pM>mr*0.85)verdict='warn';else verdict='ok';
+    }else{
+      if(p.deposit>budget2)verdict='danger';else if(p.deposit>budget2*0.9)verdict='warn';else verdict='ok';
+    }
+    if(mapFilterVal&&verdict!==mapFilterVal)return;
+    const color=MARKER_COLORS[verdict];
+    const img=new kakao.maps.MarkerImage(getMarkerSVG(color),new kakao.maps.Size(24,32));
+    const marker=new kakao.maps.Marker({map:kakaoMap,position:new kakao.maps.LatLng(p.lat,p.lon),image:img});
+    const priceStr=currentMode==='buy'?fmtShort(p.price):fmtShort(p.deposit);
+    const label=currentMode==='buy'?'매매 ':'보증금 ';
+    kakao.maps.event.addListener(marker,'click',()=>{
+      mapInfoWindow.setContent('<div style="padding:8px 12px;font-size:12px;line-height:1.5;max-width:220px"><strong>'+p.name+'</strong><br><span style="color:#666">'+p.region+' · '+p.area+'</span><br><span style="font-weight:700">'+label+priceStr+'</span>'+(p.station?' · '+p.station:'')+'</div>');
+      mapInfoWindow.open(kakaoMap,marker);
+    });
+    mapMarkers.push(marker);cnt++;
+  });
+  document.getElementById('mapBadge').textContent=cnt+'개 매물 표시';
+}
 loadSettings().then(()=>loadData());
 </script>
 </body>

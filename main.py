@@ -662,6 +662,8 @@ def build_region_data(region_name, complex_groups, kakao_key, coord_cache, sgg_n
                 "trade_date": trade_date_str,
                 "link": naver_link,
                 "regulated": False,
+                "lat": coord["lat"] if coord else None,
+                "lon": coord["lon"] if coord else None,
             })
 
     if skipped_small > 0:
@@ -729,6 +731,8 @@ def build_rent_region_data(region_name, complex_groups, kakao_key, coord_cache, 
                 "prev_deposit": t.get("이전보증금", ""),
                 "prev_monthly": t.get("이전월세", ""),
                 "link": naver_link,
+                "lat": coord["lat"] if coord else None,
+                "lon": coord["lon"] if coord else None,
             })
 
     if skipped_small > 0:
