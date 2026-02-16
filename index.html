@@ -15,12 +15,13 @@
   --yellow:#fbbf24;--yellow-dim:rgba(251,191,36,0.12);
   --blue:#60a5fa;--blue-dim:rgba(96,165,250,0.12);
   --mono:'JetBrains Mono',monospace;
+  --mode-accent:#2563eb;--mode-accent-light:#eff6ff;--mode-bg:#f0f4ff;--mode-border:#dbe4f0;--mode-header-stripe:#2563eb;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
 html{overflow-x:hidden}
 .main{max-width:1100px;margin:0 auto;padding:20px 16px}
-.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px;padding-bottom:16px;border-bottom:2px solid var(--mode-header-stripe)}
 .top-bar-left{display:flex;align-items:center;gap:12px}
 .logo{font-size:20px;font-weight:900;letter-spacing:-0.5px}
 .logo-sub{font-size:11px;color:var(--text-dim)}
@@ -30,7 +31,7 @@ html{overflow-x:hidden}
 .mode-toggle{display:flex;background:var(--surface2);border:1px solid var(--border);border-radius:8px;overflow:hidden}
 .mode-btn{background:none;border:none;color:var(--text-dim);padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all 0.2s;display:flex;align-items:center;gap:5px;white-space:nowrap}
 .mode-btn:hover{color:var(--text-mid)}
-.mode-btn.active{background:var(--accent);color:#fff;box-shadow:0 0 12px rgba(124,106,246,0.3)}
+.mode-btn.active{background:var(--mode-accent);color:#fff;box-shadow:0 0 12px rgba(37,99,235,0.3)}
 .settings-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:100;backdrop-filter:blur(4px)}
 .settings-overlay.open{display:flex;justify-content:flex-end}
 .settings-panel{background:var(--surface);width:340px;max-width:90vw;height:100vh;overflow-y:auto;padding:24px 20px;border-left:1px solid var(--border);animation:slideIn 0.25s ease}
@@ -60,7 +61,7 @@ body.mode-rent .buy-only{display:none}body.mode-rent .rent-only{display:block}
 .marriage-toggle{display:flex;background:var(--surface2);border:1px solid var(--border);border-radius:6px;overflow:hidden}
 .marriage-btn{background:none;border:none;color:var(--text-dim);padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all 0.2s;white-space:nowrap}
 .marriage-btn:hover{color:var(--text-mid)}
-.marriage-btn.active{background:var(--accent);color:#fff}
+.marriage-btn.active{background:var(--mode-accent);color:#fff}
 .marriage-info{font-size:11px;color:var(--text-dim);flex:1}
 .marriage-info strong{color:var(--yellow)}
 .marriage-income-badge{font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:4px;font-weight:600}
@@ -89,45 +90,45 @@ body.mode-rent .buy-only{display:none}body.mode-rent .rent-only{display:block}
 .table-controls{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap;align-items:center}
 .filter-chip-group{display:flex;gap:4px;flex-wrap:wrap}
 .filter-chip{background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);padding:6px 12px;border-radius:20px;font-size:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all 0.15s;white-space:nowrap;user-select:none}
-.filter-chip:hover{border-color:var(--accent);color:var(--text-mid)}
-.filter-chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.filter-chip:hover{border-color:var(--mode-accent);color:var(--text-mid)}
+.filter-chip.active{background:var(--mode-accent);color:#fff;border-color:var(--mode-accent)}
 .filter-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;align-items:center}
 .filter-label{font-size:11px;color:var(--text-dim);min-width:40px;font-weight:500}
 .search-input{flex:1;min-width:180px;background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;font-family:'Noto Sans KR',sans-serif;outline:none}
-.search-input::placeholder{color:var(--text-dim)}.search-input:focus{border-color:var(--accent)}
+.search-input::placeholder{color:var(--text-dim)}.search-input:focus{border-color:var(--mode-accent)}
 .sort-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text-mid);padding:7px 12px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;transition:all 0.15s}
-.sort-btn:hover,.sort-btn.active{border-color:var(--accent);color:var(--accent2)}
+.sort-btn:hover,.sort-btn.active{border-color:var(--mode-accent);color:var(--mode-accent)}
 .filter-select{background:var(--surface2);border:1px solid var(--border);color:var(--text-mid);padding:7px 10px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;outline:none}
 .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow-x:auto}
 .pagination-bar{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-top:1px solid var(--border);background:var(--surface);font-size:12px;color:var(--text-dim)}
 .page-size-select{background:var(--surface2);border:1px solid var(--border);color:var(--text-mid);padding:5px 8px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;outline:none}
 .page-btns{display:flex;gap:4px;align-items:center}
 .page-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text-mid);padding:5px 10px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all 0.15s}
-.page-btn:hover{border-color:var(--accent);color:var(--accent2)}
-.page-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.page-btn:hover{border-color:var(--mode-accent);color:var(--mode-accent)}
+.page-btn.active{background:var(--mode-accent);color:#fff;border-color:var(--mode-accent)}
 .page-btn:disabled{opacity:0.3;cursor:default}
 .page-info{font-size:11px;color:var(--text-dim)}
-.tab-nav{display:flex;gap:4px;margin-bottom:16px;border-bottom:2px solid var(--border);padding-bottom:0}
+.tab-nav{display:flex;gap:4px;margin-bottom:16px;border-bottom:2px solid var(--mode-border);padding-bottom:0}
 .tab-btn{background:none;border:none;color:var(--text-dim);padding:10px 18px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all 0.2s;white-space:nowrap}
-.tab-btn:hover{color:var(--text-mid)}.tab-btn.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.tab-btn:hover{color:var(--text-mid)}.tab-btn.active{color:var(--mode-accent);border-bottom-color:var(--mode-accent)}
 .tab-content{display:none}.tab-content.active{display:block}
 table{width:100%;border-collapse:collapse;font-size:13px}thead{background:var(--surface2)}
 th{padding:9px 10px;text-align:left;font-weight:500;color:var(--text-dim);font-size:11px;letter-spacing:0.5px;cursor:pointer;white-space:nowrap}th:hover{color:var(--text-mid)}
-td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover td{background:rgba(124,106,246,0.03)}
+td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover td{background:rgba(37,99,235,0.04)}
 .col-name{min-width:250px}.col-region{min-width:80px}.col-area{min-width:60px}.col-price{min-width:100px}.col-equity{min-width:100px}.col-loan{min-width:100px}.col-monthly{min-width:70px}.col-verdict{min-width:70px}.col-link{min-width:50px}
 .mono{font-family:var(--mono);font-weight:600}
 .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500}
 .tag-ok{background:var(--green-dim);color:var(--green)}.tag-warn{background:var(--yellow-dim);color:var(--yellow)}.tag-danger{background:var(--red-dim);color:var(--red)}.tag-region{background:var(--blue-dim);color:var(--blue);font-size:10px}
 .link-icons{display:flex;gap:4px}
 .link-icon{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-size:12px;text-decoration:none;transition:all 0.15s;background:var(--surface3);color:var(--text-mid);border:1px solid var(--border)}
-.link-icon:hover{border-color:var(--accent);color:var(--accent2);transform:scale(1.1)}
+.link-icon:hover{border-color:var(--mode-accent);color:var(--mode-accent);transform:scale(1.1)}
 .condition-row{display:flex;flex-wrap:wrap;gap:6px}
 .cond-chip{background:var(--surface2);border:1px solid var(--border);padding:5px 12px;border-radius:20px;font-size:11px;color:var(--text-mid);white-space:nowrap}
 .quick-links{display:flex;flex-wrap:wrap;gap:8px}
 .area-toggle{cursor:pointer;user-select:none}.area-toggle:hover{color:var(--accent2)}
-#areaUnitLabel{font-size:10px;padding:1px 5px;background:var(--accent);color:#fff;border-radius:3px}
+#areaUnitLabel{font-size:10px;padding:1px 5px;background:var(--mode-accent);color:#fff;border-radius:3px}
 .quick-link{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 14px;text-decoration:none;color:var(--text);transition:all 0.2s;flex:1;min-width:140px}
-.quick-link:hover{border-color:var(--accent);transform:translateY(-1px)}
+.quick-link:hover{border-color:var(--mode-accent);transform:translateY(-1px)}
 .ql-icon{font-size:18px}.ql-name{font-size:13px;font-weight:600}.ql-desc{font-size:10px;color:var(--text-dim)}
 .timeline{display:flex;flex-direction:column;gap:8px}
 .tl-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;display:flex;gap:12px;align-items:flex-start;transition:border-color 0.2s}
@@ -163,12 +164,12 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
 .rent-placeholder-links{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .trade-history{grid-column:1/-1;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-top:4px;display:none;min-width:280px}
 .trade-history.open{display:block}
-.trade-history-title{font-size:11px;font-weight:600;color:var(--accent2);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+.trade-history-title{font-size:11px;font-weight:600;color:var(--mode-accent);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
 .trade-row{display:flex;gap:12px;padding:4px 0;font-size:11px;border-bottom:1px solid var(--border);align-items:center;white-space:nowrap}
 .trade-row:last-child{border-bottom:none}
 .trade-date{color:var(--text-dim);min-width:75px}.trade-price{font-family:var(--mono);font-weight:600;min-width:85px}.trade-floor{color:var(--text-mid);min-width:30px}
 .trade-delta{font-family:var(--mono);font-size:10px;min-width:60px}.trade-delta.up{color:var(--red)}.trade-delta.down{color:var(--green)}.trade-delta.same{color:var(--text-dim)}
-.expand-btn{cursor:pointer;color:var(--accent2);font-size:10px;background:none;border:none;padding:0;font-family:'Noto Sans KR',sans-serif}.expand-btn:hover{color:var(--accent)}
+.expand-btn{cursor:pointer;color:var(--mode-accent);font-size:10px;background:none;border:none;padding:0;font-family:'Noto Sans KR',sans-serif}.expand-btn:hover{opacity:0.8}
 @media(max-width:768px){
   #mapContainer{height:400px!important}
   .main{padding:12px 10px}.stats-row{grid-template-columns:repeat(2,1fr);gap:8px}.stat-value{font-size:18px}
@@ -211,7 +212,7 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
   <div class="stats-row" id="statsRow">
     <div class="stat-card"><div class="stat-label">합산 연소득</div><div class="stat-value" id="totalIncome">—</div><div class="stat-sub" id="totalIncomeSub">—</div></div>
     <div class="stat-card"><div class="stat-label" id="equityLabel">투입 가능 자기자금</div><div class="stat-value" id="equity">—</div><div class="stat-sub" id="equitySub">—</div></div>
-    <div class="stat-card"><div class="stat-label" id="mainPriceLabel">최대 매수 가능가</div><div class="stat-value" id="maxPrice" style="color:var(--accent)">—</div><div class="stat-sub" id="maxPriceSub">—</div><div class="stat-bar"><div class="stat-bar-fill" id="maxPriceBar" style="width:0%;background:var(--accent)"></div></div></div>
+    <div class="stat-card"><div class="stat-label" id="mainPriceLabel">최대 매수 가능가</div><div class="stat-value" id="maxPrice" style="color:var(--mode-accent)">—</div><div class="stat-sub" id="maxPriceSub">—</div><div class="stat-bar"><div class="stat-bar-fill" id="maxPriceBar" style="width:0%;background:var(--mode-accent)"></div></div></div>
     <div class="stat-card"><div class="stat-label" id="monthlyLabel">월 상환 여력</div><div class="stat-value" id="monthlyLeft">—</div><div class="stat-sub" id="monthlyLeftSub">—</div><div class="stat-bar"><div class="stat-bar-fill" id="monthlyBar" style="width:0%;background:var(--green)"></div></div></div>
   </div>
   <div class="section buy-only" id="loanSectionBuy"><div class="section-header"><div class="section-title">🏦 대출 한도 분석</div><div class="section-badge" id="loanBadge">실시간 계산</div></div>
@@ -219,14 +220,14 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
       <div class="loan-card" id="ltvCard"><div class="loan-label">LTV 기준 최대 대출</div><div class="loan-big" id="ltvMax">—</div><div class="loan-detail" id="ltvDetail">—</div></div>
       <div class="loan-card" id="dsrCard"><div class="loan-label">DSR 기준 최대 대출</div><div class="loan-big" id="dsrMax">—</div><div class="loan-detail" id="dsrDetail">—</div></div>
       <div class="loan-card" id="monthlyCard"><div class="loan-label">월 상환 기준 최대 대출</div><div class="loan-big" id="monthlyMax">—</div><div class="loan-detail" id="monthlyDetail">—</div></div>
-      <div class="loan-card" id="finalCard"><div class="loan-label">✅ 실제 가능 대출 (최솟값)</div><div class="loan-big" id="finalLoan" style="color:var(--accent)">—</div><div class="loan-detail" id="finalDetail">—</div></div>
+      <div class="loan-card" id="finalCard"><div class="loan-label">✅ 실제 가능 대출 (최솟값)</div><div class="loan-big" id="finalLoan" style="color:var(--mode-accent)">—</div><div class="loan-detail" id="finalDetail">—</div></div>
     </div>
   </div>
   <div class="section rent-only" id="loanSectionRent"><div class="section-header"><div class="section-title">🏦 전세 대출 분석</div><div class="section-badge" id="rentLoanBadge">실시간 계산</div></div>
     <div class="rent-loan-grid">
       <div class="loan-card ok" id="rentLimitCard"><div class="loan-label">전세대출 한도</div><div class="loan-big" id="rentLimitMax">—</div><div class="loan-detail" id="rentLimitDetail">—</div></div>
       <div class="loan-card" id="rentInterestCard"><div class="loan-label">월 이자 부담</div><div class="loan-big" id="rentInterest">—</div><div class="loan-detail" id="rentInterestDetail">—</div></div>
-      <div class="loan-card ok" id="rentBudgetCard"><div class="loan-label">✅ 총 전세 예산</div><div class="loan-big" id="rentBudget" style="color:var(--accent)">—</div><div class="loan-detail" id="rentBudgetDetail">—</div></div>
+      <div class="loan-card ok" id="rentBudgetCard"><div class="loan-label">✅ 총 전세 예산</div><div class="loan-big" id="rentBudget" style="color:var(--mode-accent)">—</div><div class="loan-detail" id="rentBudgetDetail">—</div></div>
     </div>
   </div>
   <div class="section buy-only"><div class="section-header"><div class="section-title">🔍 매물 탐색 조건</div><div class="section-badge">현재 배치 설정 기준</div></div>
@@ -347,8 +348,14 @@ function updateMarriageBar(){
   if(isMarried){info.innerHTML='부부합산 소득 적용 → 정책대출 대부분 <strong>소득 초과</strong>';badge.textContent='합산 '+fmtShort(ti);badge.className='marriage-income-badge married';}
   else{info.innerHTML='단독 소득 적용 가능 → 배우자('+fmtShort(mi)+') 기준 정책대출 <strong>자격 가능</strong>';badge.textContent='단독 '+fmtShort(mi);badge.className='marriage-income-badge single';}
 }
+function applyTheme(mode){
+  const themes={buy:{accent:'#2563eb',accentLight:'#eff6ff',bg:'#f0f4ff',border:'#dbe4f0',stripe:'#2563eb'},rent:{accent:'#059669',accentLight:'#ecfdf5',bg:'#f0faf6',border:'#d1e7dd',stripe:'#059669'}};
+  const t=themes[mode],r=document.documentElement.style;
+  r.setProperty('--mode-accent',t.accent);r.setProperty('--mode-accent-light',t.accentLight);r.setProperty('--mode-bg',t.bg);r.setProperty('--mode-border',t.border);r.setProperty('--mode-header-stripe',t.stripe);
+}
 function switchMode(mode){
   currentMode=mode;
+  applyTheme(mode);
   document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
   document.body.classList.toggle('mode-rent',mode==='rent');
   document.getElementById('logoText').textContent=mode==='buy'?'🏠 우리 집 사기':'🔑 우리 집 구하기';
@@ -487,7 +494,7 @@ function updateRent(){
   const rf=rlr/100;let mbr=rf<1?eq/(1-rf):eq+rll;let lfr=Math.floor(mbr*rf);const aL=Math.min(lfr,rll),rb=eq+aL,mi=Math.round(aL*rr/100/12);
   document.getElementById('totalIncome').textContent=fmtShort(ti);document.getElementById('totalIncomeSub').textContent='본인 '+i1.toLocaleString()+' + 배우자 '+i2.toLocaleString();
   document.getElementById('equityLabel').textContent='자기자금 (전세보증금용)';document.getElementById('equity').textContent=fmtShort(eq);document.getElementById('equitySub').textContent='총 가용 자금 전액 투입';
-  document.getElementById('mainPriceLabel').textContent='최대 전세 예산';document.getElementById('maxPrice').textContent=fmtShort(rb);document.getElementById('maxPrice').style.color=rb>=35000?'var(--green)':rb>=25000?'var(--yellow)':'var(--accent)';
+  document.getElementById('mainPriceLabel').textContent='최대 전세 예산';document.getElementById('maxPrice').textContent=fmtShort(rb);document.getElementById('maxPrice').style.color=rb>=35000?'var(--green)':rb>=25000?'var(--yellow)':'var(--mode-accent)';
   document.getElementById('maxPriceSub').textContent='자기자금 '+fmtShort(eq)+' + 대출 '+fmtShort(aL);document.getElementById('maxPriceBar').style.width=Math.min(100,rb/500*100)+'%';
   document.getElementById('monthlyLabel').textContent='월 이자 부담';document.getElementById('monthlyLeft').textContent=mi+'만';document.getElementById('monthlyLeft').style.color=mi<=50?'var(--green)':mi<=80?'var(--yellow)':'var(--red)';
   document.getElementById('monthlyLeftSub').textContent='대출 '+fmtShort(aL)+' × '+rr+'%';document.getElementById('monthlyBar').style.width=Math.min(100,mi/150*100)+'%';document.getElementById('monthlyBar').style.background=mi<=50?'var(--green)':mi<=80?'var(--yellow)':'var(--red)';
