@@ -190,8 +190,6 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
       <button class="settings-btn" onclick="toggleSettings()">⚙️ 설정</button>
     </div>
   </div>
-
-  <!-- 혼인신고 상태 바 -->
   <div class="marriage-status-bar" id="marriageBar">
     <div style="font-size:12px;font-weight:600;color:var(--text-mid)">💍 혼인신고</div>
     <div class="marriage-toggle">
@@ -201,14 +199,12 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
     <div class="marriage-info" id="marriageInfo">부부합산 소득 적용 → 정책대출 대부분 <strong>소득 초과</strong></div>
     <div class="marriage-income-badge married" id="marriageIncomeBadge">합산 8,740만</div>
   </div>
-
   <div class="stats-row" id="statsRow">
     <div class="stat-card"><div class="stat-label">합산 연소득</div><div class="stat-value" id="totalIncome">—</div><div class="stat-sub" id="totalIncomeSub">—</div></div>
     <div class="stat-card"><div class="stat-label" id="equityLabel">투입 가능 자기자금</div><div class="stat-value" id="equity">—</div><div class="stat-sub" id="equitySub">—</div></div>
     <div class="stat-card"><div class="stat-label" id="mainPriceLabel">최대 매수 가능가</div><div class="stat-value" id="maxPrice" style="color:var(--accent)">—</div><div class="stat-sub" id="maxPriceSub">—</div><div class="stat-bar"><div class="stat-bar-fill" id="maxPriceBar" style="width:0%;background:var(--accent)"></div></div></div>
     <div class="stat-card"><div class="stat-label" id="monthlyLabel">월 상환 여력</div><div class="stat-value" id="monthlyLeft">—</div><div class="stat-sub" id="monthlyLeftSub">—</div><div class="stat-bar"><div class="stat-bar-fill" id="monthlyBar" style="width:0%;background:var(--green)"></div></div></div>
   </div>
-
   <div class="section buy-only" id="loanSectionBuy"><div class="section-header"><div class="section-title">🏦 대출 한도 분석</div><div class="section-badge" id="loanBadge">실시간 계산</div></div>
     <div class="loan-grid">
       <div class="loan-card" id="ltvCard"><div class="loan-label">LTV 기준 최대 대출</div><div class="loan-big" id="ltvMax">—</div><div class="loan-detail" id="ltvDetail">—</div></div>
@@ -217,7 +213,6 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
       <div class="loan-card" id="finalCard"><div class="loan-label">✅ 실제 가능 대출 (최솟값)</div><div class="loan-big" id="finalLoan" style="color:var(--accent)">—</div><div class="loan-detail" id="finalDetail">—</div></div>
     </div>
   </div>
-
   <div class="section rent-only" id="loanSectionRent"><div class="section-header"><div class="section-title">🏦 전세 대출 분석</div><div class="section-badge" id="rentLoanBadge">실시간 계산</div></div>
     <div class="rent-loan-grid">
       <div class="loan-card ok" id="rentLimitCard"><div class="loan-label">전세대출 한도</div><div class="loan-big" id="rentLimitMax">—</div><div class="loan-detail" id="rentLimitDetail">—</div></div>
@@ -225,11 +220,9 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
       <div class="loan-card ok" id="rentBudgetCard"><div class="loan-label">✅ 총 전세 예산</div><div class="loan-big" id="rentBudget" style="color:var(--accent)">—</div><div class="loan-detail" id="rentBudgetDetail">—</div></div>
     </div>
   </div>
-
   <div class="section buy-only"><div class="section-header"><div class="section-title">🔍 매물 탐색 조건</div><div class="section-badge">현재 배치 설정 기준</div></div>
     <div class="condition-row"><div class="cond-chip">📐 59~84㎡ (20평대)</div><div class="cond-chip">🚇 역세권 도보 15분 이내</div><div class="cond-chip">🏢 200세대 이상</div><div class="cond-chip">💰 매매가 6억 이하</div><div class="cond-chip">🚋 신분당선 라인</div><div class="cond-chip">📍 서울 동남부 · 성남 · 용인 · 과천 · 안양 · 하남 · 광주</div></div>
   </div>
-
   <div class="section"><div class="section-header"><div class="section-title">🔗 부동산 사이트 바로가기</div></div>
     <div class="quick-links">
       <a href="https://new.land.naver.com/" target="_blank" class="quick-link"><span class="ql-icon">🟢</span><span class="ql-name">네이버 부동산</span><span class="ql-desc">매물 검색 · 시세</span></a>
@@ -239,23 +232,29 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
       <a href="https://rt.molit.go.kr/" target="_blank" class="quick-link"><span class="ql-icon">🏛️</span><span class="ql-name">국토부 실거래가</span><span class="ql-desc">공식 거래 데이터</span></a>
     </div>
   </div>
-
   <div class="tab-nav" id="tabNav">
     <button class="tab-btn active" onclick="switchTab('properties')" id="tabBtnProperties">📊 매물 시뮬레이션</button>
     <button class="tab-btn" onclick="switchTab('policy')" id="tabBtnPolicy">📜 정책 · 대출</button>
   </div>
-
   <div class="tab-content active" id="tab-properties">
     <div class="buy-only"><div class="section" style="margin-top:0"><div class="section-header"><div class="section-title">🏘️ 관심 매물 시뮬레이션</div><div class="section-badge" id="propertyBadge">데이터 없음</div></div>
       <div class="table-controls"><input type="text" class="search-input" id="searchInput" placeholder="단지명, 지역, 동 검색..."><select class="filter-select" id="regionFilter"><option value="">전체 지역</option></select><select class="filter-select" id="verdictFilter"><option value="">전체 판정</option><option value="매수가능">매수가능</option><option value="빠듯함">빠듯함</option><option value="상환초과">상환초과</option><option value="자금부족">자금부족</option></select><button class="sort-btn active" data-sort="price-asc" onclick="setSort(this)">가격↑</button><button class="sort-btn" data-sort="price-desc" onclick="setSort(this)">가격↓</button><button class="sort-btn" data-sort="walk" onclick="setSort(this)">역세권순</button></div>
       <div class="table-wrap"><table><thead><tr><th class="col-name">단지명</th><th class="col-region">지역</th><th class="col-area"><span class="area-toggle" onclick="toggleAreaUnit()" title="클릭하여 전환">면적 <span id="areaUnitLabel">평</span></span></th><th class="col-price">매매가</th><th class="col-equity">필요자금</th><th class="col-loan">대출액</th><th class="col-monthly">월상환</th><th class="col-verdict">판정</th><th class="col-link">링크</th></tr></thead><tbody id="propertyBody"></tbody></table></div>
       <div class="pagination-bar"><div style="display:flex;align-items:center;gap:8px;"><span>표시 건수</span><select class="page-size-select" id="pageSizeSelect" onchange="changePageSize(this.value)"><option value="20" selected>20개</option><option value="30">30개</option><option value="40">40개</option><option value="50">50개</option></select></div><div class="page-info" id="pageInfo"></div><div class="page-btns" id="pageBtns"></div></div>
     </div></div>
-    <div class="rent-only"><div class="rent-placeholder"><div class="rent-placeholder-icon">🔑</div><div class="rent-placeholder-title">전세 매물 데이터 준비 중</div><div class="rent-placeholder-desc">전월세 실거래 데이터 파이프라인을 구축 중입니다.<br>현재는 위 시뮬레이터와 정책대출 탭으로 전세 예산을 분석할 수 있습니다.<br>아래 사이트에서 전세 매물을 직접 탐색해보세요.</div>
-      <div class="rent-placeholder-links"><a href="https://new.land.naver.com/" target="_blank" class="quick-link" style="flex:none"><span class="ql-icon">🟢</span><span class="ql-name">네이버 전세</span></a><a href="https://hogangnono.com/" target="_blank" class="quick-link" style="flex:none"><span class="ql-icon">🟡</span><span class="ql-name">호갱노노 전세</span></a><a href="https://asil.kr/" target="_blank" class="quick-link" style="flex:none"><span class="ql-icon">🔵</span><span class="ql-name">아실 전세</span></a></div>
-    </div></div>
+    <div class="rent-only" id="rentPropertySection">
+      <!-- 전세 데이터 있을 때 표시되는 테이블 -->
+      <div id="rentTableWrap" style="display:none"><div class="section" style="margin-top:0"><div class="section-header"><div class="section-title">🔑 전세 실거래 현황</div><div class="section-badge" id="rentPropertyBadge">데이터 없음</div></div>
+        <div class="table-controls"><input type="text" class="search-input" id="rentSearchInput" placeholder="단지명, 지역, 동 검색..."><select class="filter-select" id="rentRegionFilter"><option value="">전체 지역</option></select><select class="filter-select" id="rentVerdictFilter"><option value="">전체 판정</option><option value="가능">가능</option><option value="빠듯함">빠듯함</option><option value="예산초과">예산초과</option></select><button class="sort-btn active" data-sort="price-asc" onclick="setRentSort(this)">보증금↑</button><button class="sort-btn" data-sort="price-desc" onclick="setRentSort(this)">보증금↓</button><button class="sort-btn" data-sort="walk" onclick="setRentSort(this)">역세권순</button></div>
+        <div class="table-wrap"><table><thead><tr><th class="col-name">단지명</th><th class="col-region">지역</th><th class="col-area">면적</th><th style="min-width:50px">유형</th><th class="col-price">보증금</th><th style="min-width:60px">월세</th><th class="col-verdict">판정</th><th class="col-link">링크</th></tr></thead><tbody id="rentPropertyBody"></tbody></table></div>
+        <div class="pagination-bar"><div style="display:flex;align-items:center;gap:8px;"><span>표시 건수</span><select class="page-size-select" id="rentPageSizeSelect" onchange="changeRentPageSize(this.value)"><option value="20" selected>20개</option><option value="30">30개</option><option value="40">40개</option><option value="50">50개</option></select></div><div class="page-info" id="rentPageInfo"></div><div class="page-btns" id="rentPageBtns"></div></div>
+      </div></div>
+      <!-- 전세 데이터 없을 때 표시되는 플레이스홀더 -->
+      <div class="rent-placeholder" id="rentPlaceholder"><div class="rent-placeholder-icon">🔑</div><div class="rent-placeholder-title">전세 매물 데이터 준비 중</div><div class="rent-placeholder-desc">전월세 실거래 데이터 파이프라인을 구축 중입니다.<br>현재는 위 시뮬레이터와 정책대출 탭으로 전세 예산을 분석할 수 있습니다.<br>아래 사이트에서 전세 매물을 직접 탐색해보세요.</div>
+        <div class="rent-placeholder-links"><a href="https://new.land.naver.com/" target="_blank" class="quick-link" style="flex:none"><span class="ql-icon">🟢</span><span class="ql-name">네이버 전세</span></a><a href="https://hogangnono.com/" target="_blank" class="quick-link" style="flex:none"><span class="ql-icon">🟡</span><span class="ql-name">호갱노노 전세</span></a><a href="https://asil.kr/" target="_blank" class="quick-link" style="flex:none"><span class="ql-icon">🔵</span><span class="ql-name">아실 전세</span></a></div>
+      </div>
+    </div>
   </div>
-
   <div class="tab-content" id="tab-policy">
     <div class="section" style="margin-top:0"><div class="section-header"><div class="section-title">📜 최근 정책 변동</div><div class="section-badge">영향도 분석</div></div>
       <div class="timeline" id="policyTimeline"></div>
@@ -265,10 +264,8 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
       <div class="policy-grid" id="policyGrid"></div>
     </div>
   </div>
-
   <div class="footer">설정(⚙️)에서 소득·자금·대출 조건을 변경하면 모든 숫자가 실시간으로 재계산됩니다</div>
 </div>
-
 <!-- Settings Overlay -->
 <div class="settings-overlay" id="settingsOverlay" onclick="closeSettingsOutside(event)">
   <div class="settings-panel" onclick="event.stopPropagation()">
@@ -304,61 +301,47 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
     <div class="field"><label>현재 주택 수</label><select id="houseCount"><option value="0">무주택</option><option value="1" selected>1주택 (대구)</option><option value="2">2주택 이상</option></select></div>
   </div>
 </div>
-
 <script>
-let currentMode='buy',isMarried=true,PROPERTIES=[],DATA_LOADED=false,DATA_UPDATED_AT='',currentSort='price-asc',searchQuery='',regionFilterVal='',verdictFilterVal='',areaUnit='py',pageSize=20,currentPage=1;
+let currentMode='buy',isMarried=true,PROPERTIES=[],RENT_PROPERTIES=[],DATA_LOADED=false,RENT_DATA_LOADED=false,DATA_UPDATED_AT='',RENT_UPDATED_AT='',currentSort='price-asc',rentSort='price-asc',searchQuery='',regionFilterVal='',verdictFilterVal='',areaUnit='py',pageSize=20,currentPage=1,rentPage=1;
 
 function setMarriage(married){
   isMarried=married;
   document.querySelectorAll('.marriage-btn').forEach(b=>b.classList.toggle('active', (b.dataset.married==='1')===married));
   updateMarriageBar();
-  // 전세 모드에서 혼인 상태 변경 시 대출 유형 기본값도 변경
-  if(currentMode==='rent'){
-    if(married){
-      document.getElementById('rentLoanType').value='bank';
-      onRentTypeChange();
-    }
-  }
+  if(currentMode==='rent'){if(married){document.getElementById('rentLoanType').value='bank';onRentTypeChange();}}
   update();
 }
-
 function updateMarriageBar(){
   const i1=getVal('income1'),i2=getVal('income2'),ti=i1+i2,mi=Math.min(i1,i2);
   const info=document.getElementById('marriageInfo'),badge=document.getElementById('marriageIncomeBadge');
-  if(isMarried){
-    info.innerHTML='부부합산 소득 적용 → 정책대출 대부분 <strong>소득 초과</strong>';
-    badge.textContent='합산 '+fmtShort(ti);badge.className='marriage-income-badge married';
-  } else {
-    info.innerHTML='단독 소득 적용 가능 → 배우자('+fmtShort(mi)+') 기준 정책대출 <strong>자격 가능</strong>';
-    badge.textContent='단독 '+fmtShort(mi);badge.className='marriage-income-badge single';
-  }
+  if(isMarried){info.innerHTML='부부합산 소득 적용 → 정책대출 대부분 <strong>소득 초과</strong>';badge.textContent='합산 '+fmtShort(ti);badge.className='marriage-income-badge married';}
+  else{info.innerHTML='단독 소득 적용 가능 → 배우자('+fmtShort(mi)+') 기준 정책대출 <strong>자격 가능</strong>';badge.textContent='단독 '+fmtShort(mi);badge.className='marriage-income-badge single';}
 }
-
 function switchMode(mode){
   currentMode=mode;
   document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
   document.body.classList.toggle('mode-rent',mode==='rent');
   document.getElementById('logoText').textContent=mode==='buy'?'🏠 우리 집 사기':'🔑 우리 집 구하기';
   const tabBtnProp=document.getElementById('tabBtnProperties');
-  if(mode==='rent'){tabBtnProp.style.display='none';switchTab('policy');}
-  else{tabBtnProp.style.display='';}
+  if(mode==='rent'){
+    if(RENT_DATA_LOADED&&RENT_PROPERTIES.length>0){tabBtnProp.style.display='';tabBtnProp.textContent='📊 전세 실거래';switchTab('properties');}
+    else{tabBtnProp.style.display='none';switchTab('policy');}
+  }else{tabBtnProp.style.display='';tabBtnProp.textContent='📊 매물 시뮬레이션';}
   update();
 }
 function toggleSettings(){document.getElementById('settingsOverlay').classList.toggle('open')}
 function closeSettingsOutside(e){if(e.target===document.getElementById('settingsOverlay'))toggleSettings()}
-
 function onRentTypeChange(){
   const type=document.getElementById('rentLoanType').value,ref=document.getElementById('rentTypeRef');
   if(type==='policy'){
     ref.innerHTML='<div class="policy-ref-title">정책대출 기준 (버팀목 등)</div><div class="policy-ref-row"><span class="ref-dot" style="background:var(--green)"></span> 금리: 1.5~3.5%</div><div class="policy-ref-row"><span class="ref-dot" style="background:var(--blue)"></span> 한도: 수도권 최대 2.5억 (보증금 80%)</div><div class="policy-ref-row"><span class="ref-dot" style="background:var(--text-mid)"></span> DSR 미적용</div>'+(isMarried?'<div class="policy-ref-row" style="color:var(--red)"><span class="ref-dot" style="background:var(--red)"></span> ⚠️ 합산 소득 초과로 대부분 탈락</div>':'<div class="policy-ref-row" style="color:var(--green)"><span class="ref-dot" style="background:var(--green)"></span> ✅ 단독 소득 기준 자격 가능</div>');
     setRV('rentRate',2.5);setRV('rentLoanRatio',80);setRV('rentLoanLimit',20000);
-  } else {
+  }else{
     ref.innerHTML='<div class="policy-ref-title">시중은행 전세대출 기준</div><div class="policy-ref-row"><span class="ref-dot" style="background:var(--yellow)"></span> 금리: 3.3~4.5%</div><div class="policy-ref-row"><span class="ref-dot" style="background:var(--blue)"></span> 한도: 보증한도 내 (HUG/HF/SGI)</div><div class="policy-ref-row"><span class="ref-dot" style="background:var(--text-mid)"></span> DSR 미적용, 소득 제한 없음</div>';
     setRV('rentRate',3.8);setRV('rentLoanRatio',80);setRV('rentLoanLimit',30000);
   }
   update();
 }
-
 function setRV(id,v){const s=document.getElementById(id),i=document.getElementById(id+'Val');if(s)s.value=v;if(i)i.value=v;}
 function toggleAreaUnit(){areaUnit=areaUnit==='py'?'m2':'py';document.getElementById('areaUnitLabel').textContent=areaUnit==='py'?'평':'㎡';update();}
 function fmtArea(p){return areaUnit==='py'?(p.area_py?p.area_py+'평':p.area):p.area;}
@@ -371,12 +354,14 @@ function switchTab(tabId){
   else document.getElementById('tabBtnPolicy').classList.add('active');
 }
 function changePageSize(v){pageSize=parseInt(v);currentPage=1;update();}
+function changeRentPageSize(v){pageSize=parseInt(v);rentPage=1;update();}
 function getVal(id){const i=document.getElementById(id+'Val');if(i&&i.value!=='')return parseFloat(i.value);const e=document.getElementById(id);return e?parseFloat(e.value):0;}
 function fmtShort(n){if(n>=10000){const u=Math.floor(n/10000),m=n%10000;return m===0?u+'억':u+'억 '+m.toLocaleString()+'만';}return n.toLocaleString()+'만';}
 function monthlyPayment(p,r,y){if(p<=0)return 0;const mr=r/100/12,n=y*12;if(mr===0)return p/n;return p*mr*Math.pow(1+mr,n)/(Math.pow(1+mr,n)-1);}
 function maxLoanFromMonthly(m,r,y){const mr=r/100/12,n=y*12;if(mr===0)return m*n;return m*(Math.pow(1+mr,n)-1)/(mr*Math.pow(1+mr,n));}
 function makeLinks(p){const q=encodeURIComponent((p.dong||'')+' '+p.name);return '<a href="https://m.land.naver.com/search/result/'+q+'" target="_blank" class="link-icon" title="네이버 부동산">N</a><a href="https://kbland.kr/map?xy=37.5,127.0&search='+encodeURIComponent(p.name)+'" target="_blank" class="link-icon" title="KB부동산">K</a>';}
-function setSort(btn){document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentSort=btn.dataset.sort;currentPage=1;update();}
+function setSort(btn){document.querySelectorAll('.buy-only .sort-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentSort=btn.dataset.sort;currentPage=1;update();}
+function setRentSort(btn){document.querySelectorAll('#rentTableWrap .sort-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');rentSort=btn.dataset.sort;rentPage=1;update();}
 
 async function loadSettings(){
   try{const r=await fetch('settings.json');if(!r.ok)throw 0;const s=await r.json();
@@ -385,43 +370,44 @@ async function loadSettings(){
   if(s.married!==undefined){isMarried=s.married;document.querySelectorAll('.marriage-btn').forEach(b=>b.classList.toggle('active',(b.dataset.married==='1')===isMarried));}
   }catch(e){console.warn('settings.json 없음, 기본값 사용');}
 }
-
 function groupProperties(raw){
   const g={};raw.forEach(i=>{const k=i.region+'_'+i.name+'_'+i.area_m2;if(!g[k])g[k]={name:i.name,region:i.region,area:Math.round(i.area_m2)+'㎡',area_py:i.area_py,regulated:i.regulated||false,station:i.walk_min?'도보 '+i.walk_min+'분':'역정보 없음',station_name:i.station||'',line:i.line||'',walk_min:i.walk_min,dong:i.dong||'',built_year:i.built_year||0,households:i.households||0,link:i.link||'',prices:[],floors:[],dates:[],trades:[]};g[k].prices.push(i.price);g[k].floors.push(i.floor);g[k].dates.push(i.trade_date);g[k].trades.push({price:i.price,floor:i.floor,date:i.trade_date});});
   return Object.values(g).map(v=>{const avg=Math.round(v.prices.reduce((a,b)=>a+b,0)/v.prices.length);const tr=v.trades.sort((a,b)=>(b.date||'').localeCompare(a.date||''));return{name:v.name,region:v.region,area:v.area,area_py:v.area_py,price:avg,regulated:v.regulated,station:v.station,station_name:v.station_name,line:v.line,walk_min:v.walk_min,dong:v.dong,built_year:v.built_year,households:v.households,link:v.link,trade_count:v.prices.length,min_price:Math.min(...v.prices),max_price:Math.max(...v.prices),latest_date:v.dates.sort().reverse()[0]||'',price_per_py:v.area_py>0?Math.round(avg/v.area_py):0,trades:tr};}).sort((a,b)=>a.price-b.price);
 }
-
+function groupRentProperties(raw){
+  const g={};raw.forEach(i=>{const k=i.region+'_'+i.name+'_'+i.area_m2+'_'+(i.rent_type||'전세');if(!g[k])g[k]={name:i.name,region:i.region,area:Math.round(i.area_m2)+'㎡',area_py:i.area_py,rent_type:i.rent_type||'전세',station:i.walk_min?'도보 '+i.walk_min+'분':'역정보 없음',station_name:i.station||'',line:i.line||'',walk_min:i.walk_min,dong:i.dong||'',built_year:i.built_year||0,households:i.households||0,deposits:[],monthlys:[],floors:[],dates:[],trades:[]};g[k].deposits.push(i.deposit||0);g[k].monthlys.push(i.monthly_rent||0);g[k].floors.push(i.floor);g[k].dates.push(i.trade_date);g[k].trades.push({deposit:i.deposit||0,monthly:i.monthly_rent||0,floor:i.floor,date:i.trade_date});});
+  return Object.values(g).map(v=>{const avgD=Math.round(v.deposits.reduce((a,b)=>a+b,0)/v.deposits.length);const avgM=Math.round(v.monthlys.reduce((a,b)=>a+b,0)/v.monthlys.length);const tr=v.trades.sort((a,b)=>(b.date||'').localeCompare(a.date||''));return{name:v.name,region:v.region,area:v.area,area_py:v.area_py,rent_type:v.rent_type,deposit:avgD,monthly_rent:avgM,station:v.station,station_name:v.station_name,line:v.line,walk_min:v.walk_min,dong:v.dong,built_year:v.built_year,households:v.households,trade_count:v.deposits.length,min_deposit:Math.min(...v.deposits),max_deposit:Math.max(...v.deposits),latest_date:v.dates.sort().reverse()[0]||'',trades:tr};}).sort((a,b)=>a.deposit-b.deposit);
+}
 async function loadData(){
   try{const r=await fetch('data.json');if(!r.ok)throw 0;const d=await r.json();DATA_UPDATED_AT=d.updated_at||'';PROPERTIES=groupProperties(d.properties||[]);DATA_LOADED=true;
   const regions=[...new Set(PROPERTIES.map(p=>p.region))].sort();const sel=document.getElementById('regionFilter');regions.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;sel.appendChild(o);});
-  }catch(e){PROPERTIES=[];DATA_LOADED=false;}update();
+  }catch(e){PROPERTIES=[];DATA_LOADED=false;}
+  try{const r=await fetch('data-rent.json');if(!r.ok)throw 0;const d=await r.json();RENT_UPDATED_AT=d.updated_at||'';RENT_PROPERTIES=groupRentProperties(d.properties||[]);RENT_DATA_LOADED=RENT_PROPERTIES.length>0;
+  if(RENT_DATA_LOADED){const rr=[...new Set(RENT_PROPERTIES.map(p=>p.region))].sort();const s1=document.getElementById('regionFilter'),s2=document.getElementById('rentRegionFilter');rr.forEach(r=>{if(![...s1.options].some(o=>o.value===r)){const o=document.createElement('option');o.value=r;o.textContent=r;s1.appendChild(o);}const o2=document.createElement('option');o2.value=r;o2.textContent=r;s2.appendChild(o2);});}
+  }catch(e){RENT_PROPERTIES=[];RENT_DATA_LOADED=false;}
+  update();
 }
-
 function update(){
   if(currentMode==='buy')updateBuy();else updateRent();
   updatePolicy();updatePolicyTimeline();updateStatus();updateMarriageBar();
 }
-
 function updateStatus(){
   const s=document.getElementById('dataStatus');
   if(currentMode==='buy'){if(DATA_LOADED){s.textContent='📊 '+PROPERTIES.length+'개 단지 · 갱신: '+DATA_UPDATED_AT;s.style.color='var(--green)';}else{s.textContent='⚠️ 배치 실행 후 데이터 표시';s.style.color='var(--yellow)';}}
-  else{s.textContent='🔑 전세 시뮬레이션 모드';s.style.color='var(--accent2)';}
+  else{if(RENT_DATA_LOADED){s.textContent='🔑 전세 '+RENT_PROPERTIES.length+'개 단지 · 갱신: '+RENT_UPDATED_AT;s.style.color='var(--green)';}else{s.textContent='🔑 전세 시뮬레이션 모드 · 실거래 데이터 대기 중';s.style.color='var(--accent2)';}}
 }
-
 function updateBuy(){
   const i1=getVal('income1'),i2=getVal('income2'),ti=i1+i2,cash=getVal('cash'),interior=getVal('interior'),eq=Math.max(0,cash-interior);
   const rate=getVal('rate'),term=getVal('term'),ml=getVal('monthlyLimit'),mg=getVal('mgmt'),lp=getVal('ltv'),dp=getVal('dsr'),hc=parseInt(document.getElementById('houseCount').value),mr=ml-mg;
   const arm=ti*dp/100,mrd=arm/12,dsrL=Math.floor(maxLoanFromMonthly(mrd,rate,term)),mlL=Math.floor(maxLoanFromMonthly(mr,rate,term));
   let ltvL,eLTV=lp;if(hc>=2){eLTV=0;ltvL=0;}else if(lp>=100||lp<=0){ltvL=0;}else{ltvL=Math.floor(eq/(1-lp/100)*lp/100);}
   const fL=Math.min(dsrL,mlL,ltvL),fM=Math.floor(monthlyPayment(fL,rate,term)),mpp=fL+eq;
-
   document.getElementById('totalIncome').textContent=fmtShort(ti);document.getElementById('totalIncomeSub').textContent='본인 '+i1.toLocaleString()+' + 배우자 '+i2.toLocaleString();
   document.getElementById('equityLabel').textContent='투입 가능 자기자금';document.getElementById('equity').textContent=fmtShort(eq);document.getElementById('equitySub').textContent='총 '+cash.toLocaleString()+' - 인테리어 '+interior.toLocaleString();
   document.getElementById('mainPriceLabel').textContent='최대 매수 가능가';document.getElementById('maxPrice').textContent=fmtShort(mpp);document.getElementById('maxPrice').style.color=mpp>=30000?'var(--green)':mpp>=20000?'var(--yellow)':'var(--red)';
   document.getElementById('maxPriceSub').textContent='자기자금 '+fmtShort(eq)+' + 대출 '+fmtShort(fL);document.getElementById('maxPriceBar').style.width=Math.min(100,mpp/600*100)+'%';
   document.getElementById('monthlyLabel').textContent='월 상환 여력';document.getElementById('monthlyLeft').textContent=mr+'만';document.getElementById('monthlyLeft').style.color=mr>=150?'var(--green)':mr>=100?'var(--yellow)':'var(--red)';
   document.getElementById('monthlyLeftSub').textContent='한도 '+ml+'만 - 관리비 '+mg+'만';document.getElementById('monthlyBar').style.width=Math.min(100,mr/250*100)+'%';document.getElementById('monthlyBar').style.background='var(--green)';
-
   document.getElementById('ltvMax').textContent=fmtShort(ltvL);document.getElementById('ltvDetail').innerHTML='LTV '+eLTV+'%<br><span>자기자금 '+fmtShort(eq)+' → 매매가 '+fmtShort(Math.floor(eq/(1-eLTV/100)))+'까지</span>';document.getElementById('ltvCard').className='loan-card '+(ltvL>=fL?'ok':'warn');
   document.getElementById('dsrMax').textContent=fmtShort(dsrL);document.getElementById('dsrDetail').innerHTML='DSR '+dp+'% · 연소득 '+fmtShort(ti)+'<br><span>월 '+Math.floor(mrd)+'만 상환 가능</span>';document.getElementById('dsrCard').className='loan-card '+(dsrL>=fL?'ok':'warn');
   document.getElementById('monthlyMax').textContent=fmtShort(mlL);document.getElementById('monthlyDetail').innerHTML='월 '+mr+'만 상환 가능<br><span>금리 '+rate+'% · '+term+'년</span>';document.getElementById('monthlyCard').className='loan-card '+(mlL>=fL?'ok':'warn');
@@ -429,7 +415,6 @@ function updateBuy(){
   let bn='LTV';if(fL===dsrL)bn='DSR';if(fL===mlL)bn='월상환';document.getElementById('loanBadge').textContent='병목: '+bn;
   updatePropTable(eq,fL,eLTV,rate,term,mr);
 }
-
 function updatePropTable(eq,fL,eLTV,rate,term,mr){
   searchQuery=document.getElementById('searchInput').value.toLowerCase();regionFilterVal=document.getElementById('regionFilter').value;verdictFilterVal=document.getElementById('verdictFilter').value;
   let f=PROPERTIES.filter(p=>{if(searchQuery&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(searchQuery))return false;if(regionFilterVal&&p.region!==regionFilterVal)return false;return true;});
@@ -448,7 +433,6 @@ function updatePropTable(eq,fL,eLTV,rate,term,mr){
   const pb=document.getElementById('pageBtns');pb.innerHTML='';
   if(tp>1){const pv=document.createElement('button');pv.className='page-btn';pv.textContent='◀';pv.disabled=currentPage<=1;pv.onclick=()=>{currentPage--;update();};pb.appendChild(pv);for(let i=1;i<=tp;i++){if(tp>7&&i>2&&i<tp-1&&Math.abs(i-currentPage)>1){if(i===3||i===tp-2){const d=document.createElement('span');d.className='page-info';d.textContent='…';pb.appendChild(d);}continue;}const b=document.createElement('button');b.className='page-btn'+(i===currentPage?' active':'');b.textContent=i;b.onclick=()=>{currentPage=i;update();};pb.appendChild(b);}const nx=document.createElement('button');nx.className='page-btn';nx.textContent='▶';nx.disabled=currentPage>=tp;nx.onclick=()=>{currentPage++;update();};pb.appendChild(nx);}
 }
-
 function updateRent(){
   const i1=getVal('income1'),i2=getVal('income2'),ti=i1+i2,cash=getVal('cash'),eq=cash;
   const rr=getVal('rentRate'),rlr=getVal('rentLoanRatio'),rll=getVal('rentLoanLimit');
@@ -464,76 +448,48 @@ function updateRent(){
   document.getElementById('rentInterest').textContent=mi+'만';document.getElementById('rentInterestDetail').innerHTML='연 '+rr+'% · 이자만 납부<br><span>DSR 미적용 (전세대출)</span>';document.getElementById('rentInterestCard').className='loan-card '+(mi<=50?'ok':mi<=80?'warn':'danger');
   document.getElementById('rentBudget').textContent=fmtShort(rb);document.getElementById('rentBudgetDetail').innerHTML='자기자금 '+fmtShort(eq)+' + 대출 '+fmtShort(aL)+'<br><span>이 금액 이하 전세 탐색</span>';document.getElementById('rentBudgetCard').className='loan-card ok';
   document.getElementById('rentLoanBadge').textContent=tn+' · '+rr+'%';
+  updateRentTable(eq,rb);
 }
-
-function updatePolicyTimeline(){
-  const i1=getVal('income1'),i2=getVal('income2'),ti=i1+i2,hc=parseInt(document.getElementById('houseCount').value);
-  const tl=document.getElementById('policyTimeline');
-  
-  // 정책 변동 데이터 (우리 상황 영향도 포함)
-  const policies=[
-    {
-      date:'2025.10.15', level:'high',
-      title:'10.15 주택시장 안정화 대책',
-      impact:'서울 전역 + 경기 12곳 규제지역 지정',
-      detail:'→ 성남·안양 LTV 40~50%, 용인 수지·경기 광주는 비규제 유지 (70%)',
-      myImpactType:'negative',
-      myImpactBuy:'성남·안양 매수 시 LTV 40~50% → 자기자금 비중 증가. 비규제(용인 수지·광주) 매수가 유리',
-      myImpactRent:'전세대출에는 직접 영향 없음. 다만 규제지역 전세가 안정화 가능성'
-    },
-    {
-      date:'2025.07', level:'high',
-      title:'신혼부부 버팀목 소득 기준 1억 완화안 무산',
-      impact:'가계부채 관리 강화 기조로 시행 취소',
-      detail:'→ 7,500만원 기준 유지, 부부합산 8,740만원 초과로 자격 불가',
-      myImpactType:'negative',
-      myImpactBuy:'해당 없음 (매수용 아닌 전세 정책)',
-      myImpactRent:'합산 8,740만 > 7,500만 → 신혼부부 버팀목 전세대출 이용 불가 유지'
-    },
-    {
-      date:'2025.06.27', level:'high',
-      title:'6.27 가계부채 관리 강화',
-      impact:'수도권 주담대 한도 6억 제한, 생애최초 LTV 80%→70%',
-      detail:'→ 자기자금 비중 상승, 매수가능 가격대 하향 압박',
-      myImpactType:'negative',
-      myImpactBuy:'주담대 한도 6억 제한은 우리 가격대(~5억)에는 영향 적음. 생애최초 LTV 하락은 불리',
-      myImpactRent:'전세대출에는 직접 영향 없음'
-    },
-    {
-      date:'2025.11', level:'mid',
-      title:'기준금리 인하 3.0% → 2.75%',
-      impact:'',
-      detail:'→ 월 상환 부담 소폭 경감, 3.5억 기준 월 ~8만원 절감',
-      myImpactType:'positive',
-      myImpactBuy:'주담대 금리 하락 → 월 상환 부담 소폭 경감',
-      myImpactRent:'전세대출 금리도 연동 하락 가능 → 월 이자 부담 감소'
-    },
-    {
-      date:'2025.01', level:'mid',
-      title:'신생아 특례대출 한도 상향',
-      impact:'구입대출 한도 1.3억→2.5억, 전세 한도 변경 없음',
-      detail:'→ 2025년 이후 출산 가구, 소득 2억 이하 맞벌이 가능',
-      myImpactType:'positive',
-      myImpactBuy:'출산 시 합산 8,740만 < 2억 → 자격 충족. 한도 최대 2.5억으로 대폭 상향',
-      myImpactRent:'출산 시 전세 특례도 활용 가능 (소득 1.3억 이하, 맞벌이 2억)'
-    }
-  ];
-
-  tl.innerHTML='';
-  policies.forEach(p=>{
-    const myImpact=currentMode==='buy'?p.myImpactBuy:p.myImpactRent;
-    const item=document.createElement('div');item.className='tl-item';
-    item.innerHTML='<div class="tl-dot '+p.level+'"></div><div class="tl-date">'+p.date+'</div><div class="tl-body"><div class="tl-title">'+p.title+'</div><div class="tl-impact">'+(p.impact?p.impact+'<br>':'')+'<em>'+p.detail+'</em></div><div class="tl-my-impact '+p.myImpactType+'"><div class="impact-label">'+(p.myImpactType==='positive'?'✅':p.myImpactType==='negative'?'⚠️':'ℹ️')+' 우리 상황 영향</div><div>'+myImpact+'</div></div></div>';
-    tl.appendChild(item);
+function updateRentTable(equity,budget){
+  const placeholder=document.getElementById('rentPlaceholder');
+  const tableWrap=document.getElementById('rentTableWrap');
+  if(!RENT_DATA_LOADED||RENT_PROPERTIES.length===0){if(placeholder)placeholder.style.display='';if(tableWrap)tableWrap.style.display='none';return;}
+  if(placeholder)placeholder.style.display='none';if(tableWrap)tableWrap.style.display='';
+  const tabBtnProp=document.getElementById('tabBtnProperties');tabBtnProp.style.display='';tabBtnProp.textContent='📊 전세 실거래';
+  const sq=(document.getElementById('rentSearchInput')||{}).value||'';const rf=(document.getElementById('rentRegionFilter')||{}).value||'';const vf=(document.getElementById('rentVerdictFilter')||{}).value||'';
+  let f=RENT_PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq.toLowerCase()))return false;if(rf&&p.region!==rf)return false;return true;});
+  if(rentSort==='price-asc')f.sort((a,b)=>a.deposit-b.deposit);else if(rentSort==='price-desc')f.sort((a,b)=>b.deposit-a.deposit);else if(rentSort==='walk')f.sort((a,b)=>(a.walk_min||999)-(b.walk_min||999));
+  const wv=f.map(p=>{let v,vt;if(p.deposit>budget){v='예산초과';vt='tag-danger';}else if(p.deposit>budget*0.9){v='빠듯함';vt='tag-warn';}else{v='가능';vt='tag-ok';}return{...p,verdict:v,verdictTag:vt};});
+  const filtered=vf?wv.filter(p=>p.verdict===vf):wv;
+  const ti=filtered.length,tp=Math.max(1,Math.ceil(ti/pageSize));if(rentPage>tp)rentPage=tp;const si=(rentPage-1)*pageSize,pi=filtered.slice(si,si+pageSize);
+  const tb=document.getElementById('rentPropertyBody');if(!tb)return;tb.innerHTML='';
+  pi.forEach(p=>{const ex=[];if(p.built_year)ex.push(p.built_year+'년');if(p.households)ex.push(p.households+'세대');if(p.trade_count>1)ex.push(p.trade_count+'건');
+    const typeTag=p.rent_type==='월세'?'<span class="tag tag-warn" style="font-size:10px">월세</span>':'<span class="tag tag-ok" style="font-size:10px">전세</span>';
+    const tBtn=p.trade_count>1?'<button class="expand-btn" onclick="toggleHistory(this)">▶ 거래내역 '+p.trade_count+'건</button>':'';
+    let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.deposit-p.trades[i+1].deposit;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'날짜없음')+'</span><span class="trade-price">'+fmtShort(t.deposit)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');const pd=p.max_deposit-p.min_deposit;hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span><span style="font-size:10px;color:var(--text-dim)">'+(pd>0?'변동폭: '+fmtShort(pd):'동일가')+'</span></div>'+rows+'</div>';}
+    const tr=document.createElement('tr');tr.innerHTML='<td data-label="단지명"><strong>'+p.name+'</strong><br><span style="font-size:10px;color:var(--text-dim)">'+(p.line?p.line+' ':'')+p.station+(ex.length?' · '+ex.join(' · '):'')+'</span><br>'+tBtn+hH+'</td><td data-label="지역"><span class="tag tag-region">'+p.region+'</span></td><td data-label="면적">'+fmtArea(p)+'</td><td data-label="유형">'+typeTag+'</td><td data-label="보증금" class="mono">'+fmtShort(p.deposit)+(p.trade_count>1?'<br><span style="font-size:9px;color:var(--text-dim)">'+fmtShort(p.min_deposit)+'~'+fmtShort(p.max_deposit)+'</span>':'')+'</td><td data-label="월세" class="mono">'+(p.monthly_rent>0?p.monthly_rent+'만':'—')+'</td><td data-label="판정"><span class="tag '+p.verdictTag+'">'+p.verdict+'</span></td><td data-label="링크"><div class="link-icons">'+makeLinks(p)+'</div></td>';
+    tb.appendChild(tr);
   });
+  document.getElementById('rentPropertyBadge').textContent=ti+'/'+RENT_PROPERTIES.length+'개 표시';
+  document.getElementById('rentPageInfo').textContent=ti>0?(si+1)+'-'+Math.min(si+pageSize,ti)+' / '+ti+'건':'0건';
+  const pb=document.getElementById('rentPageBtns');pb.innerHTML='';
+  if(tp>1){const pv=document.createElement('button');pv.className='page-btn';pv.textContent='◀';pv.disabled=rentPage<=1;pv.onclick=()=>{rentPage--;update();};pb.appendChild(pv);for(let i=1;i<=tp;i++){if(tp>7&&i>2&&i<tp-1&&Math.abs(i-rentPage)>1){if(i===3||i===tp-2){const d=document.createElement('span');d.className='page-info';d.textContent='…';pb.appendChild(d);}continue;}const b=document.createElement('button');b.className='page-btn'+(i===rentPage?' active':'');b.textContent=i;b.onclick=()=>{rentPage=i;update();};pb.appendChild(b);}const nx=document.createElement('button');nx.className='page-btn';nx.textContent='▶';nx.disabled=rentPage>=tp;nx.onclick=()=>{rentPage++;update();};pb.appendChild(nx);}
 }
-
+function updatePolicyTimeline(){
+  const tl=document.getElementById('policyTimeline');
+  const policies=[
+    {date:'2025.10.15',level:'high',title:'10.15 주택시장 안정화 대책',impact:'서울 전역 + 경기 12곳 규제지역 지정',detail:'→ 성남·안양 LTV 40~50%, 용인 수지·경기 광주는 비규제 유지 (70%)',myImpactType:'negative',myImpactBuy:'성남·안양 매수 시 LTV 40~50% → 자기자금 비중 증가. 비규제(용인 수지·광주) 매수가 유리',myImpactRent:'전세대출에는 직접 영향 없음. 다만 규제지역 전세가 안정화 가능성'},
+    {date:'2025.07',level:'high',title:'신혼부부 버팀목 소득 기준 1억 완화안 무산',impact:'가계부채 관리 강화 기조로 시행 취소',detail:'→ 7,500만원 기준 유지, 부부합산 8,740만원 초과로 자격 불가',myImpactType:'negative',myImpactBuy:'해당 없음 (매수용 아닌 전세 정책)',myImpactRent:'합산 8,740만 > 7,500만 → 신혼부부 버팀목 전세대출 이용 불가 유지'},
+    {date:'2025.06.27',level:'high',title:'6.27 가계부채 관리 강화',impact:'수도권 주담대 한도 6억 제한, 생애최초 LTV 80%→70%',detail:'→ 자기자금 비중 상승, 매수가능 가격대 하향 압박',myImpactType:'negative',myImpactBuy:'주담대 한도 6억 제한은 우리 가격대(~5억)에는 영향 적음. 생애최초 LTV 하락은 불리',myImpactRent:'전세대출에는 직접 영향 없음'},
+    {date:'2025.11',level:'mid',title:'기준금리 인하 3.0% → 2.75%',impact:'',detail:'→ 월 상환 부담 소폭 경감, 3.5억 기준 월 ~8만원 절감',myImpactType:'positive',myImpactBuy:'주담대 금리 하락 → 월 상환 부담 소폭 경감',myImpactRent:'전세대출 금리도 연동 하락 가능 → 월 이자 부담 감소'},
+    {date:'2025.01',level:'mid',title:'신생아 특례대출 한도 상향',impact:'구입대출 한도 1.3억→2.5억, 전세 한도 변경 없음',detail:'→ 2025년 이후 출산 가구, 소득 2억 이하 맞벌이 가능',myImpactType:'positive',myImpactBuy:'출산 시 합산 8,740만 < 2억 → 자격 충족. 한도 최대 2.5억으로 대폭 상향',myImpactRent:'출산 시 전세 특례도 활용 가능 (소득 1.3억 이하, 맞벌이 2억)'}
+  ];
+  tl.innerHTML='';
+  policies.forEach(p=>{const myImpact=currentMode==='buy'?p.myImpactBuy:p.myImpactRent;const item=document.createElement('div');item.className='tl-item';item.innerHTML='<div class="tl-dot '+p.level+'"></div><div class="tl-date">'+p.date+'</div><div class="tl-body"><div class="tl-title">'+p.title+'</div><div class="tl-impact">'+(p.impact?p.impact+'<br>':'')+'<em>'+p.detail+'</em></div><div class="tl-my-impact '+p.myImpactType+'"><div class="impact-label">'+(p.myImpactType==='positive'?'✅':p.myImpactType==='negative'?'⚠️':'ℹ️')+' 우리 상황 영향</div><div>'+myImpact+'</div></div></div>';tl.appendChild(item);});
+}
 function updatePolicy(){
   const i1=getVal('income1'),i2=getVal('income2'),ti=i1+i2,mi=Math.min(i1,i2),hc=parseInt(document.getElementById('houseCount').value);
-  // 혼인신고 여부에 따라 심사 소득 결정
-  const assessedIncome=isMarried?ti:mi;
-  const pg=document.getElementById('policyGrid');pg.innerHTML='';let ec=0;
-
+  const assessedIncome=isMarried?ti:mi;const pg=document.getElementById('policyGrid');pg.innerHTML='';let ec=0;
   const loans=currentMode==='buy'?[
     {name:'디딤돌 대출',icon:'🏠',incomeLimit:6000,desc:'부부합산 6,000만 이하',maxLoan:'최대 2억',rate:'2.85~4.15%',conditions:['무주택','주택 5억 이하','LTV 70%'],houseReq:0,note:'생애최초: 소득 7,000만·한도 2.4억·LTV 80%'},
     {name:'보금자리론',icon:'🛡️',incomeLimit:7000,desc:'부부합산 7,000만 이하',maxLoan:'최대 3.6억',rate:'4.05~4.35%',conditions:['무주택/1주택 처분','주택 6억 이하','LTV 70%'],houseReq:1,note:'생애최초: 한도 4.2억·LTV 80%'},
@@ -547,81 +503,29 @@ function updatePolicy(){
     {name:'중기청 전세',icon:'🏢',incomeLimit:5000,singleOnly:true,desc:'단독 5,000만 이하',maxLoan:'최대 1억 (100%)',rate:'1.5% 고정',conditions:['중소기업 재직','무주택','만 19~34세'],houseReq:0,note:'보증금 전액 대출 가능'},
     {name:'청년 월세',icon:'💳',incomeLimit:5000,singleOnly:true,desc:'단독 5,000만 이하',maxLoan:'보증금 4,500만',rate:'1.3%',conditions:['만 19~34세','무주택'],houseReq:0,note:'월세 지원 목적, 보증금 소액'}
   ];
-
   loans.forEach(loan=>{
-    // 소득 판정 로직
-    const eil=loan.incomeLimitDual||loan.incomeLimit;
-    let effectiveIncome;
-    if(loan.singleOnly){
-      // 단독 소득 상품: 혼인신고 시 부부합산 적용
-      effectiveIncome=isMarried?ti:mi;
-    } else if(loan.marriedOnly){
-      // 혼인 전용 상품
-      effectiveIncome=ti;
-    } else {
-      effectiveIncome=isMarried?ti:mi;
-    }
-    const gap=effectiveIncome-eil;
-    const iOk=gap<=0;
-    const hOk=hc<=(loan.houseReq||0);
-    const isSp=!!loan.special;
-    const needsMarriage=!!loan.marriedOnly;
-
-    let sc,st,cc;
-    if(needsMarriage&&!isMarried){
-      sc='no';st='❌ 혼인신고 필요';cc='ineligible';
-    } else if(iOk&&hOk&&!isSp){
-      sc='yes';st='✅ 자격 충족';cc='eligible';ec++;
-    } else if(isSp){
-      sc='check';st='⏳ '+loan.special;cc='checking';
-    } else if(iOk&&!hOk){
-      sc='maybe';st='⏳ 무주택 시 가능';cc='conditional';
-    } else if(!iOk&&gap<=1000){
-      sc='maybe';st='⚠️ 소득 근접';cc='conditional';
-    } else {
-      sc='no';st='❌ 소득 초과';cc='ineligible';
-    }
-
-    let gt,gc;
-    if(gap>0){gt=gap.toLocaleString()+'만 초과';gc=gap<=1000?'close':'over';}
-    else if(gap===0){gt='기준 딱 맞음';gc='close';}
-    else{gt=Math.abs(gap).toLocaleString()+'만 여유';gc='under';}
-
+    const eil=loan.incomeLimitDual||loan.incomeLimit;let effectiveIncome;if(loan.singleOnly){effectiveIncome=isMarried?ti:mi;}else if(loan.marriedOnly){effectiveIncome=ti;}else{effectiveIncome=isMarried?ti:mi;}
+    const gap=effectiveIncome-eil,iOk=gap<=0,hOk=hc<=(loan.houseReq||0),isSp=!!loan.special,needsMarriage=!!loan.marriedOnly;
+    let sc,st,cc;if(needsMarriage&&!isMarried){sc='no';st='❌ 혼인신고 필요';cc='ineligible';}else if(iOk&&hOk&&!isSp){sc='yes';st='✅ 자격 충족';cc='eligible';ec++;}else if(isSp){sc='check';st='⏳ '+loan.special;cc='checking';}else if(iOk&&!hOk){sc='maybe';st='⏳ 무주택 시 가능';cc='conditional';}else if(!iOk&&gap<=1000){sc='maybe';st='⚠️ 소득 근접';cc='conditional';}else{sc='no';st='❌ 소득 초과';cc='ineligible';}
+    let gt,gc;if(gap>0){gt=gap.toLocaleString()+'만 초과';gc=gap<=1000?'close':'over';}else if(gap===0){gt='기준 딱 맞음';gc='close';}else{gt=Math.abs(gap).toLocaleString()+'만 여유';gc='under';}
     const nH=loan.note?'<div style="font-size:10px;color:var(--accent2);margin-top:4px">💡 '+loan.note+'</div>':'';
-
-    // "만약 혼인신고 안했다면" 또는 "혼인신고 했다면" 시뮬레이션
-    let whatIfH='';
-    if(isMarried&&!iOk&&!isSp){
-      // 혼인신고 상태에서 초과인 경우, 미혼이었다면?
-      const altIncome=loan.singleOnly?mi:mi;
-      const altGap=altIncome-eil;
-      if(altGap<=0){
-        whatIfH='<div class="policy-what-if">💭 미혼 시 단독('+fmtShort(altIncome)+') → 자격 충족 가능했음 (참고용)</div>';
-      }
-    } else if(!isMarried&&iOk&&loan.singleOnly){
-      // 미혼 상태에서 자격 되는 경우, 혼인 후에는?
-      const altGap=ti-eil;
-      if(altGap>0){
-        whatIfH='<div class="policy-what-if">⚠️ 혼인신고 시 합산('+fmtShort(ti)+') → 소득 '+altGap.toLocaleString()+'만 초과로 탈락</div>';
-      }
-    }
-
+    let whatIfH='';if(isMarried&&!iOk&&!isSp){const altGap=mi-eil;if(altGap<=0)whatIfH='<div class="policy-what-if">💭 미혼 시 단독('+fmtShort(mi)+') → 자격 충족 가능했음 (참고용)</div>';}else if(!isMarried&&iOk&&loan.singleOnly){const altGap=ti-eil;if(altGap>0)whatIfH='<div class="policy-what-if">⚠️ 혼인신고 시 합산('+fmtShort(ti)+') → 소득 '+altGap.toLocaleString()+'만 초과로 탈락</div>';}
     const incLabel=isMarried?'합산 '+fmtShort(effectiveIncome):'단독 '+fmtShort(effectiveIncome);
-    const c=document.createElement('div');c.className='policy-card '+cc;
-    c.innerHTML='<div class="policy-name">'+loan.icon+' '+loan.name+' <span class="policy-status '+sc+'">'+st+'</span></div><div class="policy-detail">'+loan.desc+' · '+loan.maxLoan+' · '+loan.rate+'<br>조건: '+loan.conditions.join(' / ')+'<br>심사소득: '+incLabel+'</div>'+nH+whatIfH+'<div class="policy-gap '+gc+'">소득 '+gt+'</div>';
-    pg.appendChild(c);
+    const c=document.createElement('div');c.className='policy-card '+cc;c.innerHTML='<div class="policy-name">'+loan.icon+' '+loan.name+' <span class="policy-status '+sc+'">'+st+'</span></div><div class="policy-detail">'+loan.desc+' · '+loan.maxLoan+' · '+loan.rate+'<br>조건: '+loan.conditions.join(' / ')+'<br>심사소득: '+incLabel+'</div>'+nH+whatIfH+'<div class="policy-gap '+gc+'">소득 '+gt+'</div>';pg.appendChild(c);
   });
   document.getElementById('policyBadge').textContent=ec>0?ec+'개 자격 충족!':'자동 판정';
-  const marriedLabel=isMarried?'혼인신고 완료 (부부합산)':'미혼 (단독 소득)';
-  document.getElementById('policyDateLabel').textContent='📅 기준: 2026년 2월 · '+marriedLabel+' · 출처: 주택도시기금·한국주택금융공사 공시';
+  document.getElementById('policyDateLabel').textContent='📅 기준: 2026년 2월 · '+(isMarried?'혼인신고 완료 (부부합산)':'미혼 (단독 소득)')+' · 출처: 주택도시기금·한국주택금융공사 공시';
 }
-
 const PAIRS=[['income1','income1Val'],['income2','income2Val'],['cash','cashVal'],['interior','interiorVal'],['rate','rateVal'],['term','termVal'],['monthlyLimit','monthlyLimitVal'],['mgmt','mgmtVal'],['ltv','ltvVal'],['dsr','dsrVal'],['rentRate','rentRateVal'],['rentLoanRatio','rentLoanRatioVal'],['rentLoanLimit','rentLoanLimitVal']];
 PAIRS.forEach(([s,i])=>{const sl=document.getElementById(s),ip=document.getElementById(i);if(sl&&ip){sl.addEventListener('input',()=>{ip.value=sl.value;update();});ip.addEventListener('input',()=>{sl.value=ip.value;update();});}});
 document.getElementById('houseCount').addEventListener('change',update);
 document.getElementById('searchInput').addEventListener('input',()=>{currentPage=1;update();});
 document.getElementById('regionFilter').addEventListener('change',()=>{currentPage=1;update();});
 document.getElementById('verdictFilter').addEventListener('change',()=>{currentPage=1;update();});
+// 전세 전용 검색/필터 이벤트
+const rsi=document.getElementById('rentSearchInput');if(rsi)rsi.addEventListener('input',()=>{rentPage=1;update();});
+const rrf=document.getElementById('rentRegionFilter');if(rrf)rrf.addEventListener('change',()=>{rentPage=1;update();});
+const rvf=document.getElementById('rentVerdictFilter');if(rvf)rvf.addEventListener('change',()=>{rentPage=1;update();});
 loadSettings().then(()=>loadData());
 </script>
 </body>
