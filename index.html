@@ -189,6 +189,8 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
 .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
 .prop-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:box-shadow 0.2s,border-color 0.2s}
 .prop-card:hover{border-color:var(--border-hover);box-shadow:0 4px 16px rgba(0,0,0,0.2)}
+.prop-card.highlight{border-color:var(--mode-accent)!important;box-shadow:0 0 16px rgba(37,99,235,0.4);transition:box-shadow 0.3s,border-color 0.3s}
+tr.highlight td{background:rgba(37,99,235,0.12)!important}
 .pc-header{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 14px 0;gap:8px}
 .pc-name{font-size:14px;font-weight:700;line-height:1.3}
 .pc-badge{padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;white-space:nowrap;flex-shrink:0}
@@ -372,6 +374,7 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
 </div>
 <script>
 let currentMode='buy',isMarried=true,PROPERTIES=[],RENT_PROPERTIES=[],DATA_LOADED=false,RENT_DATA_LOADED=false,DATA_UPDATED_AT='',RENT_UPDATED_AT='',currentSort='value',rentSort='value',searchQuery='',regionFilterVal='',verdictFilterVal='',rentTypeFilterVal='',rentVerdictFilterVal='',areaUnit='py',pageSize=20,currentPage=1,rentPage=1,currentView='card';
+let markerMap={},filteredBuyProps=[],filteredRentProps=[],hlTimer=null;
 
 function setMarriage(married){
   isMarried=married;
@@ -446,6 +449,22 @@ function onBuyFilterChange(){currentPage=1;update();}
 function onRentFilterChange(){rentPage=1;update();}
 function highlightSelects(){document.querySelectorAll('.filter-bar .filter-select').forEach(s=>{s.classList.toggle('active',s.selectedIndex>0);});}
 function areaMatch(py,val){if(!val)return true;const p=parseFloat(py)||0;if(val==='small')return p<=18;if(val==='mid')return p>18&&p<=25;if(val==='large')return p>25;return true;}
+function getPropId(p){return (p.name+'_'+(p.dong||'')+'_'+(p.area_py||'')).replace(/\s/g,'');}
+function getMarkerKey(p){return p.name+'_'+p.region;}
+function focusCard(mKey){
+  const props=currentMode==='buy'?filteredBuyProps:filteredRentProps;
+  const idx=props.findIndex(p=>getMarkerKey(p)===mKey);
+  if(idx<0)return;
+  const targetPage=Math.floor(idx/pageSize)+1,propId=getPropId(props[idx]);
+  let need=false;
+  if(currentMode==='buy'&&currentPage!==targetPage){currentPage=targetPage;need=true;}
+  else if(currentMode!=='buy'&&rentPage!==targetPage){rentPage=targetPage;need=true;}
+  if(need)update();
+  setTimeout(()=>{const el=document.querySelector('[data-prop-id="'+propId+'"]');if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});highlightEl(el);},need?120:20);
+}
+function highlightEl(el){document.querySelectorAll('.highlight').forEach(e=>e.classList.remove('highlight'));if(hlTimer)clearTimeout(hlTimer);el.classList.add('highlight');hlTimer=setTimeout(()=>{if(el.classList)el.classList.remove('highlight');},2500);}
+function bounceMarker(mKey){stopBounce();const m=markerMap[mKey];if(m)m.setAnimation(kakao.maps.Animation.BOUNCE);}
+function stopBounce(){Object.values(markerMap).forEach(m=>{try{if(m.getAnimation())m.setAnimation(null);}catch(e){}});}
 function renderBuyCards(items,eq,mr){
   const cg=document.getElementById('propertyCards');cg.innerHTML='';
   items.forEach(p=>{const tags=[];if(p.area_py)tags.push(p.area_py+'평'+(p.area?'('+p.area+')':''));if(p.built_year)tags.push(p.built_year+'년');if(p.households)tags.push(p.households+'세대');
@@ -453,7 +472,8 @@ function renderBuyCards(items,eq,mr){
     const stInfo=p.station_name?(p.line?p.line+' ':'')+'🚇 '+p.station_name+(p.walk_min?' '+p.walk_min+'분':''):'역정보 없음';
     const tBtn=p.trade_count>1?'<button class="expand-btn" onclick="toggleHistory(this)">▼ 거래내역 '+p.trade_count+'건</button>':'';
     let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.price-p.trades[i+1].price;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'')+'</span><span class="trade-price">'+fmtShort(t.price)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span></div>'+rows+'</div>';}
-    const card=document.createElement('div');card.className='prop-card';
+    const card=document.createElement('div');card.className='prop-card';card.dataset.propId=getPropId(p);
+    card.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));card.addEventListener('mouseleave',()=>stopBounce());
     card.innerHTML='<div class="pc-header"><div class="pc-name">'+p.name+'</div><div class="pc-badge '+bc+'">'+p.verdict+'</div></div><div class="pc-sub">'+p.region+' '+p.dong+' · '+stInfo+'</div><div class="pc-tags">'+tags.map(t=>'<span class="pc-tag">'+t+'</span>').join('')+'</div><div class="pc-price">매매 '+fmtShort(p.price)+(p.trade_count>1?'<div class="pc-price-sub">'+fmtShort(p.min_price)+'~'+fmtShort(p.max_price)+' ('+p.trade_count+'건)</div>':'')+'</div><div class="pc-detail"><div class="pc-detail-item"><div class="pc-detail-label">💰 대출</div><div class="pc-detail-value">'+fmtShort(p.pLoan)+'</div></div><div class="pc-detail-item"><div class="pc-detail-label">🏦 필요자금</div><div class="pc-detail-value" style="color:'+(p.pEquityNeeded>eq?'var(--red)':'var(--text)')+'">'+fmtShort(p.pEquityNeeded)+'</div></div><div class="pc-detail-item pc-detail-full"><div class="pc-detail-label">📊 월 상환</div><div class="pc-detail-value" style="color:'+(p.pMonthly>mr?'var(--red)':p.pMonthly>mr*0.85?'var(--yellow)':'var(--green)')+'">약 '+p.pMonthly+'만원</div></div></div><div class="pc-footer"><div class="pc-links">'+makeLinks(p)+'</div>'+tBtn+'</div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
     cg.appendChild(card);
   });
@@ -467,7 +487,8 @@ function renderRentCards(items,equity,budget){
     const tBtn=p.trade_count>1?'<button class="expand-btn" onclick="toggleHistory(this)">▼ 거래내역 '+p.trade_count+'건</button>':'';
     let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.deposit-p.trades[i+1].deposit;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'')+'</span><span class="trade-price">'+fmtShort(t.deposit)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span></div>'+rows+'</div>';}
     const needEq=Math.max(0,p.deposit-budget+equity);const loanAmt=p.deposit-needEq;const rr=getVal('rentRate');const mi=Math.round(loanAmt*rr/100/12);
-    const card=document.createElement('div');card.className='prop-card';
+    const card=document.createElement('div');card.className='prop-card';card.dataset.propId=getPropId(p);
+    card.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));card.addEventListener('mouseleave',()=>stopBounce());
     card.innerHTML='<div class="pc-header"><div class="pc-name">'+p.name+'</div><div class="pc-badge '+bc+'">'+p.verdict+'</div></div><div class="pc-sub">'+p.region+' '+p.dong+' · '+stInfo+'</div><div class="pc-tags"><span class="pc-tag">'+(p.rent_type==='월세'?'💳 월세':'🔑 전세')+'</span>'+tags.map(t=>'<span class="pc-tag">'+t+'</span>').join('')+'</div><div class="pc-price">'+typeLabel+' '+fmtShort(p.deposit)+(p.monthly_rent>0?' / '+p.monthly_rent+'만':'')+(p.trade_count>1?'<div class="pc-price-sub">'+fmtShort(p.min_deposit)+'~'+fmtShort(p.max_deposit)+' ('+p.trade_count+'건)</div>':'')+'</div><div class="pc-detail"><div class="pc-detail-item"><div class="pc-detail-label">💰 대출</div><div class="pc-detail-value">'+fmtShort(loanAmt)+'</div></div><div class="pc-detail-item"><div class="pc-detail-label">🏦 자기자금</div><div class="pc-detail-value">'+fmtShort(needEq)+'</div></div><div class="pc-detail-item pc-detail-full"><div class="pc-detail-label">📊 월 이자</div><div class="pc-detail-value" style="color:'+(mi<=50?'var(--green)':mi<=80?'var(--yellow)':'var(--red)')+'">약 '+mi+'만원</div></div></div><div class="pc-footer"><div class="pc-links">'+makeLinks(p)+'</div>'+tBtn+'</div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
     cg.appendChild(card);
   });
@@ -552,6 +573,7 @@ function updatePropTable(eq,fL,eLTV,rate,term,mr){
   else if(sv==='area-desc')filtered.sort((a,b)=>(parseFloat(b.area_py)||0)-(parseFloat(a.area_py)||0));
   else if(sv==='walk')filtered.sort((a,b)=>(a.walk_min||999)-(b.walk_min||999));
   else if(sv==='latest')filtered.sort((a,b)=>(b.latest_date||'').localeCompare(a.latest_date||''));
+  filteredBuyProps=filtered;
   highlightSelects();
   const ti=filtered.length,tp=Math.max(1,Math.ceil(ti/pageSize));if(currentPage>tp)currentPage=tp;const si=(currentPage-1)*pageSize,pi=filtered.slice(si,si+pageSize);
   const cardEl=document.getElementById('propertyCards'),tableEl=document.getElementById('buyTableWrap');
@@ -562,7 +584,8 @@ function updatePropTable(eq,fL,eLTV,rate,term,mr){
     const tBtn=p.trade_count>1?'<button class="expand-btn" onclick="toggleHistory(this)">▶ 거래내역 '+p.trade_count+'건</button>':'';
     let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.price-p.trades[i+1].price;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'날짜없음')+'</span><span class="trade-price">'+fmtShort(t.price)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');const pd=p.max_price-p.min_price;hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span><span style="font-size:10px;color:var(--text-dim)">'+(pd>0?'변동폭: '+fmtShort(pd):'동일가')+'</span></div>'+rows+'</div>';}
     const stTxt=p.station_name?(p.station_name+(p.walk_min?' '+p.walk_min+'분':'')):'—';
-    const tr=document.createElement('tr');tr.innerHTML='<td data-label="판정"><span class="tag '+p.verdictTag+'">'+p.verdict+'</span></td><td data-label="단지명"><strong>'+p.name+'</strong><br><span style="font-size:10px;color:var(--text-dim)">'+(p.line?p.line+' ':'')+p.station+(ex.length?' · '+ex.join(' · '):'')+'</span><br>'+tBtn+hH+'</td><td data-label="지역"><span class="tag tag-region">'+p.region+'</span></td><td data-label="면적">'+fmtArea(p)+'</td><td data-label="매매가" class="mono">'+fmtShort(p.price)+'</td><td data-label="월상환" class="mono" style="color:'+(p.pMonthly>mr?'var(--red)':p.pMonthly>mr*0.85?'var(--yellow)':'var(--green)')+'">'+p.pMonthly+'만</td><td data-label="역세권">'+stTxt+'</td><td data-label="연식">'+(p.built_year||'—')+'</td><td data-label="세대">'+(p.households||'—')+'</td><td data-label="링크"><div class="link-icons">'+makeLinks(p)+'</div></td>';
+    const tr=document.createElement('tr');tr.dataset.propId=getPropId(p);tr.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));tr.addEventListener('mouseleave',()=>stopBounce());
+    tr.innerHTML='<td data-label="판정"><span class="tag '+p.verdictTag+'">'+p.verdict+'</span></td><td data-label="단지명"><strong>'+p.name+'</strong><br><span style="font-size:10px;color:var(--text-dim)">'+(p.line?p.line+' ':'')+p.station+(ex.length?' · '+ex.join(' · '):'')+'</span><br>'+tBtn+hH+'</td><td data-label="지역"><span class="tag tag-region">'+p.region+'</span></td><td data-label="면적">'+fmtArea(p)+'</td><td data-label="매매가" class="mono">'+fmtShort(p.price)+'</td><td data-label="월상환" class="mono" style="color:'+(p.pMonthly>mr?'var(--red)':p.pMonthly>mr*0.85?'var(--yellow)':'var(--green)')+'">'+p.pMonthly+'만</td><td data-label="역세권">'+stTxt+'</td><td data-label="연식">'+(p.built_year||'—')+'</td><td data-label="세대">'+(p.households||'—')+'</td><td data-label="링크"><div class="link-icons">'+makeLinks(p)+'</div></td>';
     tb.appendChild(tr);
   });}
   document.getElementById('propertyBadge').textContent=DATA_LOADED?ti+'/'+PROPERTIES.length+'개 표시':'데이터 없음';
@@ -604,6 +627,7 @@ function updateRentTable(equity,budget){
   else if(rsv==='area-desc')filtered.sort((a,b)=>(parseFloat(b.area_py)||0)-(parseFloat(a.area_py)||0));
   else if(rsv==='walk')filtered.sort((a,b)=>(a.walk_min||999)-(b.walk_min||999));
   else if(rsv==='latest')filtered.sort((a,b)=>(b.latest_date||'').localeCompare(a.latest_date||''));
+  filteredRentProps=filtered;
   highlightSelects();
   const ti=filtered.length,tp=Math.max(1,Math.ceil(ti/pageSize));if(rentPage>tp)rentPage=tp;const si=(rentPage-1)*pageSize,pi=filtered.slice(si,si+pageSize);
   const cardEl=document.getElementById('rentPropertyCards'),tableEl=document.getElementById('rentTableWrapInner');
@@ -615,7 +639,8 @@ function updateRentTable(equity,budget){
     const tBtn=p.trade_count>1?'<button class="expand-btn" onclick="toggleHistory(this)">▶ 거래내역 '+p.trade_count+'건</button>':'';
     let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.deposit-p.trades[i+1].deposit;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'날짜없음')+'</span><span class="trade-price">'+fmtShort(t.deposit)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');const pd=p.max_deposit-p.min_deposit;hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span><span style="font-size:10px;color:var(--text-dim)">'+(pd>0?'변동폭: '+fmtShort(pd):'동일가')+'</span></div>'+rows+'</div>';}
     const stTxt=p.station_name?(p.station_name+(p.walk_min?' '+p.walk_min+'분':'')):'—';
-    const tr=document.createElement('tr');tr.innerHTML='<td data-label="판정"><span class="tag '+p.verdictTag+'">'+p.verdict+'</span></td><td data-label="단지명"><strong>'+p.name+'</strong><br><span style="font-size:10px;color:var(--text-dim)">'+(p.line?p.line+' ':'')+p.station+(ex.length?' · '+ex.join(' · '):'')+'</span><br>'+tBtn+hH+'</td><td data-label="지역"><span class="tag tag-region">'+p.region+'</span></td><td data-label="면적">'+fmtArea(p)+'</td><td data-label="유형">'+typeTag+'</td><td data-label="보증금" class="mono">'+fmtShort(p.deposit)+'</td><td data-label="월세" class="mono">'+(p.monthly_rent>0?p.monthly_rent+'만':'—')+'</td><td data-label="역세권">'+stTxt+'</td><td data-label="연식">'+(p.built_year||'—')+'</td><td data-label="링크"><div class="link-icons">'+makeLinks(p)+'</div></td>';
+    const tr=document.createElement('tr');tr.dataset.propId=getPropId(p);tr.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));tr.addEventListener('mouseleave',()=>stopBounce());
+    tr.innerHTML='<td data-label="판정"><span class="tag '+p.verdictTag+'">'+p.verdict+'</span></td><td data-label="단지명"><strong>'+p.name+'</strong><br><span style="font-size:10px;color:var(--text-dim)">'+(p.line?p.line+' ':'')+p.station+(ex.length?' · '+ex.join(' · '):'')+'</span><br>'+tBtn+hH+'</td><td data-label="지역"><span class="tag tag-region">'+p.region+'</span></td><td data-label="면적">'+fmtArea(p)+'</td><td data-label="유형">'+typeTag+'</td><td data-label="보증금" class="mono">'+fmtShort(p.deposit)+'</td><td data-label="월세" class="mono">'+(p.monthly_rent>0?p.monthly_rent+'만':'—')+'</td><td data-label="역세권">'+stTxt+'</td><td data-label="연식">'+(p.built_year||'—')+'</td><td data-label="링크"><div class="link-icons">'+makeLinks(p)+'</div></td>';
     tb.appendChild(tr);
   });}
   document.getElementById('rentPropertyBadge').textContent=ti+'/'+RENT_PROPERTIES.length+'개 표시';
@@ -698,7 +723,7 @@ function geocodeUnmatchedProps(){
   let idx=0,found=0;
   function next(){
     if(idx>=toGeocode.length){
-      if(found>0)updateMapMarkers();
+      if(found>0)update();
       document.getElementById('mapBadge').textContent+=' (지오코딩 완료)';
       return;
     }
@@ -711,7 +736,7 @@ function geocodeUnmatchedProps(){
         allProps.forEach(ap=>{if(ap.dong===p.dong&&ap.name===p.name&&!ap.lat){ap.lat=lat;ap.lon=lon;}});
         found++;
       }
-      if(idx%30===0&&found>0){updateMapMarkers();found=0;}
+      if(idx%30===0&&found>0){update();found=0;}
       setTimeout(next,80);
     },{size:1});
   }
@@ -739,31 +764,14 @@ function initMapIfNeeded(){
 function getMarkerSVG(color){return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20C24 5.4 18.6 0 12 0z" fill="'+color+'"/><circle cx="12" cy="11" r="5" fill="white" opacity="0.9"/></svg>');}
 function updateMapMarkers(){
   if(!kakaoMap)return;
-  mapMarkers.forEach(m=>m.setMap(null));mapMarkers=[];
-  const props=currentMode==='buy'?PROPERTIES:RENT_PROPERTIES;
+  mapMarkers.forEach(m=>m.setMap(null));mapMarkers=[];markerMap={};
+  const props=currentMode==='buy'?filteredBuyProps:filteredRentProps;
   if(!props||props.length===0){document.getElementById('mapBadge').textContent='매물 데이터 없음';return;}
-  // 판정 계산
-  const eq=currentMode==='buy'?Math.max(0,getVal('cash')-getVal('interior')):getVal('cash');
-  const rate=getVal('rate'),term=getVal('term'),mr=getVal('monthlyLimit')-getVal('mgmt'),lp=getVal('ltv');
-  const rr=getVal('rentRate'),rll=getVal('rentLoanLimit'),rlr=getVal('rentLoanRatio');
-  const rf2=rlr/100;let mbr2=rf2<1?eq/(1-rf2):eq+rll;const aL2=Math.min(Math.floor(mbr2*rf2),rll),budget2=eq+aL2;
-  // 중복 제거 (같은 단지 좌표)
   const seen={};let cnt=0;
   props.forEach(p=>{
     if(!p.lat||!p.lon)return;
-    const k=p.name+'_'+p.region;if(seen[k])return;seen[k]=true;
-    let verdict;
-    if(currentMode==='buy'){
-      const eLTV=p.regulated?Math.min(lp,50):lp;
-      const dsrL=Math.floor(maxLoanFromMonthly((getVal('income1')+getVal('income2'))*getVal('dsr')/100/12,rate,term));
-      const mlL=Math.floor(maxLoanFromMonthly(mr,rate,term));
-      const ltvL=eLTV>0&&eLTV<100?Math.floor(eq/(1-eLTV/100)*eLTV/100):0;
-      const fL=Math.min(dsrL,mlL,ltvL);
-      const pLn=Math.min(Math.floor(p.price*eLTV/100),fL),pEq=p.price-pLn,pM=Math.floor(monthlyPayment(pLn,rate,term));
-      if(pEq>eq)verdict='danger';else if(pM>mr)verdict='danger';else if(pM>mr*0.85)verdict='warn';else verdict='ok';
-    }else{
-      if(p.deposit>budget2)verdict='danger';else if(p.deposit>budget2*0.9)verdict='warn';else verdict='ok';
-    }
+    const mKey=getMarkerKey(p);if(seen[mKey])return;seen[mKey]=true;
+    const verdict=currentMode==='buy'?(p.verdict==='매수가능'?'ok':p.verdict==='빠듯함'?'warn':'danger'):(p.verdict==='가능'?'ok':p.verdict==='빠듯함'?'warn':'danger');
     if(mapFilterVal&&verdict!==mapFilterVal)return;
     const color=MARKER_COLORS[verdict];
     const img=new kakao.maps.MarkerImage(getMarkerSVG(color),new kakao.maps.Size(24,32));
@@ -773,7 +781,9 @@ function updateMapMarkers(){
     kakao.maps.event.addListener(marker,'click',()=>{
       mapInfoWindow.setContent('<div style="padding:8px 12px;font-size:12px;line-height:1.5;max-width:220px"><strong>'+p.name+'</strong><br><span style="color:#666">'+p.region+' · '+p.area+'</span><br><span style="font-weight:700">'+label+priceStr+'</span>'+(p.station?' · '+p.station:'')+'</div>');
       mapInfoWindow.open(kakaoMap,marker);
+      focusCard(mKey);
     });
+    markerMap[mKey]=marker;
     mapMarkers.push(marker);cnt++;
   });
   document.getElementById('mapBadge').textContent=cnt+'개 매물 표시';
