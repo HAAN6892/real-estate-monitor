@@ -1,10 +1,10 @@
 """
-수도권 부동산 실거래가 모니터링 봇 v4
-- 국토교통부 실거래가 API 데이터 수집
+수도권 부동산 실거래가 모니터링 봇 v5
+- 국토교통부 실거래가 API 데이터 수집 (매매 + 전월세)
 - 카카오 로컬 API로 아파트 좌표 → 최근접 역 거리 계산
 - 동일 단지 묶기, 가격대별 그룹핑, 평당가 계산
 - 텔레그램: 간소화 알림 (요약 + 대시보드 링크)
-- [v4] data.json 파일로 매물 데이터 저장
+- [v5] data-rent.json 추가, 22개 지역 확대
 """
 
 import json
@@ -20,9 +20,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).parent
 CONFIG_PATH = BASE_DIR / "config.json"
 HISTORY_PATH = BASE_DIR / "sent_history.json"
+RENT_HISTORY_PATH = BASE_DIR / "sent_history_rent.json"
 COORD_CACHE_PATH = BASE_DIR / "coord_cache.json"
 APT_INFO_CACHE_PATH = BASE_DIR / "apt_info_cache.json"
 DATA_JSON_PATH = BASE_DIR / "data.json"
+DATA_RENT_JSON_PATH = BASE_DIR / "data-rent.json"
 
 # ─── 대시보드 URL ───
 DASHBOARD_URL = "https://haan6892.github.io/real-estate-monitor/"
@@ -54,6 +56,9 @@ STATIONS = [
     {"name": "구성", "lat": 37.3005, "lon": 127.1085, "line": "분당선"},
     {"name": "모란", "lat": 37.4321, "lon": 127.1293, "line": "분당선"},
     {"name": "태평", "lat": 37.4431, "lon": 127.1268, "line": "분당선"},
+    {"name": "영통", "lat": 37.2507, "lon": 127.0569, "line": "분당선"},
+    {"name": "망포", "lat": 37.2444, "lon": 127.0467, "line": "분당선"},
+    {"name": "매탄권선", "lat": 37.2630, "lon": 127.0360, "line": "분당선"},
     # 8호선 (송파/강동)
     {"name": "잠실", "lat": 37.5133, "lon": 127.1001, "line": "2호선"},
     {"name": "석촌", "lat": 37.5056, "lon": 127.1070, "line": "8호선"},
@@ -74,17 +79,20 @@ STATIONS = [
     {"name": "하남풍산", "lat": 37.5519, "lon": 127.2048, "line": "5호선"},
     {"name": "하남시청", "lat": 37.5393, "lon": 127.2149, "line": "5호선"},
     {"name": "하남검단산", "lat": 37.5249, "lon": 127.2242, "line": "5호선"},
-    # 4호선 (과천/안양)
+    # 4호선 (과천/안양/군포/의왕)
     {"name": "과천", "lat": 37.4340, "lon": 126.9877, "line": "4호선"},
     {"name": "정부과천청사", "lat": 37.4265, "lon": 126.9899, "line": "4호선"},
     {"name": "인덕원", "lat": 37.4175, "lon": 126.9892, "line": "4호선"},
     {"name": "평촌", "lat": 37.3947, "lon": 126.9635, "line": "4호선"},
     {"name": "범계", "lat": 37.3898, "lon": 126.9515, "line": "4호선"},
     {"name": "금정", "lat": 37.3717, "lon": 126.9416, "line": "4호선"},
+    {"name": "산본", "lat": 37.3594, "lon": 126.9323, "line": "4호선"},
+    {"name": "수리산", "lat": 37.3704, "lon": 126.9164, "line": "4호선"},
+    {"name": "대야미", "lat": 37.3805, "lon": 126.9074, "line": "4호선"},
+    {"name": "의왕", "lat": 37.3447, "lon": 126.9688, "line": "1호선"},
     # 3호선 (강남/서초)
     {"name": "교대", "lat": 37.4937, "lon": 127.0146, "line": "3호선"},
     {"name": "남부터미널", "lat": 37.4856, "lon": 127.0148, "line": "3호선"},
-    {"name": "양재", "lat": 37.4842, "lon": 127.0353, "line": "3호선"},
     {"name": "매봉", "lat": 37.4872, "lon": 127.0473, "line": "3호선"},
     {"name": "도곡", "lat": 37.4915, "lon": 127.0553, "line": "3호선"},
     {"name": "대치", "lat": 37.4948, "lon": 127.0628, "line": "3호선"},
@@ -97,12 +105,36 @@ STATIONS = [
     {"name": "선릉", "lat": 37.5045, "lon": 127.0490, "line": "2호선"},
     {"name": "삼성", "lat": 37.5088, "lon": 127.0631, "line": "2호선"},
     {"name": "종합운동장", "lat": 37.5108, "lon": 127.0735, "line": "2호선"},
+    {"name": "서울대입구", "lat": 37.4812, "lon": 126.9527, "line": "2호선"},
+    {"name": "낙성대", "lat": 37.4768, "lon": 126.9637, "line": "2호선"},
+    {"name": "사당", "lat": 37.4765, "lon": 126.9816, "line": "2호선"},
     # 경강선 (광주)
     {"name": "초월", "lat": 37.3702, "lon": 127.2810, "line": "경강선"},
     {"name": "곤지암", "lat": 37.3381, "lon": 127.3230, "line": "경강선"},
     {"name": "신둔도예촌", "lat": 37.3194, "lon": 127.3651, "line": "경강선"},
     {"name": "이천", "lat": 37.2750, "lon": 127.4433, "line": "경강선"},
     {"name": "경기광주", "lat": 37.4090, "lon": 127.2540, "line": "경강선"},
+    # 7호선 (광명/동작/관악)
+    {"name": "철산", "lat": 37.4752, "lon": 126.8680, "line": "7호선"},
+    {"name": "광명사거리", "lat": 37.4787, "lon": 126.8546, "line": "7호선"},
+    {"name": "이수", "lat": 37.4856, "lon": 126.9818, "line": "7호선"},
+    {"name": "내방", "lat": 37.4874, "lon": 126.9903, "line": "7호선"},
+    {"name": "숭실대입구", "lat": 37.4966, "lon": 126.9537, "line": "7호선"},
+    # 경의중앙선 (구리)
+    {"name": "구리", "lat": 37.5943, "lon": 127.1325, "line": "경의중앙선"},
+    {"name": "도농", "lat": 37.5981, "lon": 127.1539, "line": "경의중앙선"},
+    {"name": "양정", "lat": 37.5870, "lon": 127.1197, "line": "경의중앙선"},
+    # 1호선 (수원)
+    {"name": "수원", "lat": 37.2666, "lon": 127.0001, "line": "1호선"},
+    {"name": "화서", "lat": 37.2846, "lon": 126.9904, "line": "1호선"},
+    {"name": "성균관대", "lat": 37.2994, "lon": 126.9720, "line": "1호선"},
+    # 신림선 (관악)
+    {"name": "신림", "lat": 37.4842, "lon": 126.9293, "line": "신림선"},
+    {"name": "관악산", "lat": 37.4737, "lon": 126.9311, "line": "신림선"},
+    # 동작구 추가
+    {"name": "노량진", "lat": 37.5131, "lon": 126.9425, "line": "1호선"},
+    {"name": "동작", "lat": 37.5010, "lon": 126.9518, "line": "4호선"},
+    {"name": "총신대입구", "lat": 37.4870, "lon": 126.9818, "line": "4호선"},
 ]
 
 
@@ -121,6 +153,19 @@ def load_history():
 def save_history(history):
     history = history[-3000:]
     with open(HISTORY_PATH, "w", encoding="utf-8") as f:
+        json.dump(history, f, ensure_ascii=False, indent=2)
+
+
+def load_rent_history():
+    if RENT_HISTORY_PATH.exists():
+        with open(RENT_HISTORY_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
+
+
+def save_rent_history(history):
+    history = history[-3000:]
+    with open(RENT_HISTORY_PATH, "w", encoding="utf-8") as f:
         json.dump(history, f, ensure_ascii=False, indent=2)
 
 
@@ -148,18 +193,18 @@ def save_apt_info_cache(cache):
         json.dump(cache, f, ensure_ascii=False, indent=2)
 
 
-# ─── data.json 로드/저장 ───
-def load_data_json():
-    if DATA_JSON_PATH.exists():
-        with open(DATA_JSON_PATH, "r", encoding="utf-8") as f:
+# ─── data.json / data-rent.json 로드/저장 ───
+def load_data_json(path):
+    if path.exists():
+        with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
     return {"updated_at": "", "properties": []}
 
 
-def save_data_json(data):
-    with open(DATA_JSON_PATH, "w", encoding="utf-8") as f:
+def save_data_json(data, path):
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    print(f"  [data.json] 저장 완료 ({len(data['properties'])}건)")
+    print(f"  [data] {path.name} 저장 완료 ({len(data['properties'])}건)")
 
 
 def fetch_region_apt_list(api_key, sigungu_code, apt_list_cache):
@@ -270,6 +315,7 @@ def get_apt_household_count(api_key, apt_name, sigungu_code, apt_info_cache, apt
     return result
 
 
+# ─── 매매 실거래 API ───
 def fetch_trades(api_key, region_code, deal_ymd):
     url = "https://apis.data.go.kr/1613000/RTMSDataSvcAptTradeDev/getRTMSDataSvcAptTradeDev"
     params = {
@@ -284,7 +330,7 @@ def fetch_trades(api_key, region_code, deal_ymd):
         response = requests.get(url, params=params, timeout=30)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
-        print(f"  [오류] API 호출 실패 ({region_code}): {e}")
+        print(f"  [오류] 매매 API 호출 실패 ({region_code}): {e}")
         return []
 
     try:
@@ -324,6 +370,72 @@ def fetch_trades(api_key, region_code, deal_ymd):
     return trades
 
 
+# ─── 전월세 실거래 API ───
+def fetch_rent_trades(api_key, region_code, deal_ymd):
+    """국토부 아파트 전월세 실거래 API 호출"""
+    url = "https://apis.data.go.kr/1613000/RTMSDataSvcAptRent/getRTMSDataSvcAptRent"
+    params = {
+        "serviceKey": api_key,
+        "LAWD_CD": region_code,
+        "DEAL_YMD": deal_ymd,
+        "pageNo": "1",
+        "numOfRows": "9999"
+    }
+
+    try:
+        response = requests.get(url, params=params, timeout=30)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(f"  [오류] 전월세 API 호출 실패 ({region_code}): {e}")
+        return []
+
+    try:
+        root = ET.fromstring(response.text)
+    except ET.ParseError:
+        print(f"  [오류] 전월세 XML 파싱 실패 ({region_code})")
+        return []
+
+    result_code = root.findtext(".//resultCode")
+    if result_code and result_code not in ("00", "000"):
+        result_msg = root.findtext(".//resultMsg", "알 수 없는 오류")
+        print(f"  [오류] 전월세 API 에러 ({region_code}): {result_msg}")
+        return []
+
+    items = root.findall(".//item")
+    trades = []
+
+    for item in items:
+        try:
+            # 보증금(만원), 월세(만원)
+            deposit = int((item.findtext("deposit") or "0").strip().replace(",", ""))
+            monthly_rent = int((item.findtext("monthlyRent") or "0").strip().replace(",", ""))
+
+            trade = {
+                "아파트": (item.findtext("aptNm") or "").strip(),
+                "면적": float(item.findtext("excluUseAr") or 0),
+                "보증금": deposit,
+                "월세": monthly_rent,
+                "전월세구분": "전세" if monthly_rent == 0 else "월세",
+                "층": int(item.findtext("floor") or 0),
+                "건축년도": int(item.findtext("buildYear") or 0),
+                "거래년도": int(item.findtext("dealYear") or 0),
+                "거래월": int(item.findtext("dealMonth") or 0),
+                "거래일": int(item.findtext("dealDay") or 0),
+                "법정동": (item.findtext("umdNm") or "").strip(),
+                "지번": (item.findtext("jibun") or "").strip(),
+                "도로명": (item.findtext("roadNm") or "").strip(),
+                "계약기간": (item.findtext("contractTerm") or "").strip(),
+                "갱신여부": (item.findtext("renewalUseYn") or "").strip(),
+                "이전보증금": (item.findtext("preDeposit") or "").strip(),
+                "이전월세": (item.findtext("preMonthlyRent") or "").strip(),
+            }
+            trades.append(trade)
+        except (ValueError, TypeError):
+            continue
+
+    return trades
+
+
 def filter_trades(trades, filters):
     filtered = []
     today = datetime.now().date()
@@ -350,8 +462,44 @@ def filter_trades(trades, filters):
     return filtered
 
 
+def filter_rent_trades(trades, filters):
+    """전월세 거래 필터링"""
+    filtered = []
+    today = datetime.now().date()
+    max_days = filters.get("max_days_ago", 30)  # 전세는 30일로 넓게
+
+    rent_filters = filters.get("rent", {})
+    min_deposit = rent_filters.get("min_deposit", 0)
+    max_deposit = rent_filters.get("max_deposit", 100000)  # 기본 10억
+    rent_type = rent_filters.get("type", "all")  # all, 전세, 월세
+
+    for t in trades:
+        try:
+            trade_date = datetime(t["거래년도"], t["거래월"], t["거래일"]).date()
+            if (today - trade_date).days > max_days:
+                continue
+        except (ValueError, TypeError):
+            continue
+
+        if t["면적"] < filters["min_area"] or t["면적"] > filters["max_area"]:
+            continue
+        if t["보증금"] < min_deposit or t["보증금"] > max_deposit:
+            continue
+        if t["층"] < filters.get("min_floor", 1):
+            continue
+        if rent_type != "all" and t["전월세구분"] != rent_type:
+            continue
+
+        filtered.append(t)
+    return filtered
+
+
 def make_trade_id(trade, region_name):
     return f"{region_name}_{trade['아파트']}_{trade['면적']}_{trade['거래금액']}_{trade['층']}_{trade['거래년도']}{trade['거래월']:02d}{trade['거래일']:02d}"
+
+
+def make_rent_trade_id(trade, region_name):
+    return f"R_{region_name}_{trade['아파트']}_{trade['면적']}_{trade['보증금']}_{trade['월세']}_{trade['층']}_{trade['거래년도']}{trade['거래월']:02d}{trade['거래일']:02d}"
 
 
 # ─── 카카오 API로 주소 → 좌표 변환 ───
@@ -424,12 +572,7 @@ def to_pyeong(m2):
     return round(m2 / 3.3058, 1)
 
 
-def price_group_label(price_man):
-    억 = price_man // 10000
-    return f"{억}억대"
-
-
-# ─── 단지별 묶기 + 요약 ───
+# ─── 단지별 묶기 ───
 def group_by_complex(trades):
     groups = {}
     for t in trades:
@@ -447,8 +590,26 @@ def group_by_complex(trades):
     return groups
 
 
+def group_rent_by_complex(trades):
+    """전월세 거래를 단지별로 묶기"""
+    groups = {}
+    for t in trades:
+        key = f"{t['아파트']}_{t['면적']}"
+        if key not in groups:
+            groups[key] = {
+                "아파트": t["아파트"],
+                "면적": t["면적"],
+                "건축년도": t["건축년도"],
+                "법정동": t["법정동"],
+                "도로명": t.get("도로명", ""),
+                "거래": []
+            }
+        groups[key]["거래"].append(t)
+    return groups
+
+
 def build_region_data(region_name, complex_groups, kakao_key, coord_cache, sgg_name, api_key, apt_info_cache, min_households, region_code, apt_list_cache):
-    """한 지역의 data.json 저장용 데이터 생성 (텔레그램 메시지 생성 제거)"""
+    """한 지역의 매매 data.json 저장용 데이터 생성"""
 
     data_items = []
     skipped_small = 0
@@ -509,6 +670,73 @@ def build_region_data(region_name, complex_groups, kakao_key, coord_cache, sgg_n
     return data_items
 
 
+def build_rent_region_data(region_name, complex_groups, kakao_key, coord_cache, sgg_name, api_key, apt_info_cache, min_households, region_code, apt_list_cache):
+    """한 지역의 전월세 data-rent.json 저장용 데이터 생성"""
+
+    data_items = []
+    skipped_small = 0
+
+    for key, group in complex_groups.items():
+        apt_info = get_apt_household_count(api_key, group["아파트"], region_code, apt_info_cache, apt_list_cache)
+        household = apt_info["세대수"]
+
+        if household > 0 and household < min_households:
+            skipped_small += 1
+            continue
+
+        trades = group["거래"]
+        pyeong = to_pyeong(group["면적"])
+
+        address = f"{sgg_name} {group['법정동']} {group['아파트']}"
+        coord = get_coordinates(kakao_key, address, coord_cache)
+
+        walk_min = 999
+        nearest_station_name = ""
+        nearest_station_line = ""
+        if coord:
+            nearest, dist_km, walk_min = find_nearest_station(coord["lat"], coord["lon"])
+            nearest_station_name = nearest["name"]
+            nearest_station_line = nearest["line"]
+
+        for t in trades:
+            try:
+                trade_date_str = f"{t['거래년도']}-{t['거래월']:02d}-{t['거래일']:02d}"
+            except (ValueError, TypeError):
+                trade_date_str = ""
+
+            search_query = urllib.parse.quote(f"{group['법정동']} {group['아파트']}")
+            naver_link = f"https://m.land.naver.com/search/result/{search_query}"
+
+            data_items.append({
+                "name": group["아파트"],
+                "region": region_name,
+                "dong": group["법정동"],
+                "area_m2": group["면적"],
+                "area_py": pyeong,
+                "deposit": t["보증금"],
+                "monthly_rent": t["월세"],
+                "rent_type": t["전월세구분"],
+                "deposit_per_py": round(t["보증금"] / pyeong) if pyeong > 0 else 0,
+                "floor": t["층"],
+                "built_year": group["건축년도"],
+                "households": household,
+                "station": nearest_station_name,
+                "line": nearest_station_line,
+                "walk_min": walk_min if walk_min < 999 else None,
+                "trade_date": trade_date_str,
+                "contract_term": t.get("계약기간", ""),
+                "renewal": t.get("갱신여부", ""),
+                "prev_deposit": t.get("이전보증금", ""),
+                "prev_monthly": t.get("이전월세", ""),
+                "link": naver_link,
+            })
+
+    if skipped_small > 0:
+        print(f"    ℹ️ 전세: {min_households}세대 미만 {skipped_small}개 단지 제외")
+
+    return data_items
+
+
 # ─── 텔레그램 전송 ───
 def send_telegram(bot_token, chat_id, message):
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
@@ -527,7 +755,7 @@ def send_telegram(bot_token, chat_id, message):
 # ─── 메인 ───
 def main():
     print("=" * 50)
-    print("🏠 부동산 실거래가 모니터링 v4 (data.json)")
+    print("🏠 부동산 실거래가 모니터링 v5 (매매 + 전월세)")
     print(f"⏰ {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 50)
 
@@ -541,29 +769,39 @@ def main():
 
     history = load_history()
     history_set = set(history)
+    rent_history = load_rent_history()
+    rent_history_set = set(rent_history)
     coord_cache = load_coord_cache()
     apt_info_cache = load_apt_info_cache()
     apt_list_cache = {}
     min_households = filters.get("min_households", 200)
 
-    # [v4] 기존 data.json 로드
-    existing_data = load_data_json()
+    # 기존 데이터 로드
+    existing_data = load_data_json(DATA_JSON_PATH)
     existing_properties = existing_data.get("properties", [])
-
     existing_keys = set()
     for p in existing_properties:
         key = f"{p['region']}_{p['name']}_{p['area_m2']}_{p['price']}_{p['floor']}_{p['trade_date']}"
         existing_keys.add(key)
+
+    existing_rent_data = load_data_json(DATA_RENT_JSON_PATH)
+    existing_rent_properties = existing_rent_data.get("properties", [])
+    existing_rent_keys = set()
+    for p in existing_rent_properties:
+        key = f"{p['region']}_{p['name']}_{p['area_m2']}_{p['deposit']}_{p.get('monthly_rent',0)}_{p['floor']}_{p['trade_date']}"
+        existing_rent_keys.add(key)
 
     KST = timezone(timedelta(hours=9))
     now = datetime.now(KST)
     months = [now.strftime("%Y%m"), (now - timedelta(days=30)).strftime("%Y%m")]
     months = list(dict.fromkeys(months))
 
-    total_new = 0
-    total_checked = 0
-    all_new_items = []
-    region_results = {}
+    total_new_trade = 0
+    total_new_rent = 0
+    all_new_trade_items = []
+    all_new_rent_items = []
+    trade_region_results = {}
+    rent_region_results = {}
 
     for region in regions:
         region_name = region["name"]
@@ -571,13 +809,13 @@ def main():
         sgg_name = region.get("sgg_name", region_name)
         print(f"\n📍 {region_name} ({region_code}) 조회 중...")
 
+        # ── 매매 수집 ──
         new_trades = []
         for month in months:
-            print(f"  📅 {month} 데이터 조회...")
+            print(f"  📅 매매 {month} 조회...")
             trades = fetch_trades(api_key, region_code, month)
             print(f"  → {len(trades)}건 조회됨")
             filtered = filter_trades(trades, filters)
-            total_checked += len(trades)
             print(f"  → {len(filtered)}건 필터 통과")
 
             for trade in filtered:
@@ -587,27 +825,60 @@ def main():
                 new_trades.append(trade)
                 history.append(trade_id)
                 history_set.add(trade_id)
-                total_new += 1
+                total_new_trade += 1
 
         if new_trades:
-            region_results[region_name] = {"trades": new_trades, "sgg_name": sgg_name, "region_code": region_code}
-            print(f"  ✅ 새 거래 {len(new_trades)}건")
+            trade_region_results[region_name] = {"trades": new_trades, "sgg_name": sgg_name, "region_code": region_code}
+            print(f"  ✅ 매매 새 거래 {len(new_trades)}건")
 
-    # ─── 텔레그램 간소화 알림 ───
-    if total_new > 0:
-        # 지역별 건수 요약
-        region_lines = []
-        for rname, rdata in region_results.items():
-            region_lines.append(f"  • {rname}: {len(rdata['trades'])}건")
+        # ── 전월세 수집 ──
+        new_rents = []
+        for month in months:
+            print(f"  📅 전월세 {month} 조회...")
+            rents = fetch_rent_trades(api_key, region_code, month)
+            print(f"  → {len(rents)}건 조회됨")
+            filtered_rents = filter_rent_trades(rents, filters)
+            print(f"  → {len(filtered_rents)}건 필터 통과")
 
-        message = (
-            f"🏠 *매물 업데이트*\n"
-            f"━━━━━━━━━━━━━━━\n"
-            f"⏰ {now.strftime('%Y-%m-%d %H:%M')}\n"
-            f"🆕 신규 거래 *{total_new}건*\n\n"
-            + "\n".join(region_lines) +
-            f"\n\n📊 [대시보드에서 확인]({DASHBOARD_URL})"
-        )
+            for rent in filtered_rents:
+                rent_id = make_rent_trade_id(rent, region_name)
+                if rent_id in rent_history_set:
+                    continue
+                new_rents.append(rent)
+                rent_history.append(rent_id)
+                rent_history_set.add(rent_id)
+                total_new_rent += 1
+
+        if new_rents:
+            rent_region_results[region_name] = {"trades": new_rents, "sgg_name": sgg_name, "region_code": region_code}
+            print(f"  ✅ 전월세 새 거래 {len(new_rents)}건")
+
+    # ─── 텔레그램 알림 ───
+    if total_new_trade > 0 or total_new_rent > 0:
+        trade_lines = []
+        rent_lines = []
+
+        for rname, rdata in trade_region_results.items():
+            trade_lines.append(f"  • {rname}: {len(rdata['trades'])}건")
+        for rname, rdata in rent_region_results.items():
+            rent_lines.append(f"  • {rname}: {len(rdata['trades'])}건")
+
+        parts = [
+            f"🏠 *매물 업데이트*",
+            f"━━━━━━━━━━━━━━━",
+            f"⏰ {now.strftime('%Y-%m-%d %H:%M')}",
+        ]
+
+        if total_new_trade > 0:
+            parts.append(f"\n🔑 매매 신규 *{total_new_trade}건*")
+            parts.extend(trade_lines)
+
+        if total_new_rent > 0:
+            parts.append(f"\n🏘 전월세 신규 *{total_new_rent}건*")
+            parts.extend(rent_lines)
+
+        parts.append(f"\n📊 [대시보드에서 확인]({DASHBOARD_URL})")
+        message = "\n".join(parts)
     else:
         message = (
             f"🏠 *매물 업데이트*\n"
@@ -620,9 +891,9 @@ def main():
     send_telegram(bot_token, chat_id, message)
     print(f"  📤 텔레그램 알림 전송 완료")
 
-    # ─── data.json용 데이터 수집 ───
-    if region_results:
-        for rname, rdata in region_results.items():
+    # ─── data.json (매매) 업데이트 ───
+    if trade_region_results:
+        for rname, rdata in trade_region_results.items():
             complex_groups = group_by_complex(rdata["trades"])
             data_items = build_region_data(
                 rname, complex_groups, kakao_key, coord_cache,
@@ -632,35 +903,57 @@ def main():
             for item in data_items:
                 item_key = f"{item['region']}_{item['name']}_{item['area_m2']}_{item['price']}_{item['floor']}_{item['trade_date']}"
                 if item_key not in existing_keys:
-                    all_new_items.append(item)
+                    all_new_trade_items.append(item)
                     existing_keys.add(item_key)
 
-    # ─── data.json 업데이트 ───
-    all_properties = existing_properties + all_new_items
-
+    all_properties = existing_properties + all_new_trade_items
     cutoff_date = (now - timedelta(days=90)).strftime("%Y-%m-%d")
-    all_properties = [
-        p for p in all_properties
-        if p.get("trade_date", "9999") >= cutoff_date or not p.get("trade_date")
-    ]
-
+    all_properties = [p for p in all_properties if p.get("trade_date", "9999") >= cutoff_date or not p.get("trade_date")]
     all_properties.sort(key=lambda x: x.get("trade_date", ""), reverse=True)
 
-    data_json = {
+    save_data_json({
         "updated_at": now.strftime("%Y-%m-%d %H:%M"),
         "total_count": len(all_properties),
-        "new_count": len(all_new_items),
+        "new_count": len(all_new_trade_items),
         "properties": all_properties
-    }
-    save_data_json(data_json)
+    }, DATA_JSON_PATH)
+
+    # ─── data-rent.json (전월세) 업데이트 ───
+    if rent_region_results:
+        for rname, rdata in rent_region_results.items():
+            complex_groups = group_rent_by_complex(rdata["trades"])
+            data_items = build_rent_region_data(
+                rname, complex_groups, kakao_key, coord_cache,
+                rdata["sgg_name"], api_key, apt_info_cache,
+                min_households, rdata["region_code"], apt_list_cache
+            )
+            for item in data_items:
+                item_key = f"{item['region']}_{item['name']}_{item['area_m2']}_{item['deposit']}_{item.get('monthly_rent',0)}_{item['floor']}_{item['trade_date']}"
+                if item_key not in existing_rent_keys:
+                    all_new_rent_items.append(item)
+                    existing_rent_keys.add(item_key)
+
+    all_rent_properties = existing_rent_properties + all_new_rent_items
+    all_rent_properties = [p for p in all_rent_properties if p.get("trade_date", "9999") >= cutoff_date or not p.get("trade_date")]
+    all_rent_properties.sort(key=lambda x: x.get("trade_date", ""), reverse=True)
+
+    save_data_json({
+        "updated_at": now.strftime("%Y-%m-%d %H:%M"),
+        "total_count": len(all_rent_properties),
+        "new_count": len(all_new_rent_items),
+        "properties": all_rent_properties
+    }, DATA_RENT_JSON_PATH)
 
     # 저장
     save_history(history)
+    save_rent_history(rent_history)
     save_coord_cache(coord_cache)
     save_apt_info_cache(apt_info_cache)
 
     print(f"\n{'=' * 50}")
-    print(f"✅ 완료! 새 알림 {total_new}건 / data.json {len(all_properties)}건")
+    print(f"✅ 완료!")
+    print(f"   매매: 새 {total_new_trade}건 / 총 {len(all_properties)}건")
+    print(f"   전월세: 새 {total_new_rent}건 / 총 {len(all_rent_properties)}건")
     print(f"{'=' * 50}")
 
 
