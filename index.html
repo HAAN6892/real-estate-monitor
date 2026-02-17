@@ -590,8 +590,8 @@ async function loadData(){
     [PROPERTIES,RENT_PROPERTIES].forEach(props=>{
       props.forEach(p=>{
         if(p.lat&&p.lon)return;
-        const suffix=p.dong+' '+p.name;const fullKey=p.region+' '+suffix;
-        for(const[k,v]of ccEntries){if(k===fullKey||k.endsWith(fullKey)){p.lat=v.lat;p.lon=v.lon;break;}}
+        const suffix=p.dong+' '+p.name;
+        for(const[k,v]of ccEntries){if(k.endsWith(suffix)&&k.includes(p.region)){p.lat=v.lat;p.lon=v.lon;break;}}
         if(!p.lat){for(const[k,v]of ccEntries){if(k.endsWith(suffix)){p.lat=v.lat;p.lon=v.lon;break;}}}
       });
     });
