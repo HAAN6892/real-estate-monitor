@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-02-17 22:33",
+  "updated_at": "2026-02-17 22:45",
   "total_count": 182,
   "new_count": 0,
   "properties": [
@@ -671,7 +671,9 @@
       "walk_min": null,
       "trade_date": "2026-02-08",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EB%A6%BC%EB%8F%99%20%EA%B1%B4%EC%98%812",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.4529407156863,
+      "lon": 126.89861769052
     },
     {
       "name": "다산주공(3단지)",
@@ -2411,7 +2413,9 @@
       "walk_min": null,
       "trade_date": "2026-02-04",
       "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EB%A6%BC%EB%8F%99%20%EA%B1%B4%EC%98%812",
-      "regulated": false
+      "regulated": false,
+      "lat": 37.4529407156863,
+      "lon": 126.89861769052
     },
     {
       "name": "금강펜테리움센트럴파크3차",

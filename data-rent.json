@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-02-17 22:33",
+  "updated_at": "2026-02-17 22:45",
   "total_count": 891,
   "new_count": 0,
   "properties": [
@@ -19175,7 +19175,9 @@
       "renewal": "",
       "prev_deposit": "22,000",
       "prev_monthly": "10",
-      "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EB%A6%BC%EB%8F%99%20%EA%B1%B4%EC%98%812"
+      "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EB%A6%BC%EB%8F%99%20%EA%B1%B4%EC%98%812",
+      "lat": 37.4529407156863,
+      "lon": 126.89861769052
     },
     {
       "name": "주공4",
