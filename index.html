@@ -257,7 +257,7 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
   .mobile-split-tab:hover{color:var(--text-mid)}
   .mobile-split-tab.active{background:var(--mode-accent);color:#fff}
   .split-layout{flex-direction:column;height:auto;gap:0}
-  .split-map{flex:none;height:calc(100vh - 220px);min-height:300px}
+  .split-map{flex:none;height:calc(100vh - 180px);min-height:300px}
   .split-layout.mobile-list .split-map{display:none}
   .split-layout.mobile-map .split-list{display:none}
   .split-list{height:auto;min-height:auto;overflow-y:visible}
@@ -279,7 +279,8 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
   .filter-bar .filter-select{flex:0 0 auto;min-width:0;font-size:11px;padding:6px 6px}
   .filter-bar .search-input{flex:0 0 140px;min-width:0}
   .filter-bar-divider{display:none}
-  .mobile-map-popup{position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--surface);border-top:1px solid var(--border);border-radius:14px 14px 0 0;padding:12px 16px;transform:translateY(100%);transition:transform 0.25s ease;box-shadow:0 -4px 20px rgba(0,0,0,0.3)}
+  .mobile-map-popup{position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--surface);border-top:1px solid var(--border);border-radius:14px 14px 0 0;padding:16px 20px;transform:translateY(100%);transition:transform 0.25s ease;box-shadow:0 -4px 20px rgba(0,0,0,0.3);max-height:35vh;overflow-y:auto}
+  .mobile-map-popup::before{content:'';display:block;width:40px;height:4px;background:var(--border-hover);border-radius:2px;margin:0 auto 12px}
   .mobile-map-popup.show{transform:translateY(0)}
   .mobile-map-popup .pc-compact{padding:0}
 }
@@ -876,8 +877,13 @@ function showMobileMapPopup(p){
   const bc=currentMode==='buy'?(p.verdict==='매수가능'?'ok':p.verdict==='빠듯함'?'warn':'danger'):(p.verdict==='가능'?'ok':p.verdict==='빠듯함'?'warn':'danger');
   const priceLabel=currentMode==='buy'?'매매 ':'전세 ';
   const priceVal=currentMode==='buy'?p.price:p.deposit;
-  const meta=[];if(p.area)meta.push(p.area);if(p.station_name)meta.push(p.station_name+(p.walk_min?' '+p.walk_min+'분':''));
-  content.innerHTML='<div class="pc-compact"><div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceLabel+fmtShort(priceVal)+'</span><span class="pc-cdetails">'+meta.join(' · ')+'</span></div><div class="pc-links" style="margin-top:6px">'+makeLinks(p)+'</div></div>';
+  const meta=[];if(p.area_py)meta.push(p.area_py+'평');if(p.area)meta.push('('+p.area+')');
+  const station=[];if(p.station_name)station.push(p.station_name);if(p.walk_min)station.push('도보 '+p.walk_min+'분');
+  const extra=[];if(p.built_year)extra.push(p.built_year+'년');if(p.households)extra.push(p.households+'세대');
+  let financeInfo='';
+  if(currentMode==='buy'&&p.pLoan!==undefined){financeInfo='대출 '+fmtShort(p.pLoan)+' · 자기 '+fmtShort(p.pEquityNeeded)+' · 월 '+p.pMonthly+'만';}
+  else if(currentMode!=='buy'){const eq=getVal('cash'),rr=getVal('rentRate'),rlr=getVal('rentLoanRatio'),rll=getVal('rentLoanLimit'),rf=rlr/100;const mbr=rf<1?eq/(1-rf):eq+rll;const aL=Math.min(Math.floor(mbr*rf),rll),budget=eq+aL;const needEq=Math.max(0,p.deposit-budget+eq);const loanAmt=p.deposit-needEq;const mi=Math.round(loanAmt*rr/100/12);financeInfo='대출 '+fmtShort(loanAmt)+' · 이자 '+mi+'만/월';}
+  content.innerHTML='<div class="pc-compact" style="padding:4px 0"><div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line" style="margin-top:4px"><span class="pc-cprice">'+priceLabel+fmtShort(priceVal)+'</span><span class="pc-cdetails">'+meta.join(' ')+'</span></div><div class="pc-line" style="margin-top:2px"><span class="pc-cmeta">'+(station.length?'🚇 '+station.join(' '):'')+(extra.length?' · '+extra.join(' · '):'')+'</span></div>'+(financeInfo?'<div class="pc-line" style="margin-top:2px"><span class="pc-cmeta" style="color:var(--text-mid)">'+financeInfo+'</span></div>':'')+'<div class="pc-links" style="margin-top:8px">'+makeLinks(p)+'</div></div>';
   popup.classList.add('show');
   setTimeout(()=>{document.addEventListener('click',dismissMobilePopup,{once:true});},100);
 }
