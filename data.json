@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-02-17 23:15",
-  "total_count": 182,
-  "new_count": 0,
+  "updated_at": "2026-02-18 08:27",
+  "total_count": 183,
+  "new_count": 1,
   "properties": [
     {
       "name": "보은맨션",
@@ -22,6 +22,26 @@
       "regulated": false,
       "lat": null,
       "lon": null
+    },
+    {
+      "name": "벽적골9단지주공",
+      "region": "수원 영통구",
+      "dong": "영통동",
+      "area_m2": 59.39,
+      "area_py": 18.0,
+      "price": 56000,
+      "price_per_py": 3111,
+      "floor": 4,
+      "built_year": 1999,
+      "households": 0,
+      "station": "영통",
+      "line": "분당선",
+      "walk_min": 13,
+      "trade_date": "2026-02-13",
+      "link": "https://m.land.naver.com/search/result/%EC%98%81%ED%86%B5%EB%8F%99%20%EB%B2%BD%EC%A0%81%EA%B3%A89%EB%8B%A8%EC%A7%80%EC%A3%BC%EA%B3%B5",
+      "regulated": false,
+      "lat": 37.2474593018851,
+      "lon": 127.06565648263424
     },
     {
       "name": "기흥푸르지오포레피스",
