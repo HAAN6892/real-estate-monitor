@@ -522,9 +522,13 @@ def get_coordinates(kakao_key, address, coord_cache):
     except Exception:
         pass
 
+    # 2차: 키워드 검색 (법정동 제거 → 동명이인 지역 바이어스 방지)
+    # "경기 수원시 장안구 정자동 동신2단지" → "경기 수원시 장안구 동신2단지"
+    parts = address.split()
+    keyword = " ".join(parts[:-2] + parts[-1:]) if len(parts) >= 3 else address
     url2 = "https://dapi.kakao.com/v2/local/search/keyword.json"
     try:
-        resp = requests.get(url2, headers=headers, params=params, timeout=5)
+        resp = requests.get(url2, headers=headers, params={"query": keyword}, timeout=5)
         data = resp.json()
         if data.get("documents"):
             doc = data["documents"][0]
