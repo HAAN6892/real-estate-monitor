@@ -584,15 +584,16 @@ async function loadData(){
   try{const r=await fetch('data-rent.json');if(!r.ok)throw 0;const d=await r.json();RENT_UPDATED_AT=d.updated_at||'';RENT_PROPERTIES=groupRentProperties(d.properties||[]);RENT_DATA_LOADED=RENT_PROPERTIES.length>0;
   if(RENT_DATA_LOADED){const rr=[...new Set(RENT_PROPERTIES.map(p=>p.region))].sort();const s1=document.getElementById('regionFilter'),s2=document.getElementById('rentRegionFilter');rr.forEach(r=>{if(![...s1.options].some(o=>o.value===r)){const o=document.createElement('option');o.value=r;o.textContent=r;s1.appendChild(o);}const o2=document.createElement('option');o2.value=r;o2.textContent=r;s2.appendChild(o2);});}
   }catch(e){RENT_PROPERTIES=[];RENT_DATA_LOADED=false;}
-  // coord_cache 좌표 매핑 (dong+name 매칭)
+  // coord_cache 좌표 매핑 (캐시 키: "경기 수원시 장안구 동신2단지" 형태, 법정동 없음)
   if(Object.keys(coordCache).length>0){
     const ccEntries=Object.entries(coordCache);
     [PROPERTIES,RENT_PROPERTIES].forEach(props=>{
       props.forEach(p=>{
         if(p.lat&&p.lon)return;
-        const suffix=p.dong+' '+p.name;
-        for(const[k,v]of ccEntries){if(k.endsWith(suffix)&&k.includes(p.region)){p.lat=v.lat;p.lon=v.lon;break;}}
-        if(!p.lat){for(const[k,v]of ccEntries){if(k.endsWith(suffix)){p.lat=v.lat;p.lon=v.lon;break;}}}
+        // 1순위: name으로 끝나고 region 포함 (법정동 없는 새 키 매칭)
+        for(const[k,v]of ccEntries){if(k.endsWith(p.name)&&k.includes(p.region)){p.lat=v.lat;p.lon=v.lon;break;}}
+        // 2순위: dong+name suffix (기존 키 호환)
+        if(!p.lat){const suffix=p.dong+' '+p.name;for(const[k,v]of ccEntries){if(k.endsWith(suffix)){p.lat=v.lat;p.lon=v.lon;break;}}}
       });
     });
   }

@@ -504,36 +504,41 @@ def make_rent_trade_id(trade, region_name):
 
 # ─── 카카오 API로 주소 → 좌표 변환 ───
 def get_coordinates(kakao_key, address, coord_cache):
+    # 법정동 제거: "경기 수원시 장안구 정자동 동신2단지" → "경기 수원시 장안구 동신2단지"
+    # 동명이인 지역(예: 분당 정자동 vs 수원 정자동) 바이어스 방지
+    parts = address.split()
+    query = " ".join(parts[:-2] + parts[-1:]) if len(parts) >= 3 else address
+
+    # 캐시 조회 (법정동 제거된 키 우선, 기존 키 fallback)
+    if query in coord_cache:
+        return coord_cache[query]
     if address in coord_cache:
         return coord_cache[address]
 
-    url = "https://dapi.kakao.com/v2/local/search/address.json"
     headers = {"Authorization": f"KakaoAK {kakao_key}"}
-    params = {"query": address}
 
+    # 1차: 주소 검색
+    url = "https://dapi.kakao.com/v2/local/search/address.json"
     try:
-        resp = requests.get(url, headers=headers, params=params, timeout=5)
+        resp = requests.get(url, headers=headers, params={"query": query}, timeout=5)
         data = resp.json()
         if data.get("documents"):
             doc = data["documents"][0]
             result = {"lat": float(doc["y"]), "lon": float(doc["x"])}
-            coord_cache[address] = result
+            coord_cache[query] = result
             return result
     except Exception:
         pass
 
-    # 2차: 키워드 검색 (법정동 제거 → 동명이인 지역 바이어스 방지)
-    # "경기 수원시 장안구 정자동 동신2단지" → "경기 수원시 장안구 동신2단지"
-    parts = address.split()
-    keyword = " ".join(parts[:-2] + parts[-1:]) if len(parts) >= 3 else address
+    # 2차: 키워드 검색
     url2 = "https://dapi.kakao.com/v2/local/search/keyword.json"
     try:
-        resp = requests.get(url2, headers=headers, params={"query": keyword}, timeout=5)
+        resp = requests.get(url2, headers=headers, params={"query": query}, timeout=5)
         data = resp.json()
         if data.get("documents"):
             doc = data["documents"][0]
             result = {"lat": float(doc["y"]), "lon": float(doc["x"])}
-            coord_cache[address] = result
+            coord_cache[query] = result
             return result
     except Exception:
         pass
