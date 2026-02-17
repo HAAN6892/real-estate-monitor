@@ -589,8 +589,9 @@ async function loadData(){
     [PROPERTIES,RENT_PROPERTIES].forEach(props=>{
       props.forEach(p=>{
         if(p.lat&&p.lon)return;
-        const suffix=p.dong+' '+p.name;
-        for(const[k,v]of ccEntries){if(k.endsWith(suffix)){p.lat=v.lat;p.lon=v.lon;break;}}
+        const suffix=p.dong+' '+p.name;const fullKey=p.region+' '+suffix;
+        for(const[k,v]of ccEntries){if(k===fullKey||k.endsWith(fullKey)){p.lat=v.lat;p.lon=v.lon;break;}}
+        if(!p.lat){for(const[k,v]of ccEntries){if(k.endsWith(suffix)){p.lat=v.lat;p.lon=v.lon;break;}}}
       });
     });
   }
@@ -785,7 +786,7 @@ function geocodeUnmatchedProps(){
   const seen={};const toGeocode=[];
   allProps.forEach(p=>{
     if(p.lat&&p.lon)return;
-    const k=p.dong+'_'+p.name;if(seen[k])return;seen[k]=p;
+    const k=p.region+'_'+p.dong+'_'+p.name;if(seen[k])return;seen[k]=p;
     toGeocode.push(p);
   });
   if(toGeocode.length===0)return;
@@ -798,12 +799,12 @@ function geocodeUnmatchedProps(){
       return;
     }
     const p=toGeocode[idx++];
-    const query=p.dong+' '+p.name;
+    const query=p.region+' '+p.dong+' '+p.name;
     ps.keywordSearch(query,function(data,status){
       if(status===kakao.maps.services.Status.OK&&data.length>0){
         const lat=parseFloat(data[0].y),lon=parseFloat(data[0].x);
         // 같은 dong+name을 공유하는 모든 속성에 좌표 적용
-        allProps.forEach(ap=>{if(ap.dong===p.dong&&ap.name===p.name&&!ap.lat){ap.lat=lat;ap.lon=lon;}});
+        allProps.forEach(ap=>{if(ap.region===p.region&&ap.dong===p.dong&&ap.name===p.name&&!ap.lat){ap.lat=lat;ap.lon=lon;}});
         found++;
       }
       if(idx%30===0&&found>0){update();found=0;}
