@@ -502,6 +502,8 @@ def make_rent_trade_id(trade, region_name):
     return f"R_{region_name}_{trade['아파트']}_{trade['면적']}_{trade['보증금']}_{trade['월세']}_{trade['층']}_{trade['거래년도']}{trade['거래월']:02d}{trade['거래일']:02d}"
 
 
+EXCLUDE_KEYWORDS = ["오피스텔", "주상복합", "도시형", "빌라", "타운하우스"]
+
 # ─── 카카오 API로 주소 → 좌표 변환 ───
 def get_coordinates(kakao_key, address, coord_cache):
     # 법정동 제거: "경기 수원시 장안구 정자동 동신2단지" → "경기 수원시 장안구 동신2단지"
@@ -624,7 +626,11 @@ def build_region_data(region_name, complex_groups, kakao_key, coord_cache, sgg_n
     skipped_small = 0
 
     for key, group in complex_groups.items():
-        apt_info = get_apt_household_count(api_key, group["아파트"], region_code, apt_info_cache, apt_list_cache)
+        apt_name = group["아파트"]
+        if any(kw in apt_name for kw in EXCLUDE_KEYWORDS):
+            continue
+
+        apt_info = get_apt_household_count(api_key, apt_name, region_code, apt_info_cache, apt_list_cache)
         household = apt_info["세대수"]
 
         if household > 0 and household < min_households:
@@ -634,7 +640,7 @@ def build_region_data(region_name, complex_groups, kakao_key, coord_cache, sgg_n
         trades = group["거래"]
         pyeong = to_pyeong(group["면적"])
 
-        address = f"{sgg_name} {group['법정동']} {group['아파트']}"
+        address = f"{sgg_name} {group['법정동']} {apt_name}"
         coord = get_coordinates(kakao_key, address, coord_cache)
 
         walk_min = 999
@@ -651,11 +657,11 @@ def build_region_data(region_name, complex_groups, kakao_key, coord_cache, sgg_n
             except (ValueError, TypeError):
                 trade_date_str = ""
 
-            search_query = urllib.parse.quote(f"{group['법정동']} {group['아파트']}")
+            search_query = urllib.parse.quote(f"{group['법정동']} {apt_name}")
             naver_link = f"https://m.land.naver.com/search/result/{search_query}"
 
             data_items.append({
-                "name": group["아파트"],
+                "name": apt_name,
                 "region": region_name,
                 "dong": group["법정동"],
                 "area_m2": group["면적"],
@@ -688,7 +694,11 @@ def build_rent_region_data(region_name, complex_groups, kakao_key, coord_cache, 
     skipped_small = 0
 
     for key, group in complex_groups.items():
-        apt_info = get_apt_household_count(api_key, group["아파트"], region_code, apt_info_cache, apt_list_cache)
+        apt_name = group["아파트"]
+        if any(kw in apt_name for kw in EXCLUDE_KEYWORDS):
+            continue
+
+        apt_info = get_apt_household_count(api_key, apt_name, region_code, apt_info_cache, apt_list_cache)
         household = apt_info["세대수"]
 
         if household > 0 and household < min_households:
@@ -698,7 +708,7 @@ def build_rent_region_data(region_name, complex_groups, kakao_key, coord_cache, 
         trades = group["거래"]
         pyeong = to_pyeong(group["면적"])
 
-        address = f"{sgg_name} {group['법정동']} {group['아파트']}"
+        address = f"{sgg_name} {group['법정동']} {apt_name}"
         coord = get_coordinates(kakao_key, address, coord_cache)
 
         walk_min = 999
@@ -715,11 +725,11 @@ def build_rent_region_data(region_name, complex_groups, kakao_key, coord_cache, 
             except (ValueError, TypeError):
                 trade_date_str = ""
 
-            search_query = urllib.parse.quote(f"{group['법정동']} {group['아파트']}")
+            search_query = urllib.parse.quote(f"{group['법정동']} {apt_name}")
             naver_link = f"https://m.land.naver.com/search/result/{search_query}"
 
             data_items.append({
-                "name": group["아파트"],
+                "name": apt_name,
                 "region": region_name,
                 "dong": group["법정동"],
                 "area_m2": group["면적"],
