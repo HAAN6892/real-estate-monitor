@@ -235,7 +235,7 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
   .split-list table{font-size:12px}
   .split-list th,.split-list td{padding:7px 8px}
   #buyTableWrap th:nth-child(7),#buyTableWrap td:nth-child(7),#buyTableWrap th:nth-child(8),#buyTableWrap td:nth-child(8),#buyTableWrap th:nth-child(9),#buyTableWrap td:nth-child(9),#buyTableWrap th:nth-child(10),#buyTableWrap td:nth-child(10){display:none}
-  #rentTableWrapInner th:nth-child(8),#rentTableWrapInner td:nth-child(8),#rentTableWrapInner th:nth-child(9),#rentTableWrapInner td:nth-child(9),#rentTableWrapInner th:nth-child(10),#rentTableWrapInner td:nth-child(10){display:none}
+  #rentTableWrapInner th:nth-child(8),#rentTableWrapInner td:nth-child(8),#rentTableWrapInner th:nth-child(9),#rentTableWrapInner td:nth-child(9),#rentTableWrapInner th:nth-child(10),#rentTableWrapInner td:nth-child(10),#rentTableWrapInner th:nth-child(11),#rentTableWrapInner td:nth-child(11){display:none}
   .col-name{min-width:120px}.col-region{min-width:60px}.col-price{min-width:70px}.col-monthly{min-width:50px}.col-verdict{min-width:50px}
 }
 /* Tablet */
@@ -244,7 +244,7 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
   .split-list table{font-size:12px}
   .split-list th,.split-list td{padding:5px 4px}
   #buyTableWrap th:nth-child(3),#buyTableWrap td:nth-child(3),#buyTableWrap th:nth-child(7),#buyTableWrap td:nth-child(7),#buyTableWrap th:nth-child(8),#buyTableWrap td:nth-child(8),#buyTableWrap th:nth-child(9),#buyTableWrap td:nth-child(9),#buyTableWrap th:nth-child(10),#buyTableWrap td:nth-child(10){display:none}
-  #rentTableWrapInner th:nth-child(3),#rentTableWrapInner td:nth-child(3),#rentTableWrapInner th:nth-child(7),#rentTableWrapInner td:nth-child(7),#rentTableWrapInner th:nth-child(8),#rentTableWrapInner td:nth-child(8),#rentTableWrapInner th:nth-child(9),#rentTableWrapInner td:nth-child(9),#rentTableWrapInner th:nth-child(10),#rentTableWrapInner td:nth-child(10){display:none}
+  #rentTableWrapInner th:nth-child(3),#rentTableWrapInner td:nth-child(3),#rentTableWrapInner th:nth-child(7),#rentTableWrapInner td:nth-child(7),#rentTableWrapInner th:nth-child(8),#rentTableWrapInner td:nth-child(8),#rentTableWrapInner th:nth-child(9),#rentTableWrapInner td:nth-child(9),#rentTableWrapInner th:nth-child(10),#rentTableWrapInner td:nth-child(10),#rentTableWrapInner th:nth-child(11),#rentTableWrapInner td:nth-child(11){display:none}
   .col-name{min-width:100px}.col-region{min-width:50px}.col-price{min-width:60px}.col-monthly{min-width:45px}.col-verdict{min-width:45px}
   .stats-row{grid-template-columns:repeat(2,1fr);gap:8px}.stat-value{font-size:18px}
   .loan-grid,.rent-loan-grid{grid-template-columns:1fr}.policy-grid{grid-template-columns:1fr}
@@ -330,7 +330,7 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
     </div>
   </div>
   <div class="section buy-only"><div class="section-header"><div class="section-title">🔍 매물 탐색 조건</div><div class="section-badge">현재 배치 설정 기준</div></div>
-    <div class="condition-row"><div class="cond-chip">📐 59~84㎡ (20평대)</div><div class="cond-chip">🚇 역세권 도보 15분 이내</div><div class="cond-chip">🏢 200세대 이상</div><div class="cond-chip">💰 매매가 6억 이하</div><div class="cond-chip">🚋 신분당선 라인</div><div class="cond-chip">📍 서울 동남부 · 성남 · 용인 · 과천 · 안양 · 하남 · 광주</div></div>
+    <div class="condition-row"><div class="cond-chip">📐 59~84㎡ (20평대)</div><div class="cond-chip">🚇 역세권 도보 15분 이내</div><div class="cond-chip">🏢 200세대 이상</div><div class="cond-chip">💰 매매가 6억 이하</div><div class="cond-chip">🚋 신분당선 라인</div><div class="cond-chip">📍 서울 동남부 · 성남 · 용인 · 과천 · 안양 · 하남 · 광주 · 수원 · 군포 · 의왕 · 구리 · 광명</div></div>
   </div>
   <div class="section"><div class="section-header"><div class="section-title">🔗 부동산 사이트 바로가기</div></div>
     <div class="quick-links">
@@ -373,7 +373,7 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
         </div>
         <div class="rent-only">
           <div class="card-grid" id="rentPropertyCards"></div>
-          <div class="table-wrap" id="rentTableWrapInner" style="display:none"><table><thead><tr><th class="col-verdict">판정</th><th class="col-name">단지명</th><th class="col-region">지역</th><th class="col-area">면적</th><th style="min-width:50px">유형</th><th class="col-price">보증금</th><th style="min-width:60px">월세</th><th style="min-width:70px">역세권</th><th style="min-width:50px">연식</th><th class="col-link">링크</th></tr></thead><tbody id="rentPropertyBody"></tbody></table></div>
+          <div class="table-wrap" id="rentTableWrapInner" style="display:none"><table><thead><tr><th class="col-verdict">판정</th><th class="col-name">단지명</th><th class="col-region">지역</th><th class="col-area">면적</th><th style="min-width:50px">유형</th><th class="col-price">보증금</th><th style="min-width:60px">월세</th><th style="min-width:70px">역세권</th><th style="min-width:50px">연식</th><th style="min-width:50px">세대</th><th class="col-link">링크</th></tr></thead><tbody id="rentPropertyBody"></tbody></table></div>
           <div class="pagination-bar"><div style="display:flex;align-items:center;gap:8px;"><span>표시 건수</span><select class="page-size-select" id="rentPageSizeSelect" onchange="changeRentPageSize(this.value)"><option value="20" selected>20개</option><option value="30">30개</option><option value="40">40개</option><option value="50">50개</option></select></div><div class="page-info" id="rentPageInfo"></div><div class="page-btns" id="rentPageBtns"></div></div>
         </div>
       </div>
@@ -710,7 +710,7 @@ function updateRentTable(equity,budget){
     let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.deposit-p.trades[i+1].deposit;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'날짜없음')+'</span><span class="trade-price">'+fmtShort(t.deposit)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');const pd=p.max_deposit-p.min_deposit;hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span><span style="font-size:10px;color:var(--text-dim)">'+(pd>0?'변동폭: '+fmtShort(pd):'동일가')+'</span></div>'+rows+'</div>';}
     const stTxt=p.station_name?(p.station_name+(p.walk_min?' '+p.walk_min+'분':'')):'—';
     const tr=document.createElement('tr');tr.dataset.propId=getPropId(p);tr.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));tr.addEventListener('mouseleave',()=>stopBounce());
-    tr.innerHTML='<td data-label="판정"><span class="tag '+p.verdictTag+'">'+p.verdict+'</span></td><td data-label="단지명"><strong>'+p.name+'</strong><br><span style="font-size:10px;color:var(--text-dim)">'+(p.line?p.line+' ':'')+p.station+(ex.length?' · '+ex.join(' · '):'')+'</span><br>'+tBtn+hH+'</td><td data-label="지역"><span class="tag tag-region">'+p.region+'</span></td><td data-label="면적">'+fmtArea(p)+'</td><td data-label="유형">'+typeTag+'</td><td data-label="보증금" class="mono">'+fmtShort(p.deposit)+'</td><td data-label="월세" class="mono">'+(p.monthly_rent>0?p.monthly_rent+'만':'—')+'</td><td data-label="역세권">'+stTxt+'</td><td data-label="연식">'+(p.built_year||'—')+'</td><td data-label="링크"><div class="link-icons">'+makeLinks(p)+'</div></td>';
+    tr.innerHTML='<td data-label="판정"><span class="tag '+p.verdictTag+'">'+p.verdict+'</span></td><td data-label="단지명"><strong>'+p.name+'</strong><br><span style="font-size:10px;color:var(--text-dim)">'+(p.line?p.line+' ':'')+p.station+(ex.length?' · '+ex.join(' · '):'')+'</span><br>'+tBtn+hH+'</td><td data-label="지역"><span class="tag tag-region">'+p.region+'</span></td><td data-label="면적">'+fmtArea(p)+'</td><td data-label="유형">'+typeTag+'</td><td data-label="보증금" class="mono">'+fmtShort(p.deposit)+'</td><td data-label="월세" class="mono">'+(p.monthly_rent>0?p.monthly_rent+'만':'—')+'</td><td data-label="역세권">'+stTxt+'</td><td data-label="연식">'+(p.built_year||'—')+'</td><td data-label="세대">'+(p.households||'—')+'</td><td data-label="링크"><div class="link-icons">'+makeLinks(p)+'</div></td>';
     tb.appendChild(tr);
   });}
   document.getElementById('rentPropertyBadge').textContent=mapBoundsFilter&&mapBounds?'지도 영역 내 '+ti+'건':ti+'/'+RENT_PROPERTIES.length+'개 표시';
