@@ -1,16 +1,13 @@
-name: 부동산 정책 모니터링
+name: 정책 모니터링
 
 on:
   schedule:
-    - cron: '0 0 * * *'
-    - cron: '0 5 * * *'
-    - cron: '0 10 * * *'
-  workflow_dispatch:
+    - cron: '0 0 * * 1'       # 월요일 09:00 KST (UTC 월요일 0시)
+  workflow_dispatch:            # 수동 실행 가능
 
 jobs:
-  policy-monitor:
+  policy-check:
     runs-on: ubuntu-latest
-
     steps:
       - name: 코드 체크아웃
         uses: actions/checkout@v4
@@ -21,7 +18,7 @@ jobs:
           python-version: '3.11'
 
       - name: 패키지 설치
-        run: pip install requests
+        run: pip install requests beautifulsoup4
 
       - name: config.json 생성
         env:
@@ -38,26 +35,15 @@ jobs:
           }
           with open("config.json", "w", encoding="utf-8") as f:
               json.dump(config, f, ensure_ascii=False, indent=2)
-          print("config.json 생성 완료")
           EOF
 
-      - name: 전송 기록 복원
-        uses: actions/cache@v4
-        with:
-          path: policy_sent_ids.json
-          key: policy-sent-${{ github.run_id }}
-          restore-keys: |
-            policy-sent-
-
       - name: 정책 모니터링 실행
-        env:
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
-          NOTION_DB_ID: ${{ secrets.NOTION_DB_ID }}
         run: python policy_monitor.py
 
-      - name: 전송 기록 저장
-        if: always()
-        uses: actions/cache/save@v4
-        with:
-          path: policy_sent_ids.json
-          key: policy-sent-${{ github.run_id }}
+      - name: 캐시 업데이트 커밋
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add policy_cache.json
+          git diff --staged --quiet || git commit -m "chore: update policy cache"
+          git push
