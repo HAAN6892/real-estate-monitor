@@ -499,7 +499,7 @@ function getVal(id){const i=document.getElementById(id+'Val');if(i&&i.value!==''
 function fmtShort(n){if(n>=10000){const u=Math.floor(n/10000),m=n%10000;return m===0?u+'억':u+'억 '+m.toLocaleString()+'만';}return n.toLocaleString()+'만';}
 function monthlyPayment(p,r,y){if(p<=0)return 0;const mr=r/100/12,n=y*12;if(mr===0)return p/n;return p*mr*Math.pow(1+mr,n)/(Math.pow(1+mr,n)-1);}
 function maxLoanFromMonthly(m,r,y){const mr=r/100/12,n=y*12;if(mr===0)return m*n;return m*(Math.pow(1+mr,n)-1)/(mr*Math.pow(1+mr,n));}
-function makeLinks(p){const q=encodeURIComponent((p.dong||'')+' '+p.name);return '<a href="https://m.land.naver.com/search/result/'+q+'" target="_blank" class="link-icon" title="네이버 부동산">N</a><a href="https://kbland.kr/map?search='+encodeURIComponent(p.name)+'" target="_blank" class="link-icon" title="KB부동산">K</a>';}
+function makeLinks(p){const q=encodeURIComponent((p.dong||'')+' '+p.name);return '<a href="https://m.land.naver.com/search/result/'+q+'" target="_blank" class="link-icon" title="네이버 부동산">N</a>';}
 function setSort(btn){btn.closest('.filter-chip-group').querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentSort=btn.dataset.sort;currentPage=1;update();}
 function setRentSort(btn){btn.closest('.filter-chip-group').querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');rentSort=btn.dataset.sort;rentPage=1;update();}
 function setVerdictFilter(btn){document.querySelectorAll('#verdictChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');verdictFilterVal=btn.dataset.val;currentPage=1;update();}
