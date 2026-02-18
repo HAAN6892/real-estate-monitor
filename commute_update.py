@@ -70,7 +70,8 @@ def search_transit(api_key, sx, sy, search_type=0):
     }
 
     try:
-        resp = requests.get(ODSAY_URL, params=params, timeout=15)
+        headers = {"Referer": "https://haan6892.github.io/"}
+        resp = requests.get(ODSAY_URL, params=params, headers=headers, timeout=15)
         result = resp.json()
 
         # 첫 1회만 전체 응답 출력
