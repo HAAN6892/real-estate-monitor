@@ -213,6 +213,7 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
 .pc-compact .pc-cprice{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--mode-accent);white-space:nowrap}
 .pc-compact .pc-cdetails{font-size:11px;color:var(--text-mid);flex:1;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pc-compact .pc-cfoot{display:flex;justify-content:space-between;align-items:center;margin-top:4px;padding-top:4px;border-top:1px solid var(--border)}
+.pc-commute{font-size:11px;letter-spacing:0.5px;white-space:nowrap}
 .pc-compact .pc-links{display:flex;gap:3px}
 .pc-compact .link-icon{width:22px;height:22px;font-size:11px}
 .pc-compact .expand-btn{font-size:10px;padding:3px 8px}
@@ -354,11 +355,11 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
   </div>
   <div class="tab-content active" id="tab-properties">
     <div class="buy-only"><div class="section" style="margin-top:0;margin-bottom:0"><div class="section-header"><div class="section-title">🏘️ 관심 매물 시뮬레이션</div><div class="section-badge" id="propertyBadge">데이터 없음</div></div>
-      <div class="filter-bar"><select class="filter-select" id="regionFilter" onchange="onBuyFilterChange()"><option value="">전체 지역</option></select><select class="filter-select" id="areaFilter" onchange="onBuyFilterChange()"><option value="">전체 면적</option><option value="small">소형 (~18평)</option><option value="mid">중형 (18~25평)</option><option value="large">대형 (25평+)</option></select><select class="filter-select" id="buyVerdictSelect" onchange="onBuyFilterChange()"><option value="">전체 판정</option><option value="매수가능">✅ 매수가능</option><option value="빠듯함">⚠️ 빠듯함</option><option value="상환초과">🔴 상환초과</option><option value="자금부족">🔴 자금부족</option></select><div class="filter-bar-divider"></div><select class="filter-select" id="buySortSelect" onchange="onBuyFilterChange()"><option value="value">⭐ 가성비순</option><option value="price-asc">가격↑</option><option value="price-desc">가격↓</option><option value="area-desc">면적↓</option><option value="walk">역세권순</option><option value="latest">최신거래순</option></select><input type="text" class="search-input" id="searchInput" placeholder="🔍 검색..." oninput="onBuyFilterChange()"><button class="filter-reset-btn" id="buyResetBtn" onclick="resetBuyFilters()" style="display:none">↺ 초기화</button><div class="filter-bar-divider"></div><div class="view-toggle"><button class="view-btn active" data-view="card" onclick="setView('card')" title="카드형">▦</button><button class="view-btn" data-view="table" onclick="setView('table')" title="테이블형">≡</button></div></div>
+      <div class="filter-bar"><select class="filter-select" id="regionFilter" onchange="onBuyFilterChange()"><option value="">전체 지역</option></select><select class="filter-select" id="areaFilter" onchange="onBuyFilterChange()"><option value="">전체 면적</option><option value="small">소형 (~18평)</option><option value="mid">중형 (18~25평)</option><option value="large">대형 (25평+)</option></select><select class="filter-select" id="buyVerdictSelect" onchange="onBuyFilterChange()"><option value="">전체 판정</option><option value="매수가능">✅ 매수가능</option><option value="빠듯함">⚠️ 빠듯함</option><option value="상환초과">🔴 상환초과</option><option value="자금부족">🔴 자금부족</option></select><select class="filter-select" id="buyCommuteFilter" onchange="onBuyFilterChange()"><option value="">전체 출퇴근</option><option value="transit60">🚌 1시간 이내</option><option value="subway60">🚇 1시간 이내</option><option value="transit45">🚌 45분 이내</option></select><div class="filter-bar-divider"></div><select class="filter-select" id="buySortSelect" onchange="onBuyFilterChange()"><option value="value">⭐ 가성비순</option><option value="price-asc">가격↑</option><option value="price-desc">가격↓</option><option value="area-desc">면적↓</option><option value="walk">역세권순</option><option value="commute">🚌 출퇴근순</option><option value="latest">최신거래순</option></select><input type="text" class="search-input" id="searchInput" placeholder="🔍 검색..." oninput="onBuyFilterChange()"><button class="filter-reset-btn" id="buyResetBtn" onclick="resetBuyFilters()" style="display:none">↺ 초기화</button><div class="filter-bar-divider"></div><div class="view-toggle"><button class="view-btn active" data-view="card" onclick="setView('card')" title="카드형">▦</button><button class="view-btn" data-view="table" onclick="setView('table')" title="테이블형">≡</button></div></div>
     </div></div>
     <div class="rent-only" id="rentPropertySection">
       <div id="rentTableWrap" style="display:none"><div class="section" style="margin-top:0;margin-bottom:0"><div class="section-header"><div class="section-title">🔑 전세 실거래 현황</div><div class="section-badge" id="rentPropertyBadge">데이터 없음</div></div>
-        <div class="filter-bar"><select class="filter-select" id="rentRegionFilter" onchange="onRentFilterChange()"><option value="">전체 지역</option></select><select class="filter-select" id="rentAreaFilter" onchange="onRentFilterChange()"><option value="">전체 면적</option><option value="small">소형 (~18평)</option><option value="mid">중형 (18~25평)</option><option value="large">대형 (25평+)</option></select><select class="filter-select" id="rentVerdictSelect" onchange="onRentFilterChange()"><option value="">전체 판정</option><option value="가능">✅ 가능</option><option value="빠듯함">⚠️ 빠듯함</option><option value="예산초과">🔴 예산초과</option></select><select class="filter-select" id="rentTypeSelect" onchange="onRentFilterChange()"><option value="">전체 유형</option><option value="전세">🔑 전세</option><option value="월세">💳 월세</option></select><div class="filter-bar-divider"></div><select class="filter-select" id="rentSortSelect" onchange="onRentFilterChange()"><option value="value">⭐ 가성비순</option><option value="price-asc">보증금↑</option><option value="price-desc">보증금↓</option><option value="area-desc">면적↓</option><option value="walk">역세권순</option><option value="latest">최신거래순</option></select><input type="text" class="search-input" id="rentSearchInput" placeholder="🔍 검색..." oninput="onRentFilterChange()"><button class="filter-reset-btn" id="rentResetBtn" onclick="resetRentFilters()" style="display:none">↺ 초기화</button><div class="filter-bar-divider"></div><div class="view-toggle"><button class="view-btn active" data-view="card" onclick="setView('card')" title="카드형">▦</button><button class="view-btn" data-view="table" onclick="setView('table')" title="테이블형">≡</button></div></div>
+        <div class="filter-bar"><select class="filter-select" id="rentRegionFilter" onchange="onRentFilterChange()"><option value="">전체 지역</option></select><select class="filter-select" id="rentAreaFilter" onchange="onRentFilterChange()"><option value="">전체 면적</option><option value="small">소형 (~18평)</option><option value="mid">중형 (18~25평)</option><option value="large">대형 (25평+)</option></select><select class="filter-select" id="rentVerdictSelect" onchange="onRentFilterChange()"><option value="">전체 판정</option><option value="가능">✅ 가능</option><option value="빠듯함">⚠️ 빠듯함</option><option value="예산초과">🔴 예산초과</option></select><select class="filter-select" id="rentTypeSelect" onchange="onRentFilterChange()"><option value="">전체 유형</option><option value="전세">🔑 전세</option><option value="월세">💳 월세</option></select><select class="filter-select" id="rentCommuteFilter" onchange="onRentFilterChange()"><option value="">전체 출퇴근</option><option value="transit60">🚌 1시간 이내</option><option value="subway60">🚇 1시간 이내</option><option value="transit45">🚌 45분 이내</option></select><div class="filter-bar-divider"></div><select class="filter-select" id="rentSortSelect" onchange="onRentFilterChange()"><option value="value">⭐ 가성비순</option><option value="price-asc">보증금↑</option><option value="price-desc">보증금↓</option><option value="area-desc">면적↓</option><option value="walk">역세권순</option><option value="commute">🚌 출퇴근순</option><option value="latest">최신거래순</option></select><input type="text" class="search-input" id="rentSearchInput" placeholder="🔍 검색..." oninput="onRentFilterChange()"><button class="filter-reset-btn" id="rentResetBtn" onclick="resetRentFilters()" style="display:none">↺ 초기화</button><div class="filter-bar-divider"></div><div class="view-toggle"><button class="view-btn active" data-view="card" onclick="setView('card')" title="카드형">▦</button><button class="view-btn" data-view="table" onclick="setView('table')" title="테이블형">≡</button></div></div>
       </div></div>
       <div class="rent-placeholder" id="rentPlaceholder"><div class="rent-placeholder-icon">🔑</div><div class="rent-placeholder-title">전세 매물 데이터 준비 중</div><div class="rent-placeholder-desc">전월세 실거래 데이터 파이프라인을 구축 중입니다.<br>현재는 위 시뮬레이터와 정책대출 탭으로 전세 예산을 분석할 수 있습니다.<br>아래 사이트에서 전세 매물을 직접 탐색해보세요.</div>
         <div class="rent-placeholder-links"><a href="https://new.land.naver.com/" target="_blank" class="quick-link" style="flex:none"><span class="ql-icon">🟢</span><span class="ql-name">네이버 전세</span></a><a href="https://kbland.kr/" target="_blank" class="quick-link" style="flex:none"><span class="ql-icon">🟠</span><span class="ql-name">KB부동산 전세</span></a><a href="https://asil.kr/" target="_blank" class="quick-link" style="flex:none"><span class="ql-icon">🔵</span><span class="ql-name">아실 전세</span></a></div>
@@ -435,7 +436,7 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
 </div>
 <script>
 let currentMode='buy',isMarried=true,PROPERTIES=[],RENT_PROPERTIES=[],DATA_LOADED=false,RENT_DATA_LOADED=false,DATA_UPDATED_AT='',RENT_UPDATED_AT='',currentSort='value',rentSort='value',searchQuery='',regionFilterVal='',verdictFilterVal='',rentTypeFilterVal='',rentVerdictFilterVal='',areaUnit='py',pageSize=20,currentPage=1,rentPage=1,currentView='card';
-let markerMap={},filteredBuyProps=[],filteredRentProps=[],hlTimer=null;
+let markerMap={},filteredBuyProps=[],filteredRentProps=[],hlTimer=null,COMMUTE_DATA={};
 
 function setMarriage(married){
   isMarried=married;
@@ -500,6 +501,15 @@ function fmtShort(n){if(n>=10000){const u=Math.floor(n/10000),m=n%10000;return m
 function monthlyPayment(p,r,y){if(p<=0)return 0;const mr=r/100/12,n=y*12;if(mr===0)return p/n;return p*mr*Math.pow(1+mr,n)/(Math.pow(1+mr,n)-1);}
 function maxLoanFromMonthly(m,r,y){const mr=r/100/12,n=y*12;if(mr===0)return m*n;return m*(Math.pow(1+mr,n)-1)/(mr*Math.pow(1+mr,n));}
 function makeLinks(p){const q=encodeURIComponent((p.dong||'')+' '+p.name);return '<a href="https://m.land.naver.com/search/result/'+q+'" target="_blank" class="link-icon" title="네이버 부동산">N</a>';}
+function fmtCommute(min){if(min==null)return'<span style="color:var(--text-dim)">—</span>';const c=min<=60?'var(--green)':min<=90?'var(--yellow)':'var(--text-dim)';return'<span style="color:'+c+'">'+min+'분</span>';}
+function commuteHtml(p){return'<span class="pc-commute">🚇'+fmtCommute(p.commuteSubway)+' 🚌'+fmtCommute(p.commuteTransit)+'</span>';}
+function matchCommute(p){
+  if(!COMMUTE_DATA.data)return null;const d=COMMUTE_DATA.data;
+  const key=p.region+' '+p.dong;if(d[key])return d[key];
+  const normR=s=>s.replace(/시(\s|$)/g,'$1').replace(/^경기\s+/,'').replace(/\s+/g,' ').trim();
+  const nk=normR(key);for(const[k,v]of Object.entries(d)){if(normR(k)===nk)return v;}
+  return null;
+}
 function setSort(btn){btn.closest('.filter-chip-group').querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentSort=btn.dataset.sort;currentPage=1;update();}
 function setRentSort(btn){btn.closest('.filter-chip-group').querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');rentSort=btn.dataset.sort;rentPage=1;update();}
 function setVerdictFilter(btn){document.querySelectorAll('#verdictChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');verdictFilterVal=btn.dataset.val;currentPage=1;update();}
@@ -510,18 +520,18 @@ function onBuyFilterChange(){currentPage=1;update();}
 function onRentFilterChange(){rentPage=1;update();}
 function highlightSelects(){
   document.querySelectorAll('.filter-bar .filter-select').forEach(s=>{s.classList.toggle('active',s.selectedIndex>0);});
-  const buyActive=['regionFilter','areaFilter','buyVerdictSelect'].some(id=>{const el=document.getElementById(id);return el&&el.selectedIndex>0;})||document.getElementById('searchInput').value!=='';
-  const rentActive=['rentRegionFilter','rentAreaFilter','rentVerdictSelect','rentTypeSelect'].some(id=>{const el=document.getElementById(id);return el&&el.selectedIndex>0;})||document.getElementById('rentSearchInput').value!=='';
+  const buyActive=['regionFilter','areaFilter','buyVerdictSelect','buyCommuteFilter'].some(id=>{const el=document.getElementById(id);return el&&el.selectedIndex>0;})||document.getElementById('searchInput').value!=='';
+  const rentActive=['rentRegionFilter','rentAreaFilter','rentVerdictSelect','rentTypeSelect','rentCommuteFilter'].some(id=>{const el=document.getElementById(id);return el&&el.selectedIndex>0;})||document.getElementById('rentSearchInput').value!=='';
   const bb=document.getElementById('buyResetBtn'),rb=document.getElementById('rentResetBtn');
   if(bb)bb.style.display=buyActive?'':'none';
   if(rb)rb.style.display=rentActive?'':'none';
 }
 function resetBuyFilters(){
-  ['regionFilter','areaFilter','buyVerdictSelect','buySortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
+  ['regionFilter','areaFilter','buyVerdictSelect','buyCommuteFilter','buySortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
   document.getElementById('searchInput').value='';currentPage=1;update();
 }
 function resetRentFilters(){
-  ['rentRegionFilter','rentAreaFilter','rentVerdictSelect','rentTypeSelect','rentSortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
+  ['rentRegionFilter','rentAreaFilter','rentVerdictSelect','rentTypeSelect','rentCommuteFilter','rentSortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
   document.getElementById('rentSearchInput').value='';rentPage=1;update();
 }
 function areaMatch(py,val){if(!val)return true;const p=parseFloat(py)||0;if(val==='small')return p<=18;if(val==='mid')return p>18&&p<=25;if(val==='large')return p>25;return true;}
@@ -556,7 +566,7 @@ function renderBuyCards(items,eq,mr){
     let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.price-p.trades[i+1].price;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'')+'</span><span class="trade-price">'+fmtShort(t.price)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span></div>'+rows+'</div>';}
     const card=document.createElement('div');card.className='prop-card pc-compact';card.dataset.propId=getPropId(p);
     card.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));card.addEventListener('mouseleave',()=>stopBounce());
-    card.innerHTML='<div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">매매 '+fmtShort(p.price)+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span><div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
+    card.innerHTML='<div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">매매 '+fmtShort(p.price)+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
     cg.appendChild(card);
   });
 }
@@ -578,7 +588,7 @@ function renderRentCards(items,equity,budget){
     let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.deposit-p.trades[i+1].deposit;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'')+'</span><span class="trade-price">'+fmtShort(t.deposit)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span></div>'+rows+'</div>';}
     const card=document.createElement('div');card.className='prop-card pc-compact';card.dataset.propId=getPropId(p);
     card.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));card.addEventListener('mouseleave',()=>stopBounce());
-    card.innerHTML='<div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+typeIcon+' '+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceStr+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span><div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
+    card.innerHTML='<div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+typeIcon+' '+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceStr+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
     cg.appendChild(card);
   });
 }
@@ -601,6 +611,7 @@ function groupRentProperties(raw){
 async function loadData(){
   let coordCache={};
   try{const cr=await fetch('coord_cache.json');if(cr.ok)coordCache=await cr.json();}catch(e){}
+  try{const cr=await fetch('commute_time.json');if(cr.ok)COMMUTE_DATA=await cr.json();}catch(e){}
   try{const r=await fetch('data.json');if(!r.ok)throw 0;const d=await r.json();DATA_UPDATED_AT=d.updated_at||'';PROPERTIES=groupProperties(d.properties||[]);DATA_LOADED=true;
   const regions=[...new Set(PROPERTIES.map(p=>p.region))].sort();const sel=document.getElementById('regionFilter');regions.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;sel.appendChild(o);});
   }catch(e){PROPERTIES=[];DATA_LOADED=false;}
@@ -623,6 +634,10 @@ async function loadData(){
       });
     });
   }
+  // 출퇴근 소요시간 매핑
+  [PROPERTIES,RENT_PROPERTIES].forEach(props=>{
+    props.forEach(p=>{const c=matchCommute(p);p.commuteSubway=c?c.subway:null;p.commuteTransit=c?c.transit:null;});
+  });
   update();
 }
 function update(){
@@ -656,9 +671,10 @@ function updateBuy(){
   let bn='LTV';if(fL===dsrL)bn='DSR';if(fL===mlL)bn='월상환';document.getElementById('loanBadge').textContent='병목: '+bn;
   updatePropTable(eq,fL,eLTV,rate,term,mr);
 }
+function commuteMatch(p,cv){if(!cv)return true;if(cv==='transit60')return p.commuteTransit!=null&&p.commuteTransit<=60;if(cv==='subway60')return p.commuteSubway!=null&&p.commuteSubway<=60;if(cv==='transit45')return p.commuteTransit!=null&&p.commuteTransit<=45;return true;}
 function updatePropTable(eq,fL,eLTV,rate,term,mr){
-  const sq=document.getElementById('searchInput').value.toLowerCase(),rv=document.getElementById('regionFilter').value,av=(document.getElementById('areaFilter')||{}).value||'',vv=(document.getElementById('buyVerdictSelect')||{}).value||'',sv=(document.getElementById('buySortSelect')||{}).value||'value';
-  let f=PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq))return false;if(rv&&p.region!==rv)return false;if(!areaMatch(p.area_py,av))return false;return true;});
+  const sq=document.getElementById('searchInput').value.toLowerCase(),rv=document.getElementById('regionFilter').value,av=(document.getElementById('areaFilter')||{}).value||'',vv=(document.getElementById('buyVerdictSelect')||{}).value||'',cv=(document.getElementById('buyCommuteFilter')||{}).value||'',sv=(document.getElementById('buySortSelect')||{}).value||'value';
+  let f=PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq))return false;if(rv&&p.region!==rv)return false;if(!areaMatch(p.area_py,av))return false;if(!commuteMatch(p,cv))return false;return true;});
   const wv=f.map(p=>{const pL=p.regulated?Math.min(eLTV,50):eLTV,pLn=Math.min(Math.floor(p.price*pL/100),fL),pEq=p.price-pLn,pM=Math.floor(monthlyPayment(pLn,rate,term));let v,vt;if(pEq>eq){v='자금부족';vt='tag-danger';}else if(pM>mr){v='상환초과';vt='tag-danger';}else if(pM>mr*0.85){v='빠듯함';vt='tag-warn';}else{v='매수가능';vt='tag-ok';}return{...p,pLTV:pL,pLoan:pLn,pEquityNeeded:pEq,pMonthly:pM,verdict:v,verdictTag:vt};});
   let filtered=vv?wv.filter(p=>p.verdict===vv):wv;
   if(mapBoundsFilter&&mapBounds)filtered=filtered.filter(p=>inBounds(p));
@@ -667,6 +683,7 @@ function updatePropTable(eq,fL,eLTV,rate,term,mr){
   else if(sv==='price-asc')filtered.sort((a,b)=>a.price-b.price);else if(sv==='price-desc')filtered.sort((a,b)=>b.price-a.price);
   else if(sv==='area-desc')filtered.sort((a,b)=>(parseFloat(b.area_py)||0)-(parseFloat(a.area_py)||0));
   else if(sv==='walk')filtered.sort((a,b)=>(a.walk_min||999)-(b.walk_min||999));
+  else if(sv==='commute')filtered.sort((a,b)=>(a.commuteTransit||999)-(b.commuteTransit||999));
   else if(sv==='latest')filtered.sort((a,b)=>(b.latest_date||'').localeCompare(a.latest_date||''));
   filteredBuyProps=filtered;
   highlightSelects();
@@ -712,8 +729,8 @@ function updateRentTable(equity,budget){
   if(placeholder)placeholder.style.display='none';if(tableWrap)tableWrap.style.display='';
   const tabBtnProp=document.getElementById('tabBtnProperties');tabBtnProp.style.display='';tabBtnProp.textContent='📊 전세 실거래';
   const sq=(document.getElementById('rentSearchInput')||{}).value||'';const rf=(document.getElementById('rentRegionFilter')||{}).value||'';
-  const rav=(document.getElementById('rentAreaFilter')||{}).value||'',rvv=(document.getElementById('rentVerdictSelect')||{}).value||'',rtv=(document.getElementById('rentTypeSelect')||{}).value||'',rsv=(document.getElementById('rentSortSelect')||{}).value||'value';
-  let f=RENT_PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq.toLowerCase()))return false;if(rf&&p.region!==rf)return false;if(rtv&&p.rent_type!==rtv)return false;if(!areaMatch(p.area_py,rav))return false;return true;});
+  const rav=(document.getElementById('rentAreaFilter')||{}).value||'',rvv=(document.getElementById('rentVerdictSelect')||{}).value||'',rtv=(document.getElementById('rentTypeSelect')||{}).value||'',rcv=(document.getElementById('rentCommuteFilter')||{}).value||'',rsv=(document.getElementById('rentSortSelect')||{}).value||'value';
+  let f=RENT_PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq.toLowerCase()))return false;if(rf&&p.region!==rf)return false;if(rtv&&p.rent_type!==rtv)return false;if(!areaMatch(p.area_py,rav))return false;if(!commuteMatch(p,rcv))return false;return true;});
   const wv=f.map(p=>{let v,vt;if(p.deposit>budget){v='예산초과';vt='tag-danger';}else if(p.deposit>budget*0.9){v='빠듯함';vt='tag-warn';}else{v='가능';vt='tag-ok';}return{...p,verdict:v,verdictTag:vt};});
   let filtered=rvv?wv.filter(p=>p.verdict===rvv):wv;
   if(mapBoundsFilter&&mapBounds)filtered=filtered.filter(p=>inBounds(p));
@@ -722,6 +739,7 @@ function updateRentTable(equity,budget){
   else if(rsv==='price-asc')filtered.sort((a,b)=>a.deposit-b.deposit);else if(rsv==='price-desc')filtered.sort((a,b)=>b.deposit-a.deposit);
   else if(rsv==='area-desc')filtered.sort((a,b)=>(parseFloat(b.area_py)||0)-(parseFloat(a.area_py)||0));
   else if(rsv==='walk')filtered.sort((a,b)=>(a.walk_min||999)-(b.walk_min||999));
+  else if(rsv==='commute')filtered.sort((a,b)=>(a.commuteTransit||999)-(b.commuteTransit||999));
   else if(rsv==='latest')filtered.sort((a,b)=>(b.latest_date||'').localeCompare(a.latest_date||''));
   filteredRentProps=filtered;
   highlightSelects();
