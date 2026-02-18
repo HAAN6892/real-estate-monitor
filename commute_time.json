@@ -2,10 +2,297 @@
   "destination": "강남역 미림타워",
   "address": "서울 강남구 역삼동 826",
   "survey_basis": "평일 07:00~09:00 출발 기준",
-  "updated": "2026-02-18",
+  "updated": "2026-02-18 18:01",
   "data": {
-    "경기 광주시 역동": { "subway": 75, "transit": 55, "note": "경강선→신분당선 환승" },
-    "경기 용인시 기흥구 구갈동": { "subway": 55, "transit": 42, "note": "분당선→신분당선" },
-    "수원 장안구 정자동": { "subway": 70, "transit": 48, "note": "1호선→신분당선 환승" }
+    "경기 광주시 역동": {
+      "subway": 75,
+      "transit": 55,
+      "note": "경강선→신분당선 환승"
+    },
+    "경기 용인시 기흥구 구갈동": {
+      "subway": 55,
+      "transit": 42,
+      "note": "분당선→신분당선"
+    },
+    "수원 장안구 정자동": {
+      "subway": 70,
+      "transit": 48,
+      "note": "1호선→신분당선 환승"
+    },
+    "수원 영통구 영통동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 기흥구 영덕동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 군포시 당동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 수지구 죽전동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 기흥구 공세동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 태전동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 구리시 갈매동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 안양 만안구 석수동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 기흥구 보라동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 초월읍 대쌍령리": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "수원 영통구 망포동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 안양 만안구 안양동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 기흥구 상하동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 기흥구 중동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 경안동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 관악구 신림동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "수원 장안구 이목동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 군포시 금정동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 안양 만안구 박달동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 수지구 풍덕천동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 기흥구 신갈동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 기흥구 상갈동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 탄벌동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 회덕동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 장지동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 곤지암읍 곤지암리": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광명시 철산동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 군포시 부곡동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 구리시 교문동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 구리시 토평동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 구리시 수택동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "수원 영통구 원천동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 강동구 길동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 안양 동안구 비산동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 기흥구 서천동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 신현동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 관악구 남현동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 군포시 산본동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "수원 영통구 매탄동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "수원 장안구 천천동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "성남 중원구 성남동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 양벌동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 군포시 도마교동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "수원 장안구 연무동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "수원 장안구 율전동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 삼동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 구리시 인창동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 기흥구 동백동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 기흥구 마북동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 곤지암읍 삼리": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 쌍령동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 송정동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 의왕시 오전동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 기흥구 고매동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 초월읍 쌍동리": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    }
   }
 }
