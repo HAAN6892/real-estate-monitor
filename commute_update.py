@@ -167,7 +167,8 @@ def main():
     # 아직 데이터 없는 동만 처리
     new_dongs = [d for d in dong_list
                  if d not in existing_data
-                 or existing_data[d].get("note") == "좌표 매칭 실패"]
+                 or existing_data[d].get("note") == "좌표 매칭 실패"
+                 or (existing_data[d].get("subway") is None and existing_data[d].get("transit") is None)]
     print(f"신규 조회 대상: {len(new_dongs)}개 동")
 
     if not new_dongs:
