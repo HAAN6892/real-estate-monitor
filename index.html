@@ -610,11 +610,14 @@ async function loadData(){
   // coord_cache 좌표 매핑 (캐시 키: "경기 수원시 장안구 동신2단지" 형태, 법정동 없음)
   if(Object.keys(coordCache).length>0){
     const ccEntries=Object.entries(coordCache);
+    // 지역명 정규화: "수원시 장안구" → "수원 장안구" (시 제거로 축약형 매칭)
+    const normR=s=>s.replace(/시(\s|$)/g,'$1').replace(/\s+/g,' ').trim();
     [PROPERTIES,RENT_PROPERTIES].forEach(props=>{
       props.forEach(p=>{
         if(p.lat&&p.lon)return;
-        // 1순위: name으로 끝나고 region 포함 (법정동 없는 새 키 매칭)
-        for(const[k,v]of ccEntries){if(k.endsWith(p.name)&&k.includes(p.region)){p.lat=v.lat;p.lon=v.lon;break;}}
+        // 1순위: name으로 끝나고 정규화된 region 포함
+        const nr=normR(p.region);
+        for(const[k,v]of ccEntries){if(k.endsWith(p.name)&&normR(k).includes(nr)){p.lat=v.lat;p.lon=v.lon;break;}}
         // 2순위: dong+name suffix (기존 키 호환)
         if(!p.lat){const suffix=p.dong+' '+p.name;for(const[k,v]of ccEntries){if(k.endsWith(suffix)){p.lat=v.lat;p.lon=v.lon;break;}}}
       });
