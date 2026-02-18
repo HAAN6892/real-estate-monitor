@@ -282,9 +282,9 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
   td::before{content:attr(data-label);display:block;font-size:10px;color:var(--text-dim);margin-bottom:1px}
   .marriage-status-bar{flex-direction:column;align-items:flex-start;gap:8px}
   .card-grid{grid-template-columns:1fr}
-  .filter-bar{gap:4px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px;scrollbar-width:thin}
-  .filter-bar .filter-select{flex:0 0 auto;min-width:0;font-size:11px;padding:6px 6px}
-  .filter-bar .search-input{flex:0 0 140px;min-width:0}
+  .filter-bar{gap:4px 6px;flex-wrap:wrap;padding-bottom:4px}
+  .filter-bar .filter-select{flex:1 1 28%;min-width:70px;font-size:11px;padding:6px 8px}
+  .filter-bar .search-input{flex:1 1 100px;min-width:80px}
   .filter-bar-divider{display:none}
   .mobile-map-popup{position:fixed;bottom:0;left:0;right:0;z-index:50;background:var(--surface);border-top:1px solid var(--border);border-radius:14px 14px 0 0;padding:16px 20px;transform:translateY(100%);transition:transform 0.25s ease;box-shadow:0 -4px 20px rgba(0,0,0,0.3);max-height:35vh;overflow-y:auto}
   .mobile-map-popup::before{content:'';display:block;width:40px;height:4px;background:var(--border-hover);border-radius:2px;margin:0 auto 12px}
@@ -365,7 +365,7 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
       </div>
     </div>
     <div class="split-layout" id="splitLayout">
-      <div class="mobile-split-tabs" id="mobileSplitTabs"><button class="mobile-split-tab active" data-split="map" onclick="switchMobileSplit('map')">🗺 지도</button><button class="mobile-split-tab" data-split="list" onclick="switchMobileSplit('list')">📋 리스트</button></div>
+      <div class="mobile-split-tabs" id="mobileSplitTabs"><button class="mobile-split-tab" data-split="map" onclick="switchMobileSplit('map')">🗺 지도</button><button class="mobile-split-tab active" data-split="list" onclick="switchMobileSplit('list')">📋 리스트</button></div>
       <div class="split-map">
         <div id="mapContainer"></div>
         <div class="map-info-badge" id="mapBadge">로딩 중...</div>
@@ -895,15 +895,19 @@ function updateMapMarkers(){
   });
   document.getElementById('mapBadge').textContent=cnt+'개 매물 표시';
 }
-let mobileSplitMode='map';
+let mobileSplitMode='list';
 function isMobile(){return window.innerWidth<=768;}
 function switchMobileSplit(mode){
   mobileSplitMode=mode;
   const sl=document.getElementById('splitLayout');
+  if(!sl)return;
   document.querySelectorAll('.mobile-split-tab').forEach(b=>b.classList.toggle('active',b.dataset.split===mode));
   sl.classList.remove('mobile-map','mobile-list');
   sl.classList.add('mobile-'+mode);
-  if(mode==='map'&&kakaoMap)setTimeout(()=>kakaoMap.relayout(),100);
+  if(mode==='map'){
+    if(!mapInitialized)initMapIfNeeded();
+    if(kakaoMap)setTimeout(()=>{kakaoMap.relayout();if(mapInitialized)updateMapMarkers();},200);
+  }
   const popup=document.getElementById('mobileMapPopup');if(popup)popup.classList.remove('show');
 }
 function showMobileMapPopup(p){
@@ -926,11 +930,12 @@ window.addEventListener('resize',()=>{
   if(kakaoMap)kakaoMap.relayout();
   const sl=document.getElementById('splitLayout');
   if(window.innerWidth>768){sl.classList.remove('mobile-map','mobile-list');}
-  else if(!sl.classList.contains('mobile-map')&&!sl.classList.contains('mobile-list')){sl.classList.add('mobile-map');}
+  else if(!sl.classList.contains('mobile-map')&&!sl.classList.contains('mobile-list')){switchMobileSplit(mobileSplitMode);}
 });
+// 모바일: 즉시 리스트 모드 적용 (데이터 로드 전에도 올바른 레이아웃)
+if(isMobile())switchMobileSplit('list');
 loadSettings().then(()=>loadData().then(()=>{
   initMapIfNeeded();
-  if(isMobile())document.getElementById('splitLayout').classList.add('mobile-map');
 }));
 </script>
 <div class="mobile-map-popup" id="mobileMapPopup"><div id="mobileMapPopupContent"></div></div>
