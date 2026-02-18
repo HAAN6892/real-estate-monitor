@@ -28,6 +28,7 @@ jobs:
           MY_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           MY_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           MY_KAKAO_KEY: ${{ secrets.KAKAO_KEY }}
+          MY_ODSAY_KEY: ${{ secrets.ODSAY_KEY }}
         run: |
           python3 << 'EOF'
           import json, os
@@ -38,6 +39,7 @@ jobs:
                   "chat_id": os.environ["MY_CHAT_ID"]
               },
               "kakao_key": os.environ["MY_KAKAO_KEY"],
+              "odsay_key": os.environ.get("MY_ODSAY_KEY", ""),
               "filters": {
                   "min_area": 59,
                   "max_area": 84,
@@ -91,10 +93,14 @@ jobs:
       - name: 모니터링 실행
         run: python main.py
 
+      - name: 출퇴근 소요시간 업데이트
+        run: python commute_update.py
+        continue-on-error: true
+
       - name: 데이터 커밋
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add data.json data-rent.json sent_history.json sent_history_rent.json coord_cache.json apt_info_cache.json 2>/dev/null || true
+          git add data.json data-rent.json sent_history.json sent_history_rent.json coord_cache.json apt_info_cache.json commute_time.json 2>/dev/null || true
           git diff --cached --quiet || git commit -m "📊 데이터 업데이트 $(date +'%Y-%m-%d %H:%M')"
           git push || true
