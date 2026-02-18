@@ -113,7 +113,7 @@ def find_coord_for_dong(dong_key, coord_cache, properties):
         for cache_key, coords in coord_cache.items():
             # 단지명이 포함되는 키 찾기
             if name and name in cache_key:
-                return coords.get("lng"), coords.get("lat")
+                return coords.get("lng") or coords.get("lon"), coords.get("lat")
 
         # region+dong으로 포함 매칭
         search = f"{dong}" if dong else region
@@ -122,7 +122,7 @@ def find_coord_for_dong(dong_key, coord_cache, properties):
             norm_key = cache_key.replace("시 ", " ").replace("경기 ", "")
             norm_search = search.replace("시 ", " ").replace("경기 ", "")
             if norm_search in norm_key or norm_key.endswith(search):
-                return coords.get("lng"), coords.get("lat")
+                return coords.get("lng") or coords.get("lon"), coords.get("lat")
 
     return None, None
 
@@ -156,7 +156,9 @@ def main():
     print(f"기존 데이터: {len(existing_data)}개 동")
 
     # 아직 데이터 없는 동만 처리
-    new_dongs = [d for d in dong_list if d not in existing_data]
+    new_dongs = [d for d in dong_list
+                 if d not in existing_data
+                 or existing_data[d].get("note") == "좌표 매칭 실패"]
     print(f"신규 조회 대상: {len(new_dongs)}개 동")
 
     if not new_dongs:
