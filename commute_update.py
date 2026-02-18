@@ -50,12 +50,15 @@ def load_existing_commute():
             "data": {}
         }
 
+_debug_printed = False
+
 def search_transit(api_key, sx, sy, search_type=0):
     """
     ODsay 대중교통 길찾기 API 호출
     search_type: 0=전체, 1=지하철만, 2=버스만
     반환: 최소 소요시간(분) 또는 None
     """
+    global _debug_printed
     params = {
         "apiKey": api_key,
         "SX": sx,
@@ -70,8 +73,14 @@ def search_transit(api_key, sx, sy, search_type=0):
         resp = requests.get(ODSAY_URL, params=params, timeout=15)
         result = resp.json()
 
+        # 첫 1회만 전체 응답 출력
+        if not _debug_printed:
+            print(f"  [DEBUG] 첫 API 응답:\n{json.dumps(result, ensure_ascii=False, indent=2)}")
+            _debug_printed = True
+
         # 에러 체크
         if "result" not in result or "path" not in result["result"]:
+            print(f"  [DEBUG] 경로 없음: {json.dumps(result, ensure_ascii=False)}")
             return None
 
         # 모든 경로 후보 중 최소 소요시간
