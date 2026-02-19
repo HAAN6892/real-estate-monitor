@@ -2,7 +2,7 @@
   "destination": "강남역 미림타워",
   "address": "서울 강남구 역삼동 826",
   "survey_basis": "ODsay API 대중교통 길찾기 (자동)",
-  "updated": "2026-02-19 20:34",
+  "updated": "2026-02-20 08:39",
   "data": {
     "수원 장안구 정자동": {
       "subway": 72,
@@ -283,6 +283,16 @@
       "subway": null,
       "transit": null,
       "note": "좌표 매칭 실패"
+    },
+    "수원 장안구 조원동": {
+      "subway": 19,
+      "transit": 56,
+      "note": ""
+    },
+    "성남 중원구 하대원동": {
+      "subway": 52,
+      "transit": 45,
+      "note": ""
     }
   }
 }
