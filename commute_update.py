@@ -28,13 +28,16 @@ def load_coord_cache():
         return {}
 
 def load_data():
-    """data.json에서 매물 목록 로드 → 동(dong) 단위로 중복 제거"""
-    try:
-        with open("data.json", "r", encoding="utf-8") as f:
-            data = json.load(f)
-            return data.get("properties", [])
-    except:
-        return []
+    """data.json + data-rent.json에서 매물 목록 로드 → 동(dong) 단위로 중복 제거"""
+    props = []
+    for fname in ["data.json", "data-rent.json"]:
+        try:
+            with open(fname, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                props.extend(data.get("properties", []))
+        except:
+            pass
+    return props
 
 def load_existing_commute():
     """기존 commute_time.json 로드"""

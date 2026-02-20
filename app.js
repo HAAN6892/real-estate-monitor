@@ -15,7 +15,7 @@ const REGULATION_MAP={
   // 비규제지역 (LTV 70%)
   '경기 안양 만안구':{zone:'비규제',ltv:70},'용인 기흥구':{zone:'비규제',ltv:70},
   '경기 광주시':{zone:'비규제',ltv:70},'경기 구리시':{zone:'비규제',ltv:70},'경기 군포시':{zone:'비규제',ltv:70},
-  '경기 부천시':{zone:'비규제',ltv:70},'고양 일산동구':{zone:'비규제',ltv:70},'수원 권선구':{zone:'비규제',ltv:70},
+  '부천 원미구':{zone:'비규제',ltv:70},'부천 소사구':{zone:'비규제',ltv:70},'부천 오정구':{zone:'비규제',ltv:70},'고양 일산동구':{zone:'비규제',ltv:70},'수원 권선구':{zone:'비규제',ltv:70},
   '인천 서구':{zone:'비규제',ltv:70},'인천 남동구':{zone:'비규제',ltv:70}
 };
 function getRegulation(region){
@@ -93,6 +93,7 @@ function maxLoanFromMonthly(m,r,y){const mr=r/100/12,n=y*12;if(mr===0)return m*n
 function makeLinks(p){const q=encodeURIComponent((p.dong||'')+' '+p.name);return '<a href="https://m.land.naver.com/search/result/'+q+'" target="_blank" class="link-icon" title="네이버 부동산">N</a>';}
 function fmtCommute(min){if(min==null)return'<span style="color:var(--text-dim)">—</span>';const c=min<=60?'var(--green)':min<=90?'var(--yellow)':'var(--text-dim)';return'<span style="color:'+c+'">'+min+'분</span>';}
 function commuteHtml(p){return'<span class="pc-commute">🚇'+fmtCommute(p.commuteSubway)+' 🚌'+fmtCommute(p.commuteTransit)+'</span>';}
+function jeonseRateBadge(p){if(p.jeonseRate==null)return'';if(p.jeonseRate>=70)return'<span class="tag tag-jr tag-jr-danger">전세가율 '+p.jeonseRate+'%</span>';if(p.jeonseRate<=50)return'<span class="tag tag-jr tag-jr-safe">전세가율 '+p.jeonseRate+'%</span>';return'<span class="tag tag-jr">전세가율 '+p.jeonseRate+'%</span>';}
 function matchCommute(p){
   if(!COMMUTE_DATA.data)return null;const d=COMMUTE_DATA.data;
   const key=p.region+' '+p.dong;if(d[key])return d[key];
@@ -182,7 +183,8 @@ function renderRentCards(items,equity,budget){
     const card=document.createElement('div');card.className='prop-card pc-compact';card.dataset.propId=getPropId(p);
     card.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));card.addEventListener('mouseleave',()=>stopBounce());
     const anomalyBadge=p.priceAnomaly?'<span class="tag tag-anomaly">⚠️ 이상가격</span>':'';
-    card.innerHTML='<div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span>'+anomalyBadge+'<span class="pc-cname">'+typeIcon+' '+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceStr+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
+    const jrBadge=jeonseRateBadge(p);
+    card.innerHTML='<div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span>'+anomalyBadge+jrBadge+'<span class="pc-cname">'+typeIcon+' '+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceStr+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
     cg.appendChild(card);
   });
 }
@@ -225,6 +227,28 @@ function flagRentAnomalies(){
   });
   if(cnt>0)console.log(`이상가격 감지: ${cnt}건 (중위 보증금 50% 미만)`);
 }
+function calcJeonseRate(){
+  if(!DATA_LOADED||PROPERTIES.length===0){RENT_PROPERTIES.forEach(p=>{p.jeonseRate=null;});return;}
+  // 매매 데이터를 name+area_py 기준으로 맵 구성 (같은 단지+면적 → 매매가)
+  const buyMap={};
+  PROPERTIES.forEach(p=>{const k=p.name+'_'+p.area_py;if(!buyMap[k])buyMap[k]=[];buyMap[k].push(p.price);});
+  let matched=0;
+  RENT_PROPERTIES.forEach(p=>{
+    if(p.rent_type!=='전세'){p.jeonseRate=null;return;}
+    // 1순위: 같은 단지명 + 같은 면적
+    const k1=p.name+'_'+p.area_py;
+    if(buyMap[k1]){const avg=Math.round(buyMap[k1].reduce((a,b)=>a+b,0)/buyMap[k1].length);p.jeonseRate=Math.round(p.deposit/avg*100);matched++;return;}
+    // 2순위: 같은 단지명 + 유사 면적 (±3평)
+    const py=parseFloat(p.area_py)||0;
+    for(const[bk,prices]of Object.entries(buyMap)){
+      if(!bk.startsWith(p.name+'_'))continue;
+      const bpy=parseFloat(bk.split('_')[1])||0;
+      if(Math.abs(bpy-py)<=3){const avg=Math.round(prices.reduce((a,b)=>a+b,0)/prices.length);p.jeonseRate=Math.round(p.deposit/avg*100);matched++;return;}
+    }
+    p.jeonseRate=null;
+  });
+  console.log(`전세가율 매칭: ${matched}/${RENT_PROPERTIES.filter(p=>p.rent_type==='전세').length}건`);
+}
 function groupRentProperties(raw){
   const g={};raw.forEach(i=>{const k=i.region+'_'+i.name+'_'+i.area_m2+'_'+(i.rent_type||'전세');if(!g[k])g[k]={name:i.name,region:i.region,area:Math.round(i.area_m2)+'㎡',area_py:i.area_py,rent_type:i.rent_type||'전세',station:i.walk_min?'도보 '+i.walk_min+'분':'역정보 없음',station_name:i.station||'',line:i.line||'',walk_min:i.walk_min,dong:i.dong||'',built_year:i.built_year||0,households:i.households||0,lat:i.lat||null,lon:i.lon||null,deposits:[],monthlys:[],floors:[],dates:[],trades:[]};g[k].deposits.push(i.deposit||0);g[k].monthlys.push(i.monthly_rent||0);g[k].floors.push(i.floor);g[k].dates.push(i.trade_date);g[k].trades.push({deposit:i.deposit||0,monthly:i.monthly_rent||0,floor:i.floor,date:i.trade_date});});
   return Object.values(g).map(v=>{const avgD=Math.round(v.deposits.reduce((a,b)=>a+b,0)/v.deposits.length);const avgM=Math.round(v.monthlys.reduce((a,b)=>a+b,0)/v.monthlys.length);const tr=v.trades.sort((a,b)=>(b.date||'').localeCompare(a.date||''));return{name:v.name,region:v.region,area:v.area,area_py:v.area_py,rent_type:v.rent_type,deposit:avgD,monthly_rent:avgM,station:v.station,station_name:v.station_name,line:v.line,walk_min:v.walk_min,dong:v.dong,built_year:v.built_year,households:v.households,lat:v.lat,lon:v.lon,trade_count:v.deposits.length,min_deposit:Math.min(...v.deposits),max_deposit:Math.max(...v.deposits),latest_date:v.dates.sort().reverse()[0]||'',trades:tr};}).sort((a,b)=>a.deposit-b.deposit);
@@ -237,7 +261,7 @@ async function loadData(){
   const regions=[...new Set(PROPERTIES.map(p=>p.region))].sort();const sel=document.getElementById('regionFilter');regions.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;sel.appendChild(o);});
   }catch(e){PROPERTIES=[];DATA_LOADED=false;}
   try{const r=await fetch('data-rent.json');if(!r.ok)throw 0;const d=await r.json();RENT_UPDATED_AT=d.updated_at||'';RENT_PROPERTIES=groupRentProperties(d.properties||[]);RENT_DATA_LOADED=RENT_PROPERTIES.length>0;
-  if(RENT_DATA_LOADED){flagRentAnomalies();const rr=[...new Set(RENT_PROPERTIES.map(p=>p.region))].sort();const s1=document.getElementById('regionFilter'),s2=document.getElementById('rentRegionFilter');rr.forEach(r=>{if(![...s1.options].some(o=>o.value===r)){const o=document.createElement('option');o.value=r;o.textContent=r;s1.appendChild(o);}const o2=document.createElement('option');o2.value=r;o2.textContent=r;s2.appendChild(o2);});}
+  if(RENT_DATA_LOADED){flagRentAnomalies();calcJeonseRate();const rr=[...new Set(RENT_PROPERTIES.map(p=>p.region))].sort();const s1=document.getElementById('regionFilter'),s2=document.getElementById('rentRegionFilter');rr.forEach(r=>{if(![...s1.options].some(o=>o.value===r)){const o=document.createElement('option');o.value=r;o.textContent=r;s1.appendChild(o);}const o2=document.createElement('option');o2.value=r;o2.textContent=r;s2.appendChild(o2);});}
   }catch(e){RENT_PROPERTIES=[];RENT_DATA_LOADED=false;}
   // coord_cache 좌표 매핑 (캐시 키: "경기 수원시 장안구 동신2단지" 형태, 법정동 없음)
   if(Object.keys(coordCache).length>0){
@@ -387,7 +411,8 @@ function updateRentTable(equity,budget){
     const stTxt=p.station_name?(p.station_name+(p.walk_min?' '+p.walk_min+'분':'')):'—';
     const tr=document.createElement('tr');tr.dataset.propId=getPropId(p);tr.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));tr.addEventListener('mouseleave',()=>stopBounce());
     const anomTag=p.priceAnomaly?' <span class="tag tag-anomaly" style="font-size:9px">⚠️ 이상</span>':'';
-    tr.innerHTML='<td data-label="판정"><span class="tag '+p.verdictTag+'">'+p.verdict+'</span>'+anomTag+'</td><td data-label="단지명"><strong>'+p.name+'</strong><br><span style="font-size:10px;color:var(--text-dim)">'+(p.line?p.line+' ':'')+p.station+(ex.length?' · '+ex.join(' · '):'')+'</span><br>'+tBtn+hH+'</td><td data-label="지역"><span class="tag tag-region">'+p.region+'</span></td><td data-label="면적">'+fmtArea(p)+'</td><td data-label="유형">'+typeTag+'</td><td data-label="보증금" class="mono">'+fmtShort(p.deposit)+'</td><td data-label="월세" class="mono">'+(p.monthly_rent>0?p.monthly_rent+'만':'—')+'</td><td data-label="역세권">'+stTxt+'</td><td data-label="연식">'+(p.built_year||'—')+'</td><td data-label="세대">'+(p.households||'—')+'</td><td data-label="링크"><div class="link-icons">'+makeLinks(p)+'</div></td>';
+    const jrTag=jeonseRateBadge(p);
+    tr.innerHTML='<td data-label="판정"><span class="tag '+p.verdictTag+'">'+p.verdict+'</span>'+anomTag+'</td><td data-label="단지명"><strong>'+p.name+'</strong>'+jrTag+'<br><span style="font-size:10px;color:var(--text-dim)">'+(p.line?p.line+' ':'')+p.station+(ex.length?' · '+ex.join(' · '):'')+'</span><br>'+tBtn+hH+'</td><td data-label="지역"><span class="tag tag-region">'+p.region+'</span></td><td data-label="면적">'+fmtArea(p)+'</td><td data-label="유형">'+typeTag+'</td><td data-label="보증금" class="mono">'+fmtShort(p.deposit)+'</td><td data-label="월세" class="mono">'+(p.monthly_rent>0?p.monthly_rent+'만':'—')+'</td><td data-label="역세권">'+stTxt+'</td><td data-label="연식">'+(p.built_year||'—')+'</td><td data-label="세대">'+(p.households||'—')+'</td><td data-label="링크"><div class="link-icons">'+makeLinks(p)+'</div></td>';
     tb.appendChild(tr);
   });}
   const totalAnomaly=RENT_PROPERTIES.filter(p=>p.priceAnomaly).length;
@@ -496,7 +521,8 @@ function showFullscreenPopup(p){
     hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span></div>'+rows+'</div>';
   }
   const fsAnomaly=p.priceAnomaly?'<span class="tag tag-anomaly">⚠️ 이상가격</span>':'';
-  content.innerHTML='<div class="pc-compact"><div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span>'+fsAnomaly+'<span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span>'+regBadge+'</div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceStr+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'')+'</div>';
+  const fsJr=currentMode==='rent'?jeonseRateBadge(p):'';
+  content.innerHTML='<div class="pc-compact"><div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span>'+fsAnomaly+fsJr+'<span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span>'+regBadge+'</div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceStr+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'')+'</div>';
   popup.classList.add('show');
 }
 function hideFullscreenPopup(){const popup=document.getElementById('fsMapPopup');if(popup)popup.classList.remove('show');}
