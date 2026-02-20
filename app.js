@@ -420,10 +420,46 @@ function toggleMapFullscreen(){
   mapFullscreen=!mapFullscreen;
   const layout=document.getElementById('splitLayout'),btn=document.getElementById('mapFullscreenBtn'),mapEl=document.querySelector('.split-map');
   if(mapFullscreen){layout.classList.add('map-full');mapEl.classList.add('map-fullscreen');btn.textContent='✕ 닫기';}
-  else{layout.classList.remove('map-full');mapEl.classList.remove('map-fullscreen');btn.textContent='⛶ 전체';}
+  else{layout.classList.remove('map-full');mapEl.classList.remove('map-fullscreen');btn.textContent='⛶ 전체';hideFullscreenPopup();}
   setTimeout(()=>{if(kakaoMap)kakaoMap.relayout();},150);
 }
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mapFullscreen)toggleMapFullscreen();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.getElementById('fsMapPopup')?.classList.contains('show'))hideFullscreenPopup();else if(mapFullscreen)toggleMapFullscreen();}});
+function showFullscreenPopup(p){
+  const popup=document.getElementById('fsMapPopup'),content=document.getElementById('fsMapPopupContent');
+  if(!popup)return;
+  const bc=currentMode==='buy'?(p.verdict==='매수가능'?'ok':p.verdict==='빠듯함'?'warn':'danger'):(p.verdict==='가능'?'ok':p.verdict==='빠듯함'?'warn':'danger');
+  const meta=[];
+  if(p.station_name)meta.push((p.line?p.line+' ':'')+'도보 '+(p.walk_min||'?')+'분');
+  if(p.built_year)meta.push(p.built_year+'년');
+  if(p.area_py)meta.push(p.area_py+'평'+(p.area?'('+p.area+')':''));
+  if(p.households)meta.push(p.households+'세대');
+  let priceStr='',details='';
+  if(currentMode==='buy'){
+    priceStr='매매 '+fmtShort(p.price);
+    const mr=getVal('monthlyLimit')-getVal('mgmt');
+    const mColor=p.pMonthly>mr?'var(--red)':p.pMonthly>mr*0.85?'var(--yellow)':'var(--green)';
+    details='대출 '+fmtShort(p.pLoan)+' · 자기 '+fmtShort(p.pEquityNeeded)+' · <span style="color:'+mColor+'">월 '+p.pMonthly+'만</span>';
+  }else{
+    const typeIcon=p.rent_type==='월세'?'💳':'🔑';
+    priceStr=p.rent_type==='월세'?'월세 '+fmtShort(p.deposit)+'/'+p.monthly_rent+'만':typeIcon+' 전세 '+fmtShort(p.deposit);
+    const eq=getVal('cash'),rr=getVal('rentRate'),rlr=getVal('rentLoanRatio'),rll=getVal('rentLoanLimit'),rf=rlr/100;
+    const mbr=rf<1?eq/(1-rf):eq+rll;const aL=Math.min(Math.floor(mbr*rf),rll),budget=eq+aL;
+    const needEq=Math.max(0,p.deposit-budget+eq);const loanAmt=p.deposit-needEq;const mi=Math.round(loanAmt*rr/100/12);
+    const miColor=mi<=50?'var(--green)':mi<=80?'var(--yellow)':'var(--red)';
+    details='대출 '+fmtShort(loanAmt)+' · 자기 '+fmtShort(needEq)+' · <span style="color:'+miColor+'">이자 '+mi+'만</span>';
+  }
+  const regBadge=currentMode==='buy'?(p.regZone==='투기과열'?'<span class="tag tag-reg tag-reg-hot">투기과열 LTV'+p.pLTV+'%</span>':'<span class="tag tag-reg tag-reg-free">비규제 LTV'+p.pLTV+'%</span>'):'';
+  const tBtn=p.trade_count>1?'<button class="expand-btn" onclick="toggleHistory(this)">▶ 거래내역 '+p.trade_count+'건</button>':'';
+  let hH='';
+  if(p.trade_count>1){
+    const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const price=currentMode==='buy'?t.price:t.deposit;const prev=currentMode==='buy'?p.trades[i+1].price:p.trades[i+1].deposit;const df=price-prev;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'')+'</span><span class="trade-price">'+fmtShort(currentMode==='buy'?t.price:t.deposit)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');
+    hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span></div>'+rows+'</div>';
+  }
+  content.innerHTML='<div class="pc-compact"><div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span>'+regBadge+'</div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceStr+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'')+'</div>';
+  popup.classList.add('show');
+}
+function hideFullscreenPopup(){const popup=document.getElementById('fsMapPopup');if(popup)popup.classList.remove('show');}
+document.addEventListener('DOMContentLoaded',()=>{const btn=document.getElementById('fsMapPopupClose');if(btn)btn.addEventListener('click',hideFullscreenPopup);});
 const MARKER_COLORS={ok:'#34d399',warn:'#fbbf24',danger:'#f87171',station:'#60a5fa'};
 const MAP_STATIONS=[
   {name:"강남",lat:37.4979,lon:127.0276},{name:"양재",lat:37.4842,lon:127.0353},{name:"판교",lat:37.3948,lon:127.1112},
@@ -477,6 +513,7 @@ function initMapIfNeeded(){
     const container=document.getElementById('mapContainer');
     kakaoMap=new kakao.maps.Map(container,{center:new kakao.maps.LatLng(37.38,127.08),level:8});
     kakao.maps.event.addListener(kakaoMap,'idle',onMapIdle);
+    kakao.maps.event.addListener(kakaoMap,'click',()=>{hideFullscreenPopup();});
     mapInfoWindow=new kakao.maps.InfoWindow({zIndex:1});
     // 역 마커
     MAP_STATIONS.forEach(st=>{
@@ -507,6 +544,7 @@ function updateMapMarkers(){
     const priceStr=currentMode==='buy'?fmtShort(p.price):fmtShort(p.deposit);
     const label=currentMode==='buy'?'매매 ':'보증금 ';
     kakao.maps.event.addListener(marker,'click',()=>{
+      if(mapFullscreen){showFullscreenPopup(p);return;}
       if(isMobile()){showMobileMapPopup(p);return;}
       mapInfoWindow.setContent('<div style="padding:8px 12px;font-size:12px;line-height:1.5;max-width:220px"><strong>'+p.name+'</strong><br><span style="color:#666">'+p.region+' · '+p.area+'</span><br><span style="font-weight:700">'+label+priceStr+'</span>'+(p.station?' · '+p.station:'')+'</div>');
       mapInfoWindow.open(kakaoMap,marker);
