@@ -502,7 +502,28 @@ def make_rent_trade_id(trade, region_name):
     return f"R_{region_name}_{trade['아파트']}_{trade['면적']}_{trade['보증금']}_{trade['월세']}_{trade['층']}_{trade['거래년도']}{trade['거래월']:02d}{trade['거래일']:02d}"
 
 
-EXCLUDE_KEYWORDS = ["오피스텔", "주상복합", "도시형", "빌라", "타운하우스"]
+EXCLUDE_KEYWORDS = [
+    # 비아파트
+    "오피스텔", "주상복합", "도시형", "빌라", "타운하우스", "상가",
+    # 공공임대 키워드
+    "LH", "SH", "행복주택", "국민임대", "영구임대", "공공임대",
+    "매입임대", "장기전세", "시프트",
+]
+
+# SH/LH 장기전세 브랜드명 (단지명에 공공임대 키워드가 없지만 공공주택인 경우)
+PUBLIC_HOUSING_NAMES = ["네이처힐", "파인타운"]
+
+
+def is_excluded_apt(apt_name):
+    """공공임대·비아파트 등 제외 대상 판별"""
+    if any(kw in apt_name for kw in EXCLUDE_KEYWORDS):
+        return True
+    if any(kw in apt_name for kw in PUBLIC_HOUSING_NAMES):
+        return True
+    # 휴먼시아 + 임대 조합 (분양전환 단지는 유지)
+    if "휴먼시아" in apt_name and "임대" in apt_name:
+        return True
+    return False
 
 # ─── 카카오 API로 주소 → 좌표 변환 ───
 def get_coordinates(kakao_key, address, coord_cache):
@@ -627,7 +648,7 @@ def build_region_data(region_name, complex_groups, kakao_key, coord_cache, sgg_n
 
     for key, group in complex_groups.items():
         apt_name = group["아파트"]
-        if any(kw in apt_name for kw in EXCLUDE_KEYWORDS):
+        if is_excluded_apt(apt_name):
             continue
 
         apt_info = get_apt_household_count(api_key, apt_name, region_code, apt_info_cache, apt_list_cache)
@@ -695,7 +716,7 @@ def build_rent_region_data(region_name, complex_groups, kakao_key, coord_cache, 
 
     for key, group in complex_groups.items():
         apt_name = group["아파트"]
-        if any(kw in apt_name for kw in EXCLUDE_KEYWORDS):
+        if is_excluded_apt(apt_name):
             continue
 
         apt_info = get_apt_household_count(api_key, apt_name, region_code, apt_info_cache, apt_list_cache)
