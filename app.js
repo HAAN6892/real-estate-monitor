@@ -110,21 +110,22 @@ function onBuyFilterChange(){currentPage=1;update();}
 function onRentFilterChange(){rentPage=1;update();}
 function highlightSelects(){
   document.querySelectorAll('.filter-bar .filter-select').forEach(s=>{s.classList.toggle('active',s.selectedIndex>0);});
-  const buyActive=['regionFilter','areaFilter','buyVerdictSelect','buyCommuteFilter'].some(id=>{const el=document.getElementById(id);return el&&el.selectedIndex>0;})||document.getElementById('searchInput').value!=='';
-  const rentActive=['rentRegionFilter','rentAreaFilter','rentVerdictSelect','rentTypeSelect','rentCommuteFilter'].some(id=>{const el=document.getElementById(id);return el&&el.selectedIndex>0;})||document.getElementById('rentSearchInput').value!=='';
+  const buyActive=['regionFilter','areaFilter','buyVerdictSelect','buyBuiltYearFilter','buyCommuteFilter'].some(id=>{const el=document.getElementById(id);return el&&el.selectedIndex>0;})||document.getElementById('searchInput').value!=='';
+  const rentActive=['rentRegionFilter','rentAreaFilter','rentVerdictSelect','rentTypeSelect','rentBuiltYearFilter','rentCommuteFilter'].some(id=>{const el=document.getElementById(id);return el&&el.selectedIndex>0;})||document.getElementById('rentSearchInput').value!=='';
   const bb=document.getElementById('buyResetBtn'),rb=document.getElementById('rentResetBtn');
   if(bb)bb.style.display=buyActive?'':'none';
   if(rb)rb.style.display=rentActive?'':'none';
 }
 function resetBuyFilters(){
-  ['regionFilter','areaFilter','buyVerdictSelect','buyCommuteFilter','buySortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
+  ['regionFilter','areaFilter','buyVerdictSelect','buyBuiltYearFilter','buyCommuteFilter','buySortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
   document.getElementById('searchInput').value='';currentPage=1;update();
 }
 function resetRentFilters(){
-  ['rentRegionFilter','rentAreaFilter','rentVerdictSelect','rentTypeSelect','rentCommuteFilter','rentSortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
+  ['rentRegionFilter','rentAreaFilter','rentVerdictSelect','rentTypeSelect','rentBuiltYearFilter','rentCommuteFilter','rentSortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
   document.getElementById('rentSearchInput').value='';rentPage=1;update();
 }
 function areaMatch(py,val){if(!val)return true;const p=parseFloat(py)||0;if(val==='small')return p<=18;if(val==='mid')return p>18&&p<=25;if(val==='large')return p>25;return true;}
+function builtYearMatch(by,val){if(!val)return true;if(!by)return false;const cy=new Date().getFullYear();if(val==='old')return cy-by>=20;return cy-by<=parseInt(val);}
 function getPropId(p){return (p.name+'_'+(p.dong||'')+'_'+(p.area_py||'')).replace(/\s/g,'');}
 function getMarkerKey(p){return p.name+'_'+p.region;}
 function focusCard(mKey){
@@ -268,8 +269,8 @@ function updateBuy(){
 }
 function commuteMatch(p,cv){if(!cv)return true;if(cv==='transit60')return p.commuteTransit!=null&&p.commuteTransit<=60;if(cv==='subway60')return p.commuteSubway!=null&&p.commuteSubway<=60;if(cv==='transit45')return p.commuteTransit!=null&&p.commuteTransit<=45;return true;}
 function updatePropTable(eq,fL,eLTV,rate,term,mr){
-  const sq=document.getElementById('searchInput').value.toLowerCase(),rv=document.getElementById('regionFilter').value,av=(document.getElementById('areaFilter')||{}).value||'',vv=(document.getElementById('buyVerdictSelect')||{}).value||'',cv=(document.getElementById('buyCommuteFilter')||{}).value||'',sv=(document.getElementById('buySortSelect')||{}).value||'value';
-  let f=PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq))return false;if(rv&&p.region!==rv)return false;if(!areaMatch(p.area_py,av))return false;if(!commuteMatch(p,cv))return false;return true;});
+  const sq=document.getElementById('searchInput').value.toLowerCase(),rv=document.getElementById('regionFilter').value,av=(document.getElementById('areaFilter')||{}).value||'',vv=(document.getElementById('buyVerdictSelect')||{}).value||'',cv=(document.getElementById('buyCommuteFilter')||{}).value||'',byv=(document.getElementById('buyBuiltYearFilter')||{}).value||'',sv=(document.getElementById('buySortSelect')||{}).value||'value';
+  let f=PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq))return false;if(rv&&p.region!==rv)return false;if(!areaMatch(p.area_py,av))return false;if(!builtYearMatch(p.built_year,byv))return false;if(!commuteMatch(p,cv))return false;return true;});
   const autoLtv=document.getElementById('autoLtvCheckbox')?.checked!==false;
   const wv=f.map(p=>{const reg=getRegulation(p.region);const pL=autoLtv?reg.ltv:(p.regulated?Math.min(eLTV,50):eLTV);const pLn=Math.min(Math.floor(p.price*pL/100),fL),pEq=p.price-pLn,pM=Math.floor(monthlyPayment(pLn,rate,term));let v,vt;if(pEq>eq){v='자금부족';vt='tag-danger';}else if(pM>mr){v='상환초과';vt='tag-danger';}else if(pM>mr*0.85){v='빠듯함';vt='tag-warn';}else{v='매수가능';vt='tag-ok';}return{...p,pLTV:pL,pLoan:pLn,pEquityNeeded:pEq,pMonthly:pM,verdict:v,verdictTag:vt,regZone:reg.zone};});
   let filtered=vv?wv.filter(p=>p.verdict===vv):wv;
@@ -326,8 +327,8 @@ function updateRentTable(equity,budget){
   if(placeholder)placeholder.style.display='none';if(tableWrap)tableWrap.style.display='';
   const tabBtnProp=document.getElementById('tabBtnProperties');tabBtnProp.style.display='';tabBtnProp.textContent='📊 전세 실거래';
   const sq=(document.getElementById('rentSearchInput')||{}).value||'';const rf=(document.getElementById('rentRegionFilter')||{}).value||'';
-  const rav=(document.getElementById('rentAreaFilter')||{}).value||'',rvv=(document.getElementById('rentVerdictSelect')||{}).value||'',rtv=(document.getElementById('rentTypeSelect')||{}).value||'',rcv=(document.getElementById('rentCommuteFilter')||{}).value||'',rsv=(document.getElementById('rentSortSelect')||{}).value||'value';
-  let f=RENT_PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq.toLowerCase()))return false;if(rf&&p.region!==rf)return false;if(rtv&&p.rent_type!==rtv)return false;if(!areaMatch(p.area_py,rav))return false;if(!commuteMatch(p,rcv))return false;return true;});
+  const rav=(document.getElementById('rentAreaFilter')||{}).value||'',rvv=(document.getElementById('rentVerdictSelect')||{}).value||'',rtv=(document.getElementById('rentTypeSelect')||{}).value||'',rbyv=(document.getElementById('rentBuiltYearFilter')||{}).value||'',rcv=(document.getElementById('rentCommuteFilter')||{}).value||'',rsv=(document.getElementById('rentSortSelect')||{}).value||'value';
+  let f=RENT_PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq.toLowerCase()))return false;if(rf&&p.region!==rf)return false;if(rtv&&p.rent_type!==rtv)return false;if(!areaMatch(p.area_py,rav))return false;if(!builtYearMatch(p.built_year,rbyv))return false;if(!commuteMatch(p,rcv))return false;return true;});
   const wv=f.map(p=>{let v,vt;if(p.deposit>budget){v='예산초과';vt='tag-danger';}else if(p.deposit>budget*0.9){v='빠듯함';vt='tag-warn';}else{v='가능';vt='tag-ok';}return{...p,verdict:v,verdictTag:vt};});
   let filtered=rvv?wv.filter(p=>p.verdict===rvv):wv;
   if(mapBoundsFilter&&mapBounds)filtered=filtered.filter(p=>inBounds(p));
