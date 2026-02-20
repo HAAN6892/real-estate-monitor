@@ -119,6 +119,8 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
 .mono{font-family:var(--mono);font-weight:600}
 .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500}
 .tag-ok{background:var(--green-dim);color:var(--green)}.tag-warn{background:var(--yellow-dim);color:var(--yellow)}.tag-danger{background:var(--red-dim);color:var(--red)}.tag-region{background:var(--blue-dim);color:var(--blue);font-size:10px}
+.tag-reg{font-size:9px;padding:1px 6px;border-radius:3px;font-weight:600;letter-spacing:0.3px}
+.tag-reg-hot{background:rgba(248,113,113,0.15);color:var(--red)}.tag-reg-free{background:rgba(52,211,153,0.15);color:var(--green)}
 .link-icons{display:flex;gap:4px}
 .link-icon{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;font-size:12px;text-decoration:none;transition:all 0.15s;background:var(--surface3);color:var(--text-mid);border:1px solid var(--border)}
 .link-icon:hover{border-color:var(--mode-accent);color:var(--mode-accent);transform:scale(1.1)}
@@ -418,7 +420,8 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
       <div class="field"><label>관리비 예상</label><div class="field-row"><input type="range" id="mgmt" min="10" max="60" step="5" value="35"><input type="number" class="field-value" id="mgmtVal" value="35" min="0" max="999"><span class="field-unit">만원</span></div></div>
       <div class="section-label">📍 규제 설정 <span style="font-size:9px;color:var(--accent);letter-spacing:0">← 정부 정책</span></div>
       <div class="policy-ref"><div class="policy-ref-title">현행 LTV 기준</div><div class="policy-ref-row"><span class="ref-dot" style="background:var(--green)"></span> 비규제: 70%</div><div class="policy-ref-row"><span class="ref-dot" style="background:var(--yellow)"></span> 조정대상: 50%</div><div class="policy-ref-row"><span class="ref-dot" style="background:var(--red)"></span> 투기과열: 40%</div><div class="policy-ref-row"><span class="ref-dot" style="background:var(--blue)"></span> 생애최초: 80% (특례)</div></div>
-      <div class="field"><label>적용 LTV <span class="field-hint">시뮬레이션용</span></label><div class="field-row"><input type="range" id="ltv" min="0" max="80" step="5" value="70"><input type="number" class="field-value" id="ltvVal" value="70" min="0" max="100"><span class="field-unit">%</span></div></div>
+      <div class="field"><label style="display:flex;align-items:center;gap:6px"><input type="checkbox" id="autoLtvCheckbox" checked style="accent-color:var(--accent);width:14px;height:14px"> 지역별 LTV 자동 적용 <span class="field-hint">(투기과열 40% / 비규제 70%)</span></label></div>
+      <div class="field" id="ltvSliderField"><label>적용 LTV <span class="field-hint" id="ltvHint">지역별 자동 적용 중</span></label><div class="field-row"><input type="range" id="ltv" min="0" max="80" step="5" value="70" disabled><input type="number" class="field-value" id="ltvVal" value="70" min="0" max="100" disabled><span class="field-unit">%</span></div></div>
       <div class="policy-ref" style="margin-top:10px"><div class="policy-ref-title">현행 DSR 기준</div><div class="policy-ref-row"><span class="ref-dot" style="background:var(--text-mid)"></span> 전 금융권: 40%</div></div>
       <div class="field"><label>적용 DSR <span class="field-hint">시뮬레이션용</span></label><div class="field-row"><input type="range" id="dsr" min="20" max="60" step="5" value="40"><input type="number" class="field-value" id="dsrVal" value="40" min="0" max="100"><span class="field-unit">%</span></div></div>
     </div>
@@ -435,6 +438,33 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
   </div>
 </div>
 <script>
+// ─── 지역별 규제등급 매핑 (2025.10.15 대책 기준) ───
+const REGULATION_MAP={
+  // 투기과열지구 (LTV 40%) — 서울 전역은 fallback 처리
+  '서울 강남구':{zone:'투기과열',ltv:40},'서울 서초구':{zone:'투기과열',ltv:40},'서울 송파구':{zone:'투기과열',ltv:40},
+  '서울 강동구':{zone:'투기과열',ltv:40},'서울 동작구':{zone:'투기과열',ltv:40},'서울 관악구':{zone:'투기과열',ltv:40},
+  '서울 금천구':{zone:'투기과열',ltv:40},'서울 성북구':{zone:'투기과열',ltv:40},'서울 강서구':{zone:'투기과열',ltv:40},
+  '서울 노원구':{zone:'투기과열',ltv:40},'서울 도봉구':{zone:'투기과열',ltv:40},'서울 영등포구':{zone:'투기과열',ltv:40},
+  '서울 구로구':{zone:'투기과열',ltv:40},'서울 용산구':{zone:'투기과열',ltv:40},
+  // 경기 투기과열
+  '경기 과천시':{zone:'투기과열',ltv:40},'경기 광명시':{zone:'투기과열',ltv:40},
+  '성남 수정구':{zone:'투기과열',ltv:40},'성남 중원구':{zone:'투기과열',ltv:40},'성남 분당구':{zone:'투기과열',ltv:40},
+  '수원 영통구':{zone:'투기과열',ltv:40},'수원 장안구':{zone:'투기과열',ltv:40},'수원 팔달구':{zone:'투기과열',ltv:40},
+  '경기 안양 동안구':{zone:'투기과열',ltv:40},'용인 수지구':{zone:'투기과열',ltv:40},
+  '경기 의왕시':{zone:'투기과열',ltv:40},'경기 하남시':{zone:'투기과열',ltv:40},
+  // 비규제지역 (LTV 70%)
+  '경기 안양 만안구':{zone:'비규제',ltv:70},'용인 기흥구':{zone:'비규제',ltv:70},
+  '경기 광주시':{zone:'비규제',ltv:70},'경기 구리시':{zone:'비규제',ltv:70},'경기 군포시':{zone:'비규제',ltv:70},
+  '경기 부천시':{zone:'비규제',ltv:70},'고양 일산동구':{zone:'비규제',ltv:70},'수원 권선구':{zone:'비규제',ltv:70},
+  '인천 서구':{zone:'비규제',ltv:70},'인천 남동구':{zone:'비규제',ltv:70}
+};
+function getRegulation(region){
+  if(!region)return{zone:'비규제',ltv:70};
+  if(REGULATION_MAP[region])return REGULATION_MAP[region];
+  if(region.startsWith('서울'))return{zone:'투기과열',ltv:40};
+  return{zone:'비규제',ltv:70};
+}
+
 let currentMode='buy',isMarried=true,PROPERTIES=[],RENT_PROPERTIES=[],DATA_LOADED=false,RENT_DATA_LOADED=false,DATA_UPDATED_AT='',RENT_UPDATED_AT='',currentSort='value',rentSort='value',searchQuery='',regionFilterVal='',verdictFilterVal='',rentTypeFilterVal='',rentVerdictFilterVal='',areaUnit='py',pageSize=20,currentPage=1,rentPage=1,currentView='card';
 let markerMap={},filteredBuyProps=[],filteredRentProps=[],hlTimer=null,COMMUTE_DATA={};
 
@@ -566,7 +596,8 @@ function renderBuyCards(items,eq,mr){
     let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.price-p.trades[i+1].price;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'')+'</span><span class="trade-price">'+fmtShort(t.price)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span></div>'+rows+'</div>';}
     const card=document.createElement('div');card.className='prop-card pc-compact';card.dataset.propId=getPropId(p);
     card.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));card.addEventListener('mouseleave',()=>stopBounce());
-    card.innerHTML='<div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">매매 '+fmtShort(p.price)+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
+    const regBadge=p.regZone==='투기과열'?'<span class="tag tag-reg tag-reg-hot">투기과열 LTV'+p.pLTV+'%</span>':'<span class="tag tag-reg tag-reg-free">비규제 LTV'+p.pLTV+'%</span>';
+    card.innerHTML='<div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span>'+regBadge+'</div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">매매 '+fmtShort(p.price)+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
     cg.appendChild(card);
   });
 }
@@ -655,16 +686,20 @@ function updateStatus(){
 function updateBuy(){
   const i1=getVal('income1'),i2=getVal('income2'),ti=i1+i2,cash=getVal('cash'),interior=getVal('interior'),eq=Math.max(0,cash-interior);
   const rate=getVal('rate'),term=getVal('term'),ml=getVal('monthlyLimit'),mg=getVal('mgmt'),lp=getVal('ltv'),dp=getVal('dsr'),hc=parseInt(document.getElementById('houseCount').value),mr=ml-mg;
+  const autoLtv=document.getElementById('autoLtvCheckbox')?.checked!==false;
   const arm=ti*dp/100,mrd=arm/12,dsrL=Math.floor(maxLoanFromMonthly(mrd,rate,term)),mlL=Math.floor(maxLoanFromMonthly(mr,rate,term));
-  let ltvL,eLTV=lp;if(hc>=2){eLTV=0;ltvL=0;}else if(lp>=100||lp<=0){ltvL=0;}else{ltvL=Math.floor(eq/(1-lp/100)*lp/100);}
+  // auto LTV: 비규제(70%) 기준으로 요약 표시, 개별 매물은 지역별 적용
+  const summaryLtv=autoLtv?70:lp;
+  let ltvL,eLTV=summaryLtv;if(hc>=2){eLTV=0;ltvL=0;}else if(summaryLtv>=100||summaryLtv<=0){ltvL=0;}else{ltvL=Math.floor(eq/(1-summaryLtv/100)*summaryLtv/100);}
   const fL=Math.min(dsrL,mlL,ltvL),fM=Math.floor(monthlyPayment(fL,rate,term)),mpp=fL+eq;
   document.getElementById('totalIncome').textContent=fmtShort(ti);document.getElementById('totalIncomeSub').textContent='본인 '+i1.toLocaleString()+' + 배우자 '+i2.toLocaleString();
   document.getElementById('equityLabel').textContent='투입 가능 자기자금';document.getElementById('equity').textContent=fmtShort(eq);document.getElementById('equitySub').textContent='총 '+cash.toLocaleString()+' - 인테리어 '+interior.toLocaleString();
   document.getElementById('mainPriceLabel').textContent='최대 매수 가능가';document.getElementById('maxPrice').textContent=fmtShort(mpp);document.getElementById('maxPrice').style.color=mpp>=30000?'var(--green)':mpp>=20000?'var(--yellow)':'var(--red)';
-  document.getElementById('maxPriceSub').textContent='자기자금 '+fmtShort(eq)+' + 대출 '+fmtShort(fL);document.getElementById('maxPriceBar').style.width=Math.min(100,mpp/600*100)+'%';
+  document.getElementById('maxPriceSub').textContent='자기자금 '+fmtShort(eq)+' + 대출 '+fmtShort(fL)+(autoLtv?' (비규제 기준)':'');document.getElementById('maxPriceBar').style.width=Math.min(100,mpp/600*100)+'%';
   document.getElementById('monthlyLabel').textContent='월 상환 여력';document.getElementById('monthlyLeft').textContent=mr+'만';document.getElementById('monthlyLeft').style.color=mr>=150?'var(--green)':mr>=100?'var(--yellow)':'var(--red)';
   document.getElementById('monthlyLeftSub').textContent='한도 '+ml+'만 - 관리비 '+mg+'만';document.getElementById('monthlyBar').style.width=Math.min(100,mr/250*100)+'%';document.getElementById('monthlyBar').style.background='var(--green)';
-  document.getElementById('ltvMax').textContent=fmtShort(ltvL);document.getElementById('ltvDetail').innerHTML='LTV '+eLTV+'%<br><span>자기자금 '+fmtShort(eq)+' → 매매가 '+fmtShort(Math.floor(eq/(1-eLTV/100)))+'까지</span>';document.getElementById('ltvCard').className='loan-card '+(ltvL>=fL?'ok':'warn');
+  const ltvLabel=autoLtv?'지역별 자동 (40~70%)':'LTV '+eLTV+'%';
+  document.getElementById('ltvMax').textContent=fmtShort(ltvL);document.getElementById('ltvDetail').innerHTML=ltvLabel+'<br><span>자기자금 '+fmtShort(eq)+' → 매매가 '+fmtShort(Math.floor(eq/(1-eLTV/100)))+'까지</span>';document.getElementById('ltvCard').className='loan-card '+(ltvL>=fL?'ok':'warn');
   document.getElementById('dsrMax').textContent=fmtShort(dsrL);document.getElementById('dsrDetail').innerHTML='DSR '+dp+'% · 연소득 '+fmtShort(ti)+'<br><span>월 '+Math.floor(mrd)+'만 상환 가능</span>';document.getElementById('dsrCard').className='loan-card '+(dsrL>=fL?'ok':'warn');
   document.getElementById('monthlyMax').textContent=fmtShort(mlL);document.getElementById('monthlyDetail').innerHTML='월 '+mr+'만 상환 가능<br><span>금리 '+rate+'% · '+term+'년</span>';document.getElementById('monthlyCard').className='loan-card '+(mlL>=fL?'ok':'warn');
   document.getElementById('finalLoan').textContent=fmtShort(fL);document.getElementById('finalDetail').innerHTML='월 '+fM+'만 · 매수가능 '+fmtShort(mpp)+'<br><span>LTV·DSR·월상환 중 최솟값</span>';
@@ -675,7 +710,8 @@ function commuteMatch(p,cv){if(!cv)return true;if(cv==='transit60')return p.comm
 function updatePropTable(eq,fL,eLTV,rate,term,mr){
   const sq=document.getElementById('searchInput').value.toLowerCase(),rv=document.getElementById('regionFilter').value,av=(document.getElementById('areaFilter')||{}).value||'',vv=(document.getElementById('buyVerdictSelect')||{}).value||'',cv=(document.getElementById('buyCommuteFilter')||{}).value||'',sv=(document.getElementById('buySortSelect')||{}).value||'value';
   let f=PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq))return false;if(rv&&p.region!==rv)return false;if(!areaMatch(p.area_py,av))return false;if(!commuteMatch(p,cv))return false;return true;});
-  const wv=f.map(p=>{const pL=p.regulated?Math.min(eLTV,50):eLTV,pLn=Math.min(Math.floor(p.price*pL/100),fL),pEq=p.price-pLn,pM=Math.floor(monthlyPayment(pLn,rate,term));let v,vt;if(pEq>eq){v='자금부족';vt='tag-danger';}else if(pM>mr){v='상환초과';vt='tag-danger';}else if(pM>mr*0.85){v='빠듯함';vt='tag-warn';}else{v='매수가능';vt='tag-ok';}return{...p,pLTV:pL,pLoan:pLn,pEquityNeeded:pEq,pMonthly:pM,verdict:v,verdictTag:vt};});
+  const autoLtv=document.getElementById('autoLtvCheckbox')?.checked!==false;
+  const wv=f.map(p=>{const reg=getRegulation(p.region);const pL=autoLtv?reg.ltv:(p.regulated?Math.min(eLTV,50):eLTV);const pLn=Math.min(Math.floor(p.price*pL/100),fL),pEq=p.price-pLn,pM=Math.floor(monthlyPayment(pLn,rate,term));let v,vt;if(pEq>eq){v='자금부족';vt='tag-danger';}else if(pM>mr){v='상환초과';vt='tag-danger';}else if(pM>mr*0.85){v='빠듯함';vt='tag-warn';}else{v='매수가능';vt='tag-ok';}return{...p,pLTV:pL,pLoan:pLn,pEquityNeeded:pEq,pMonthly:pM,verdict:v,verdictTag:vt,regZone:reg.zone};});
   let filtered=vv?wv.filter(p=>p.verdict===vv):wv;
   if(mapBoundsFilter&&mapBounds)filtered=filtered.filter(p=>inBounds(p));
   const vo={'매수가능':0,'빠듯함':1,'상환초과':2,'자금부족':2};
@@ -697,7 +733,8 @@ function updatePropTable(eq,fL,eLTV,rate,term,mr){
     let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.price-p.trades[i+1].price;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'날짜없음')+'</span><span class="trade-price">'+fmtShort(t.price)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');const pd=p.max_price-p.min_price;hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span><span style="font-size:10px;color:var(--text-dim)">'+(pd>0?'변동폭: '+fmtShort(pd):'동일가')+'</span></div>'+rows+'</div>';}
     const stTxt=p.station_name?(p.station_name+(p.walk_min?' '+p.walk_min+'분':'')):'—';
     const tr=document.createElement('tr');tr.dataset.propId=getPropId(p);tr.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));tr.addEventListener('mouseleave',()=>stopBounce());
-    tr.innerHTML='<td data-label="판정"><span class="tag '+p.verdictTag+'">'+p.verdict+'</span></td><td data-label="단지명"><strong>'+p.name+'</strong><br><span style="font-size:10px;color:var(--text-dim)">'+(p.line?p.line+' ':'')+p.station+(ex.length?' · '+ex.join(' · '):'')+'</span><br>'+tBtn+hH+'</td><td data-label="지역"><span class="tag tag-region">'+p.region+'</span></td><td data-label="면적">'+fmtArea(p)+'</td><td data-label="매매가" class="mono">'+fmtShort(p.price)+'</td><td data-label="월상환" class="mono" style="color:'+(p.pMonthly>mr?'var(--red)':p.pMonthly>mr*0.85?'var(--yellow)':'var(--green)')+'">'+p.pMonthly+'만</td><td data-label="역세권">'+stTxt+'</td><td data-label="연식">'+(p.built_year||'—')+'</td><td data-label="세대">'+(p.households||'—')+'</td><td data-label="링크"><div class="link-icons">'+makeLinks(p)+'</div></td>';
+    const tRegBadge=p.regZone==='투기과열'?'<span class="tag tag-reg tag-reg-hot">투기과열 '+p.pLTV+'%</span>':'<span class="tag tag-reg tag-reg-free">비규제 '+p.pLTV+'%</span>';
+    tr.innerHTML='<td data-label="판정"><span class="tag '+p.verdictTag+'">'+p.verdict+'</span></td><td data-label="단지명"><strong>'+p.name+'</strong><br><span style="font-size:10px;color:var(--text-dim)">'+(p.line?p.line+' ':'')+p.station+(ex.length?' · '+ex.join(' · '):'')+'</span><br>'+tBtn+hH+'</td><td data-label="지역"><span class="tag tag-region">'+p.region+'</span> '+tRegBadge+'</td><td data-label="면적">'+fmtArea(p)+'</td><td data-label="매매가" class="mono">'+fmtShort(p.price)+'</td><td data-label="월상환" class="mono" style="color:'+(p.pMonthly>mr?'var(--red)':p.pMonthly>mr*0.85?'var(--yellow)':'var(--green)')+'">'+p.pMonthly+'만</td><td data-label="역세권">'+stTxt+'</td><td data-label="연식">'+(p.built_year||'—')+'</td><td data-label="세대">'+(p.households||'—')+'</td><td data-label="링크"><div class="link-icons">'+makeLinks(p)+'</div></td>';
     tb.appendChild(tr);
   });}
   document.getElementById('propertyBadge').textContent=DATA_LOADED?(mapBoundsFilter&&mapBounds?'지도 영역 내 '+ti+'건':ti+'/'+PROPERTIES.length+'개 표시'):'데이터 없음';
@@ -806,6 +843,12 @@ function updatePolicy(){
 const PAIRS=[['income1','income1Val'],['income2','income2Val'],['cash','cashVal'],['interior','interiorVal'],['rate','rateVal'],['term','termVal'],['monthlyLimit','monthlyLimitVal'],['mgmt','mgmtVal'],['ltv','ltvVal'],['dsr','dsrVal'],['rentRate','rentRateVal'],['rentLoanRatio','rentLoanRatioVal'],['rentLoanLimit','rentLoanLimitVal']];
 PAIRS.forEach(([s,i])=>{const sl=document.getElementById(s),ip=document.getElementById(i);if(sl&&ip){sl.addEventListener('input',()=>{ip.value=sl.value;update();});ip.addEventListener('input',()=>{sl.value=ip.value;update();});}});
 document.getElementById('houseCount').addEventListener('change',update);
+document.getElementById('autoLtvCheckbox').addEventListener('change',function(){
+  const on=this.checked,sl=document.getElementById('ltv'),ip=document.getElementById('ltvVal'),hint=document.getElementById('ltvHint');
+  sl.disabled=on;ip.disabled=on;
+  hint.textContent=on?'지역별 자동 적용 중':'시뮬레이션용';
+  update();
+});
 document.getElementById('searchInput').addEventListener('input',()=>{currentPage=1;update();});
 document.getElementById('regionFilter').addEventListener('change',()=>{currentPage=1;update();});
 const rsi=document.getElementById('rentSearchInput');if(rsi)rsi.addEventListener('input',()=>{rentPage=1;update();});
