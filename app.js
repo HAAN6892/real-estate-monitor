@@ -298,6 +298,7 @@ function updateBuy(){
 }
 function commuteMatch(p,cv){if(!cv)return true;if(cv==='transit60')return p.commuteTransit!=null&&p.commuteTransit<=60;if(cv==='subway60')return p.commuteSubway!=null&&p.commuteSubway<=60;if(cv==='transit45')return p.commuteTransit!=null&&p.commuteTransit<=45;return true;}
 function updatePropTable(eq,fL,eLTV,rate,term,mr){
+  const scrollEl=document.getElementById('splitList'),savedScroll=_preserveScroll&&scrollEl?scrollEl.scrollTop:0;
   const sq=document.getElementById('searchInput').value.toLowerCase(),rv=document.getElementById('regionFilter').value,av=(document.getElementById('areaFilter')||{}).value||'',vv=(document.getElementById('buyVerdictSelect')||{}).value||'',cv=(document.getElementById('buyCommuteFilter')||{}).value||'',byv=(document.getElementById('buyBuiltYearFilter')||{}).value||'',sv=(document.getElementById('buySortSelect')||{}).value||'value';
   let f=PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq))return false;if(rv&&p.region!==rv)return false;if(!areaMatch(p.area_py,av))return false;if(!builtYearMatch(p.built_year,byv))return false;if(!commuteMatch(p,cv))return false;return true;});
   const autoLtv=document.getElementById('autoLtvCheckbox')?.checked!==false;
@@ -331,6 +332,7 @@ function updatePropTable(eq,fL,eLTV,rate,term,mr){
   document.getElementById('pageInfo').textContent=ti>0?(si+1)+'-'+Math.min(si+pageSize,ti)+' / '+ti+'건':'0건';
   const pb=document.getElementById('pageBtns');pb.innerHTML='';
   if(tp>1){const pv=document.createElement('button');pv.className='page-btn';pv.textContent='◀';pv.disabled=currentPage<=1;pv.onclick=()=>{currentPage--;update();};pb.appendChild(pv);for(let i=1;i<=tp;i++){if(tp>7&&i>2&&i<tp-1&&Math.abs(i-currentPage)>1){if(i===3||i===tp-2){const d=document.createElement('span');d.className='page-info';d.textContent='…';pb.appendChild(d);}continue;}const b=document.createElement('button');b.className='page-btn'+(i===currentPage?' active':'');b.textContent=i;b.onclick=()=>{currentPage=i;update();};pb.appendChild(b);}const nx=document.createElement('button');nx.className='page-btn';nx.textContent='▶';nx.disabled=currentPage>=tp;nx.onclick=()=>{currentPage++;update();};pb.appendChild(nx);}
+  if(_preserveScroll&&scrollEl)scrollEl.scrollTop=savedScroll;
 }
 function updateRent(){
   const i1=getVal('income1'),i2=getVal('income2'),ti=i1+i2,cash=getVal('cash'),eq=cash;
@@ -350,6 +352,7 @@ function updateRent(){
   updateRentTable(eq,rb);
 }
 function updateRentTable(equity,budget){
+  const scrollEl=document.getElementById('splitList'),savedScroll=_preserveScroll&&scrollEl?scrollEl.scrollTop:0;
   const placeholder=document.getElementById('rentPlaceholder');
   const tableWrap=document.getElementById('rentTableWrap');
   if(!RENT_DATA_LOADED||RENT_PROPERTIES.length===0){if(placeholder)placeholder.style.display='';if(tableWrap)tableWrap.style.display='none';return;}
@@ -394,6 +397,7 @@ function updateRentTable(equity,budget){
   document.getElementById('rentPageInfo').textContent=ti>0?(si+1)+'-'+Math.min(si+pageSize,ti)+' / '+ti+'건':'0건';
   const pb=document.getElementById('rentPageBtns');pb.innerHTML='';
   if(tp>1){const pv=document.createElement('button');pv.className='page-btn';pv.textContent='◀';pv.disabled=rentPage<=1;pv.onclick=()=>{rentPage--;update();};pb.appendChild(pv);for(let i=1;i<=tp;i++){if(tp>7&&i>2&&i<tp-1&&Math.abs(i-rentPage)>1){if(i===3||i===tp-2){const d=document.createElement('span');d.className='page-info';d.textContent='…';pb.appendChild(d);}continue;}const b=document.createElement('button');b.className='page-btn'+(i===rentPage?' active':'');b.textContent=i;b.onclick=()=>{rentPage=i;update();};pb.appendChild(b);}const nx=document.createElement('button');nx.className='page-btn';nx.textContent='▶';nx.disabled=rentPage>=tp;nx.onclick=()=>{rentPage++;update();};pb.appendChild(nx);}
+  if(_preserveScroll&&scrollEl)scrollEl.scrollTop=savedScroll;
 }
 function updatePolicyTimeline(){
   const tl=document.getElementById('policyTimeline');
@@ -451,7 +455,7 @@ const rsi=document.getElementById('rentSearchInput');if(rsi)rsi.addEventListener
 const rrf=document.getElementById('rentRegionFilter');if(rrf)rrf.addEventListener('change',()=>{rentPage=1;update();});
 
 // ─── 카카오맵 ───
-let kakaoMap=null,mapMarkers=[],mapInfoWindow=null,mapFilterVal='',mapInitialized=false,geocodingDone=false,mapBoundsFilter=true,mapBounds=null,mapFullscreen=false;
+let kakaoMap=null,mapMarkers=[],mapInfoWindow=null,mapFilterVal='',mapInitialized=false,geocodingDone=false,mapBoundsFilter=true,mapBounds=null,mapFullscreen=false,mapIdleTimer=null,_preserveScroll=false;
 function toggleMapFullscreen(){
   mapFullscreen=!mapFullscreen;
   const layout=document.getElementById('splitLayout'),btn=document.getElementById('mapFullscreenBtn'),mapEl=document.querySelector('.split-map');
@@ -506,7 +510,7 @@ const MAP_STATIONS=[
 ];
 function setMapFilter(btn){document.querySelectorAll('#mapVerdictChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');mapFilterVal=btn.dataset.val;updateMapMarkers();}
 function toggleMapBounds(on){mapBoundsFilter=on;if(on&&kakaoMap){mapBounds=kakaoMap.getBounds();}else{mapBounds=null;}currentPage=1;rentPage=1;update();}
-function onMapIdle(){if(!mapBoundsFilter||!kakaoMap)return;mapBounds=kakaoMap.getBounds();currentPage=1;rentPage=1;update();}
+function onMapIdle(){if(!mapBoundsFilter||!kakaoMap)return;if(mapIdleTimer)clearTimeout(mapIdleTimer);mapIdleTimer=setTimeout(()=>{mapBounds=kakaoMap.getBounds();_preserveScroll=true;update();_preserveScroll=false;},500);}
 function inBounds(p){if(!mapBounds||!p.lat||!p.lon)return true;const sw=mapBounds.getSouthWest(),ne=mapBounds.getNorthEast();return p.lat>=sw.getLat()&&p.lat<=ne.getLat()&&p.lon>=sw.getLng()&&p.lon<=ne.getLng();}
 function geocodeUnmatchedProps(){
   if(geocodingDone)return;
@@ -524,7 +528,7 @@ function geocodeUnmatchedProps(){
   let idx=0,found=0;
   function next(){
     if(idx>=toGeocode.length){
-      if(found>0)update();
+      if(found>0){_preserveScroll=true;update();_preserveScroll=false;}
       document.getElementById('mapBadge').textContent+=' (지오코딩 완료)';
       return;
     }
@@ -537,7 +541,7 @@ function geocodeUnmatchedProps(){
         allProps.forEach(ap=>{if(ap.region===p.region&&ap.dong===p.dong&&ap.name===p.name&&!ap.lat){ap.lat=lat;ap.lon=lon;}});
         found++;
       }
-      if(idx%30===0&&found>0){update();found=0;}
+      if(idx%30===0&&found>0){_preserveScroll=true;update();_preserveScroll=false;found=0;}
       setTimeout(next,80);
     },{size:1});
   }
