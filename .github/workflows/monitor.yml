@@ -115,4 +115,5 @@ jobs:
           git config user.email "actions@github.com"
           git add data.json data-rent.json sent_history.json sent_history_rent.json coord_cache.json apt_info_cache.json commute_time.json 2>/dev/null || true
           git diff --cached --quiet || git commit -m "📊 데이터 업데이트 $(date +'%Y-%m-%d %H:%M')"
+          git pull --rebase origin main || true
           git push || true
