@@ -2,7 +2,7 @@
   "destination": "강남역 미림타워",
   "address": "서울 강남구 역삼동 826",
   "survey_basis": "ODsay API 대중교통 길찾기 (자동)",
-  "updated": "2026-02-20 20:27",
+  "updated": "2026-02-20 23:51",
   "data": {
     "수원 장안구 정자동": {
       "subway": 72,
@@ -135,9 +135,9 @@
       "note": ""
     },
     "경기 광주시 곤지암읍 곤지암리": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 39,
+      "transit": 39,
+      "note": ""
     },
     "경기 광명시 철산동": {
       "subway": 44,
@@ -275,9 +275,9 @@
       "note": "좌표 매칭 실패"
     },
     "용인 기흥구 고매동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 69,
+      "transit": 59,
+      "note": ""
     },
     "경기 광주시 초월읍 쌍동리": {
       "subway": null,
@@ -292,6 +292,236 @@
     "성남 중원구 하대원동": {
       "subway": 52,
       "transit": 45,
+      "note": ""
+    },
+    "수원 권선구 세류동": {
+      "subway": 65,
+      "transit": 65,
+      "note": ""
+    },
+    "고양 일산동구 백석동": {
+      "subway": 75,
+      "transit": 61,
+      "note": ""
+    },
+    "인천 서구 청라동": {
+      "subway": 59,
+      "transit": 59,
+      "note": ""
+    },
+    "수원 권선구 호매실동": {
+      "subway": 19,
+      "transit": 71,
+      "note": ""
+    },
+    "수원 권선구 오목천동": {
+      "subway": 67,
+      "transit": 67,
+      "note": ""
+    },
+    "수원 권선구 금곡동": {
+      "subway": 19,
+      "transit": 67,
+      "note": ""
+    },
+    "인천 서구 원당동": {
+      "subway": 74,
+      "transit": 74,
+      "note": ""
+    },
+    "인천 남동구 구월동": {
+      "subway": 86,
+      "transit": 79,
+      "note": ""
+    },
+    "인천 남동구 간석동": {
+      "subway": 77,
+      "transit": 77,
+      "note": ""
+    },
+    "수원 권선구 권선동": {
+      "subway": 75,
+      "transit": 75,
+      "note": ""
+    },
+    "수원 권선구 당수동": {
+      "subway": 19,
+      "transit": 62,
+      "note": ""
+    },
+    "고양 일산동구 풍동": {
+      "subway": 86,
+      "transit": 76,
+      "note": ""
+    },
+    "인천 남동구 서창동": {
+      "subway": 30,
+      "transit": 70,
+      "note": ""
+    },
+    "서울 성북구 길음동": {
+      "subway": 55,
+      "transit": 54,
+      "note": ""
+    },
+    "서울 성북구 정릉동": {
+      "subway": 55,
+      "transit": 55,
+      "note": ""
+    },
+    "서울 노원구 중계동": {
+      "subway": 81,
+      "transit": 74,
+      "note": ""
+    },
+    "수원 권선구 서둔동": {
+      "subway": 61,
+      "transit": 61,
+      "note": ""
+    },
+    "인천 서구 당하동": {
+      "subway": 70,
+      "transit": 70,
+      "note": ""
+    },
+    "인천 서구 불로동": {
+      "subway": 72,
+      "transit": 72,
+      "note": ""
+    },
+    "서울 노원구 상계동": {
+      "subway": 58,
+      "transit": 49,
+      "note": ""
+    },
+    "서울 도봉구 도봉동": {
+      "subway": 55,
+      "transit": 55,
+      "note": ""
+    },
+    "서울 도봉구 쌍문동": {
+      "subway": 63,
+      "transit": 61,
+      "note": ""
+    },
+    "수원 권선구 탑동": {
+      "subway": 46,
+      "transit": 38,
+      "note": ""
+    },
+    "수원 권선구 고색동": {
+      "subway": 19,
+      "transit": 64,
+      "note": ""
+    },
+    "인천 서구 가정동": {
+      "subway": 86,
+      "transit": 74,
+      "note": ""
+    },
+    "인천 남동구 논현동": {
+      "subway": 91,
+      "transit": 80,
+      "note": ""
+    },
+    "서울 구로구 오류동": {
+      "subway": 47,
+      "transit": 47,
+      "note": ""
+    },
+    "인천 서구 금곡동": {
+      "subway": 61,
+      "transit": 61,
+      "note": ""
+    },
+    "인천 서구 가좌동": {
+      "subway": 85,
+      "transit": 80,
+      "note": ""
+    },
+    "인천 남동구 만수동": {
+      "subway": 92,
+      "transit": 79,
+      "note": ""
+    },
+    "서울 도봉구 창동": {
+      "subway": 54,
+      "transit": 54,
+      "note": ""
+    },
+    "수원 권선구 곡반정동": {
+      "subway": 78,
+      "transit": 69,
+      "note": ""
+    },
+    "수원 권선구 구운동": {
+      "subway": 69,
+      "transit": 59,
+      "note": ""
+    },
+    "서울 노원구 월계동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 구로구 개봉동": {
+      "subway": 49,
+      "transit": 49,
+      "note": ""
+    },
+    "고양 일산동구 장항동": {
+      "subway": 78,
+      "transit": 66,
+      "note": ""
+    },
+    "인천 서구 심곡동": {
+      "subway": 44,
+      "transit": 44,
+      "note": ""
+    },
+    "인천 서구 신현동": {
+      "subway": 84,
+      "transit": 72,
+      "note": ""
+    },
+    "서울 노원구 공릉동": {
+      "subway": 48,
+      "transit": 44,
+      "note": ""
+    },
+    "서울 구로구 구로동": {
+      "subway": 33,
+      "transit": 33,
+      "note": ""
+    },
+    "수원 권선구 평동": {
+      "subway": 61,
+      "transit": 61,
+      "note": ""
+    },
+    "고양 일산동구 중산동": {
+      "subway": 80,
+      "transit": 78,
+      "note": ""
+    },
+    "고양 일산동구 성석동": {
+      "subway": 17,
+      "transit": 96,
+      "note": ""
+    },
+    "인천 서구 마전동": {
+      "subway": 86,
+      "transit": 82,
+      "note": ""
+    },
+    "서울 금천구 시흥동": {
+      "subway": 61,
+      "transit": 56,
+      "note": ""
+    },
+    "서울 구로구 고척동": {
+      "subway": 58,
+      "transit": 40,
       "note": ""
     }
   }
