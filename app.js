@@ -101,6 +101,40 @@ function makeLinks(p){const q=encodeURIComponent((p.dong||'')+' '+p.name);return
 function fmtCommute(min){if(min==null)return'<span style="color:var(--text-dim)">—</span>';const c=min<=60?'var(--green)':min<=90?'var(--yellow)':'var(--text-dim)';return'<span style="color:'+c+'">'+min+'분</span>';}
 function commuteHtml(p){return'<span class="pc-commute">🚇'+fmtCommute(p.commuteSubway)+' 🚌'+fmtCommute(p.commuteTransit)+'</span>';}
 function jeonseRateBadge(p){if(p.jeonseRate==null)return'';if(p.jeonseRate>=70)return'<span class="tag tag-jr tag-jr-danger">전세가율 '+p.jeonseRate+'%</span>';if(p.jeonseRate<=50)return'<span class="tag tag-jr tag-jr-safe">전세가율 '+p.jeonseRate+'%</span>';return'<span class="tag tag-jr">전세가율 '+p.jeonseRate+'%</span>';}
+function findBuyMatch(p){
+  if(!DATA_LOADED||PROPERTIES.length===0)return null;
+  const py=parseFloat(p.area_py)||0;
+  // 1순위: 같은 이름+같은 면적
+  let m=PROPERTIES.find(b=>b.name===p.name&&b.area_py===p.area_py);
+  if(m)return m;
+  // 2순위: 같은 이름+유사면적(±3평)
+  m=PROPERTIES.find(b=>b.name===p.name&&Math.abs((parseFloat(b.area_py)||0)-py)<=3);
+  return m||null;
+}
+function showBuyCompare(pid){
+  const rp=RENT_PROPERTIES.find(p=>getPropId(p)===pid);if(!rp)return;
+  const bp=findBuyMatch(rp);
+  const eq=getVal('cash'),interior=getVal('interior'),eqBuy=Math.max(0,eq-interior);
+  const rate=getVal('rate'),term=getVal('term');
+  const rr=getVal('rentRate'),rlr=getVal('rentLoanRatio'),rll=getVal('rentLoanLimit');
+  // 전세 계산
+  const rf=rlr/100;const mbr=rf<1?eqBuy/(1-rf):eqBuy+rll;const aLR=Math.min(Math.floor(mbr*rf),rll);const rentBudget=eqBuy+aLR;
+  const rentNeedEq=Math.max(0,rp.deposit-rentBudget+eqBuy);const rentLoan=rp.deposit-rentNeedEq;const rentMi=Math.round(rentLoan*rr/100/12);
+  let html='<div class="compare-popup"><div class="compare-title">📊 전세 vs 매수 비교</div><div class="compare-name">'+rp.name+' · '+rp.area+' · '+rp.region+'</div>';
+  html+='<div class="compare-section"><div class="compare-label">🔑 전세</div><div class="compare-row"><span>보증금</span><span class="mono">'+fmtShort(rp.deposit)+'</span></div><div class="compare-row"><span>대출</span><span class="mono">'+fmtShort(rentLoan)+'</span></div><div class="compare-row"><span>자기자금</span><span class="mono">'+fmtShort(rentNeedEq)+'</span></div><div class="compare-row highlight"><span>월 이자</span><span class="mono" style="color:var(--accent2)">'+rentMi+'만</span></div></div>';
+  if(bp){
+    const reg=getRegulation(bp.region);const bLtv=reg.ltv;const bLoan=Math.min(Math.floor(bp.price*bLtv/100),60000);const bEqN=bp.price-bLoan;const bMo=Math.floor(monthlyPayment(bLoan,rate,term));
+    const diff=bMo-rentMi;const jr=Math.round(rp.deposit/bp.price*100);
+    html+='<div class="compare-section"><div class="compare-label">🏠 매수</div><div class="compare-row"><span>매매가</span><span class="mono">'+fmtShort(bp.price)+'</span></div><div class="compare-row"><span>대출 (LTV '+bLtv+'%)</span><span class="mono">'+fmtShort(bLoan)+'</span></div><div class="compare-row"><span>자기자금</span><span class="mono">'+fmtShort(bEqN)+'</span></div><div class="compare-row highlight"><span>월 상환</span><span class="mono" style="color:var(--accent)">'+bMo+'만</span></div></div>';
+    html+='<div class="compare-diff"><div class="compare-row"><span>전세가율</span><span class="mono">'+jr+'%</span></div><div class="compare-row highlight"><span>매수 시 월 추가 부담</span><span class="mono" style="color:'+(diff>0?'var(--red)':'var(--green)')+'">'+( diff>0?'+':'')+diff+'만</span></div><div class="compare-note">'+(diff<=30?'💡 월 '+Math.abs(diff)+'만 차이로 내 집 마련 가능':'⚠️ 월 상환 부담이 크게 증가')+'</div></div>';
+  }else{
+    html+='<div class="compare-section"><div class="compare-label">🏠 매수</div><div class="compare-empty">매매 시세 정보 없음</div></div>';
+  }
+  html+='<button class="compare-close" onclick="this.closest(\'.compare-overlay\').remove()">닫기</button></div>';
+  const overlay=document.createElement('div');overlay.className='compare-overlay';overlay.innerHTML=html;
+  overlay.addEventListener('click',function(e){if(e.target===overlay)overlay.remove();});
+  document.body.appendChild(overlay);
+}
 function matchCommute(p){
   if(!COMMUTE_DATA.data)return null;const d=COMMUTE_DATA.data;
   const key=p.region+' '+p.dong;if(d[key])return d[key];
@@ -193,7 +227,8 @@ function renderRentCards(items,equity,budget){
     card.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));card.addEventListener('mouseleave',()=>stopBounce());
     const anomalyBadge=p.priceAnomaly?'<span class="tag tag-anomaly">⚠️ 이상가격</span>':'';
     const jrBadge=jeonseRateBadge(p);
-    card.innerHTML='<div class="pc-line">'+bmBtn(p)+'<span class="pc-badge-sm '+bc+'">'+p.verdict+'</span>'+anomalyBadge+jrBadge+'<span class="pc-cname">'+typeIcon+' '+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceStr+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
+    const cmpBtn=p.rent_type==='전세'?'<button class="expand-btn" onclick="showBuyCompare(\''+getPropId(p).replace(/'/g,"\\'")+'\')">📊 매수비교</button>':'';
+    card.innerHTML='<div class="pc-line">'+bmBtn(p)+'<span class="pc-badge-sm '+bc+'">'+p.verdict+'</span>'+anomalyBadge+jrBadge+'<span class="pc-cname">'+typeIcon+' '+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceStr+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+cmpBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
     cg.appendChild(card);
   });
 }
