@@ -54,7 +54,7 @@ function applyTheme(mode){
   r.setProperty('--mode-accent',t.accent);r.setProperty('--mode-accent-light',t.accentLight);r.setProperty('--mode-bg',t.bg);r.setProperty('--mode-border',t.border);r.setProperty('--mode-header-stripe',t.stripe);
 }
 function switchMode(mode){
-  currentMode=mode;
+  _focusedPropId=null;currentMode=mode;
   applyTheme(mode);
   document.querySelectorAll('.mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
   document.body.classList.toggle('mode-rent',mode==='rent');
@@ -145,11 +145,11 @@ function matchCommute(p){
 function setSort(btn){btn.closest('.filter-chip-group').querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');currentSort=btn.dataset.sort;currentPage=1;update();}
 function setRentSort(btn){btn.closest('.filter-chip-group').querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');rentSort=btn.dataset.sort;rentPage=1;update();}
 function setVerdictFilter(btn){document.querySelectorAll('#verdictChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');verdictFilterVal=btn.dataset.val;currentPage=1;update();}
-function setRentTypeFilter(btn){document.querySelectorAll('#rentTypeChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');rentTypeFilterVal=btn.dataset.val;rentPage=1;update();}
-function setRentVerdictFilter(btn){document.querySelectorAll('#rentVerdictChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');rentVerdictFilterVal=btn.dataset.val;rentPage=1;update();}
-function setView(v){currentView=v;document.querySelectorAll('.view-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));update();}
-function onBuyFilterChange(){currentPage=1;update();}
-function onRentFilterChange(){rentPage=1;update();}
+function setRentTypeFilter(btn){_focusedPropId=null;document.querySelectorAll('#rentTypeChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');rentTypeFilterVal=btn.dataset.val;rentPage=1;update();}
+function setRentVerdictFilter(btn){_focusedPropId=null;document.querySelectorAll('#rentVerdictChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');rentVerdictFilterVal=btn.dataset.val;rentPage=1;update();}
+function setView(v){_focusedPropId=null;currentView=v;document.querySelectorAll('.view-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));update();}
+function onBuyFilterChange(){_focusedPropId=null;currentPage=1;update();}
+function onRentFilterChange(){_focusedPropId=null;rentPage=1;update();}
 function highlightSelects(){
   document.querySelectorAll('.filter-bar .filter-select').forEach(s=>{s.classList.toggle('active',s.selectedIndex>0);});
   const buyActive=['regionFilter','areaFilter','buyVerdictSelect','buyBuiltYearFilter','buyCommuteFilter'].some(id=>{const el=document.getElementById(id);return el&&el.selectedIndex>0;})||document.getElementById('searchInput').value!=='';
@@ -161,13 +161,13 @@ function highlightSelects(){
 function resetBuyFilters(){
   ['regionFilter','areaFilter','buyVerdictSelect','buyBuiltYearFilter','buyCommuteFilter','buySortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
   const bb=document.getElementById('buyBmOnly');if(bb)bb.checked=false;
-  document.getElementById('searchInput').value='';currentPage=1;update();
+  document.getElementById('searchInput').value='';_focusedPropId=null;currentPage=1;update();
 }
 function resetRentFilters(){
   ['rentRegionFilter','rentAreaFilter','rentVerdictSelect','rentTypeSelect','rentBuiltYearFilter','rentCommuteFilter','rentSortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
   const ac=document.getElementById('rentShowAnomaly');if(ac)ac.checked=false;
   const rb=document.getElementById('rentBmOnly');if(rb)rb.checked=false;
-  document.getElementById('rentSearchInput').value='';rentPage=1;update();
+  document.getElementById('rentSearchInput').value='';_focusedPropId=null;rentPage=1;update();
 }
 function areaMatch(py,val){if(!val)return true;const p=parseFloat(py)||0;if(val==='small')return p<=18;if(val==='mid')return p>18&&p<=25;if(val==='large')return p>25;return true;}
 function builtYearMatch(by,val){if(!val)return true;if(!by)return false;const cy=new Date().getFullYear();if(val==='old')return cy-by>=20;return cy-by<=parseInt(val);}
@@ -178,14 +178,22 @@ function focusCard(mKey){
   const idx=props.findIndex(p=>getMarkerKey(p)===mKey);
   if(idx<0)return;
   const targetPage=Math.floor(idx/pageSize)+1,propId=getPropId(props[idx]);
+  _focusedPropId=propId;
+  if(mapIdleTimer)clearTimeout(mapIdleTimer);
   let need=false;
   if(currentMode==='buy'&&currentPage!==targetPage){currentPage=targetPage;need=true;}
   else if(currentMode!=='buy'&&rentPage!==targetPage){rentPage=targetPage;need=true;}
   if(need)update();
-  // 핀 클릭 후 1.5초간 onMapIdle 재렌더링 억제
-  _focusLock=Date.now();if(mapIdleTimer)clearTimeout(mapIdleTimer);
-  const doFocus=()=>{const el=document.querySelector('[data-prop-id="'+propId+'"]');if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});highlightEl(el);};
-  setTimeout(doFocus,need?120:20);
+  else restoreFocus();
+}
+function restoreFocus(){
+  if(!_focusedPropId)return;
+  const el=document.querySelector('[data-prop-id="'+_focusedPropId+'"]');
+  if(!el)return;
+  _autoScrolling=true;
+  el.scrollIntoView({behavior:'smooth',block:'center'});
+  highlightEl(el);
+  setTimeout(()=>{_autoScrolling=false;},800);
 }
 function highlightEl(el){document.querySelectorAll('.highlight').forEach(e=>e.classList.remove('highlight'));if(hlTimer)clearTimeout(hlTimer);el.classList.add('highlight');hlTimer=setTimeout(()=>{if(el.classList)el.classList.remove('highlight');},2500);}
 function bounceMarker(mKey){stopBounce();const m=markerMap[mKey];if(m&&m.a)m.a.style.animation='markerBounce 0.6s ease infinite';}
@@ -406,6 +414,7 @@ function updatePropTable(eq,fL,eLTV,rate,term,mr){
   const pb=document.getElementById('pageBtns');pb.innerHTML='';
   if(tp>1){const pv=document.createElement('button');pv.className='page-btn';pv.textContent='◀';pv.disabled=currentPage<=1;pv.onclick=()=>{currentPage--;update();};pb.appendChild(pv);for(let i=1;i<=tp;i++){if(tp>7&&i>2&&i<tp-1&&Math.abs(i-currentPage)>1){if(i===3||i===tp-2){const d=document.createElement('span');d.className='page-info';d.textContent='…';pb.appendChild(d);}continue;}const b=document.createElement('button');b.className='page-btn'+(i===currentPage?' active':'');b.textContent=i;b.onclick=()=>{currentPage=i;update();};pb.appendChild(b);}const nx=document.createElement('button');nx.className='page-btn';nx.textContent='▶';nx.disabled=currentPage>=tp;nx.onclick=()=>{currentPage++;update();};pb.appendChild(nx);}
   if(_preserveScroll&&scrollEl)scrollEl.scrollTop=savedScroll;
+  if(_focusedPropId)setTimeout(restoreFocus,50);
 }
 function updateRent(){
   const i1=getVal('income1'),i2=getVal('income2'),ti=i1+i2,cash=getVal('cash'),eq=cash;
@@ -473,6 +482,7 @@ function updateRentTable(equity,budget){
   const pb=document.getElementById('rentPageBtns');pb.innerHTML='';
   if(tp>1){const pv=document.createElement('button');pv.className='page-btn';pv.textContent='◀';pv.disabled=rentPage<=1;pv.onclick=()=>{rentPage--;update();};pb.appendChild(pv);for(let i=1;i<=tp;i++){if(tp>7&&i>2&&i<tp-1&&Math.abs(i-rentPage)>1){if(i===3||i===tp-2){const d=document.createElement('span');d.className='page-info';d.textContent='…';pb.appendChild(d);}continue;}const b=document.createElement('button');b.className='page-btn'+(i===rentPage?' active':'');b.textContent=i;b.onclick=()=>{rentPage=i;update();};pb.appendChild(b);}const nx=document.createElement('button');nx.className='page-btn';nx.textContent='▶';nx.disabled=rentPage>=tp;nx.onclick=()=>{rentPage++;update();};pb.appendChild(nx);}
   if(_preserveScroll&&scrollEl)scrollEl.scrollTop=savedScroll;
+  if(_focusedPropId)setTimeout(restoreFocus,50);
 }
 function updatePolicyTimeline(){
   const tl=document.getElementById('policyTimeline');
@@ -524,13 +534,14 @@ document.getElementById('autoLtvCheckbox').addEventListener('change',function(){
   hint.textContent=on?'지역별 자동 적용 중':'시뮬레이션용';
   update();
 });
-document.getElementById('searchInput').addEventListener('input',()=>{currentPage=1;update();});
-document.getElementById('regionFilter').addEventListener('change',()=>{currentPage=1;update();});
-const rsi=document.getElementById('rentSearchInput');if(rsi)rsi.addEventListener('input',()=>{rentPage=1;update();});
-const rrf=document.getElementById('rentRegionFilter');if(rrf)rrf.addEventListener('change',()=>{rentPage=1;update();});
+document.getElementById('searchInput').addEventListener('input',()=>{_focusedPropId=null;currentPage=1;update();});
+document.getElementById('regionFilter').addEventListener('change',()=>{_focusedPropId=null;currentPage=1;update();});
+const rsi=document.getElementById('rentSearchInput');if(rsi)rsi.addEventListener('input',()=>{_focusedPropId=null;rentPage=1;update();});
+const rrf=document.getElementById('rentRegionFilter');if(rrf)rrf.addEventListener('change',()=>{_focusedPropId=null;rentPage=1;update();});
 
 // ─── 카카오맵 ───
-let kakaoMap=null,mapMarkers=[],mapInfoWindow=null,mapFilterVal='',mapInitialized=false,geocodingDone=false,mapBoundsFilter=true,mapBounds=null,mapFullscreen=false,mapIdleTimer=null,_preserveScroll=false,_focusLock=0;
+let kakaoMap=null,mapMarkers=[],mapInfoWindow=null,mapFilterVal='',mapInitialized=false,geocodingDone=false,mapBoundsFilter=true,mapBounds=null,mapFullscreen=false,mapIdleTimer=null,_preserveScroll=false,_focusedPropId=null,_autoScrolling=false;
+(function(){const sl=document.getElementById('splitList');if(sl)sl.addEventListener('scroll',()=>{if(!_autoScrolling)_focusedPropId=null;},{passive:true});})();
 function toggleMapFullscreen(){
   mapFullscreen=!mapFullscreen;
   const layout=document.getElementById('splitLayout'),btn=document.getElementById('mapFullscreenBtn'),mapEl=document.querySelector('.split-map');
@@ -585,8 +596,8 @@ const MAP_STATIONS=[
   {name:"광교중앙",lat:37.2886,lon:127.0492},{name:"모란",lat:37.4321,lon:127.1293},{name:"야탑",lat:37.4112,lon:127.1272}
 ];
 function setMapFilter(btn){document.querySelectorAll('#mapVerdictChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');mapFilterVal=btn.dataset.val;updateMapMarkers();}
-function toggleMapBounds(on){mapBoundsFilter=on;if(on&&kakaoMap){mapBounds=kakaoMap.getBounds();}else{mapBounds=null;}currentPage=1;rentPage=1;update();}
-function onMapIdle(){if(!mapBoundsFilter||!kakaoMap)return;if(mapIdleTimer)clearTimeout(mapIdleTimer);mapIdleTimer=setTimeout(()=>{if(Date.now()-_focusLock<1500)return;mapBounds=kakaoMap.getBounds();_preserveScroll=true;update();_preserveScroll=false;},500);}
+function toggleMapBounds(on){_focusedPropId=null;mapBoundsFilter=on;if(on&&kakaoMap){mapBounds=kakaoMap.getBounds();}else{mapBounds=null;}currentPage=1;rentPage=1;update();}
+function onMapIdle(){if(!mapBoundsFilter||!kakaoMap)return;if(mapIdleTimer)clearTimeout(mapIdleTimer);mapIdleTimer=setTimeout(()=>{mapBounds=kakaoMap.getBounds();_preserveScroll=true;update();_preserveScroll=false;},500);}
 function inBounds(p){if(!mapBounds||!p.lat||!p.lon)return true;const sw=mapBounds.getSouthWest(),ne=mapBounds.getNorthEast();return p.lat>=sw.getLat()&&p.lat<=ne.getLat()&&p.lon>=sw.getLng()&&p.lon<=ne.getLng();}
 function geocodeUnmatchedProps(){
   if(geocodingDone)return;
