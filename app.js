@@ -182,7 +182,10 @@ function focusCard(mKey){
   if(currentMode==='buy'&&currentPage!==targetPage){currentPage=targetPage;need=true;}
   else if(currentMode!=='buy'&&rentPage!==targetPage){rentPage=targetPage;need=true;}
   if(need)update();
-  setTimeout(()=>{const el=document.querySelector('[data-prop-id="'+propId+'"]');if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});highlightEl(el);},need?120:20);
+  // 핀 클릭 후 1.5초간 onMapIdle 재렌더링 억제
+  _focusLock=Date.now();if(mapIdleTimer)clearTimeout(mapIdleTimer);
+  const doFocus=()=>{const el=document.querySelector('[data-prop-id="'+propId+'"]');if(!el)return;el.scrollIntoView({behavior:'smooth',block:'center'});highlightEl(el);};
+  setTimeout(doFocus,need?120:20);
 }
 function highlightEl(el){document.querySelectorAll('.highlight').forEach(e=>e.classList.remove('highlight'));if(hlTimer)clearTimeout(hlTimer);el.classList.add('highlight');hlTimer=setTimeout(()=>{if(el.classList)el.classList.remove('highlight');},2500);}
 function bounceMarker(mKey){stopBounce();const m=markerMap[mKey];if(m&&m.a)m.a.style.animation='markerBounce 0.6s ease infinite';}
@@ -527,7 +530,7 @@ const rsi=document.getElementById('rentSearchInput');if(rsi)rsi.addEventListener
 const rrf=document.getElementById('rentRegionFilter');if(rrf)rrf.addEventListener('change',()=>{rentPage=1;update();});
 
 // ─── 카카오맵 ───
-let kakaoMap=null,mapMarkers=[],mapInfoWindow=null,mapFilterVal='',mapInitialized=false,geocodingDone=false,mapBoundsFilter=true,mapBounds=null,mapFullscreen=false,mapIdleTimer=null,_preserveScroll=false;
+let kakaoMap=null,mapMarkers=[],mapInfoWindow=null,mapFilterVal='',mapInitialized=false,geocodingDone=false,mapBoundsFilter=true,mapBounds=null,mapFullscreen=false,mapIdleTimer=null,_preserveScroll=false,_focusLock=0;
 function toggleMapFullscreen(){
   mapFullscreen=!mapFullscreen;
   const layout=document.getElementById('splitLayout'),btn=document.getElementById('mapFullscreenBtn'),mapEl=document.querySelector('.split-map');
@@ -583,7 +586,7 @@ const MAP_STATIONS=[
 ];
 function setMapFilter(btn){document.querySelectorAll('#mapVerdictChips .filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');mapFilterVal=btn.dataset.val;updateMapMarkers();}
 function toggleMapBounds(on){mapBoundsFilter=on;if(on&&kakaoMap){mapBounds=kakaoMap.getBounds();}else{mapBounds=null;}currentPage=1;rentPage=1;update();}
-function onMapIdle(){if(!mapBoundsFilter||!kakaoMap)return;if(mapIdleTimer)clearTimeout(mapIdleTimer);mapIdleTimer=setTimeout(()=>{mapBounds=kakaoMap.getBounds();_preserveScroll=true;update();_preserveScroll=false;},500);}
+function onMapIdle(){if(!mapBoundsFilter||!kakaoMap)return;if(mapIdleTimer)clearTimeout(mapIdleTimer);mapIdleTimer=setTimeout(()=>{if(Date.now()-_focusLock<1500)return;mapBounds=kakaoMap.getBounds();_preserveScroll=true;update();_preserveScroll=false;},500);}
 function inBounds(p){if(!mapBounds||!p.lat||!p.lon)return true;const sw=mapBounds.getSouthWest(),ne=mapBounds.getNorthEast();return p.lat>=sw.getLat()&&p.lat<=ne.getLat()&&p.lon>=sw.getLng()&&p.lon<=ne.getLng();}
 function geocodeUnmatchedProps(){
   if(geocodingDone)return;
