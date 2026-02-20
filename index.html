@@ -190,6 +190,9 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
 .map-fullscreen-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
 .split-layout.map-full .split-list{display:none}
 .split-layout.map-full .split-map{flex:0 0 100%}
+.split-map.map-fullscreen{position:fixed!important;top:0;left:0;width:100vw!important;height:100vh!important;z-index:9999;border-radius:0;flex:none!important}
+.split-map.map-fullscreen #mapContainer{border-radius:0}
+.split-map.map-fullscreen .map-fullscreen-btn{top:12px;left:12px;font-size:13px;padding:7px 14px}
 .view-toggle{display:flex;gap:2px;margin-left:auto}
 .view-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);width:32px;height:32px;border-radius:6px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;font-family:var(--mono)}
 .view-btn:hover{border-color:var(--mode-accent);color:var(--text-mid)}
@@ -858,11 +861,12 @@ const rrf=document.getElementById('rentRegionFilter');if(rrf)rrf.addEventListene
 let kakaoMap=null,mapMarkers=[],mapInfoWindow=null,mapFilterVal='',mapInitialized=false,geocodingDone=false,mapBoundsFilter=true,mapBounds=null,mapFullscreen=false;
 function toggleMapFullscreen(){
   mapFullscreen=!mapFullscreen;
-  const layout=document.getElementById('splitLayout'),btn=document.getElementById('mapFullscreenBtn');
-  if(mapFullscreen){layout.classList.add('map-full');btn.textContent='◧ 분할';}
-  else{layout.classList.remove('map-full');btn.textContent='⛶ 전체';}
+  const layout=document.getElementById('splitLayout'),btn=document.getElementById('mapFullscreenBtn'),mapEl=document.querySelector('.split-map');
+  if(mapFullscreen){layout.classList.add('map-full');mapEl.classList.add('map-fullscreen');btn.textContent='✕ 닫기';}
+  else{layout.classList.remove('map-full');mapEl.classList.remove('map-fullscreen');btn.textContent='⛶ 전체';}
   setTimeout(()=>{if(kakaoMap)kakaoMap.relayout();},150);
 }
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mapFullscreen)toggleMapFullscreen();});
 const MARKER_COLORS={ok:'#34d399',warn:'#fbbf24',danger:'#f87171',station:'#60a5fa'};
 const MAP_STATIONS=[
   {name:"강남",lat:37.4979,lon:127.0276},{name:"양재",lat:37.4842,lon:127.0353},{name:"판교",lat:37.3948,lon:127.1112},
