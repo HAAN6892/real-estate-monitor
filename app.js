@@ -27,6 +27,13 @@ function getRegulation(region){
 
 let currentMode='buy',isMarried=true,PROPERTIES=[],RENT_PROPERTIES=[],DATA_LOADED=false,RENT_DATA_LOADED=false,DATA_UPDATED_AT='',RENT_UPDATED_AT='',currentSort='value',rentSort='value',searchQuery='',regionFilterVal='',verdictFilterVal='',rentTypeFilterVal='',rentVerdictFilterVal='',areaUnit='py',pageSize=20,currentPage=1,rentPage=1,currentView='card';
 let markerMap={},filteredBuyProps=[],filteredRentProps=[],hlTimer=null,COMMUTE_DATA={};
+// ─── 북마크 ───
+let BOOKMARKS=new Set(JSON.parse(localStorage.getItem('bookmarks')||'[]'));
+function saveBookmarks(){localStorage.setItem('bookmarks',JSON.stringify([...BOOKMARKS]));}
+function toggleBookmark(pid,e){if(e)e.stopPropagation();if(BOOKMARKS.has(pid))BOOKMARKS.delete(pid);else BOOKMARKS.add(pid);saveBookmarks();update();updateBookmarkCount();}
+function isBookmarked(pid){return BOOKMARKS.has(pid);}
+function bmBtn(p){const pid=getPropId(p);const on=isBookmarked(pid);return '<button class="bm-btn'+(on?' on':'')+'" onclick="toggleBookmark(\''+pid.replace(/'/g,"\\'")+'\',event)" title="북마크">'+(on?'★':'☆')+'</button>';}
+function updateBookmarkCount(){const c=BOOKMARKS.size;const b1=document.getElementById('buyBmCount'),b2=document.getElementById('rentBmCount');if(b1)b1.textContent=c>0?c+'건':'';if(b2)b2.textContent=c>0?c+'건':'';}
 
 function setMarriage(married){
   isMarried=married;
@@ -119,11 +126,13 @@ function highlightSelects(){
 }
 function resetBuyFilters(){
   ['regionFilter','areaFilter','buyVerdictSelect','buyBuiltYearFilter','buyCommuteFilter','buySortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
+  const bb=document.getElementById('buyBmOnly');if(bb)bb.checked=false;
   document.getElementById('searchInput').value='';currentPage=1;update();
 }
 function resetRentFilters(){
   ['rentRegionFilter','rentAreaFilter','rentVerdictSelect','rentTypeSelect','rentBuiltYearFilter','rentCommuteFilter','rentSortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
   const ac=document.getElementById('rentShowAnomaly');if(ac)ac.checked=false;
+  const rb=document.getElementById('rentBmOnly');if(rb)rb.checked=false;
   document.getElementById('rentSearchInput').value='';rentPage=1;update();
 }
 function areaMatch(py,val){if(!val)return true;const p=parseFloat(py)||0;if(val==='small')return p<=18;if(val==='mid')return p>18&&p<=25;if(val==='large')return p>25;return true;}
@@ -160,7 +169,7 @@ function renderBuyCards(items,eq,mr){
     const card=document.createElement('div');card.className='prop-card pc-compact';card.dataset.propId=getPropId(p);
     card.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));card.addEventListener('mouseleave',()=>stopBounce());
     const regBadge=p.regZone==='투기과열'?'<span class="tag tag-reg tag-reg-hot">투기과열 LTV'+p.pLTV+'%</span>':'<span class="tag tag-reg tag-reg-free">비규제 LTV'+p.pLTV+'%</span>';
-    card.innerHTML='<div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span>'+regBadge+'</div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">매매 '+fmtShort(p.price)+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
+    card.innerHTML='<div class="pc-line">'+bmBtn(p)+'<span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span>'+regBadge+'</div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">매매 '+fmtShort(p.price)+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
     cg.appendChild(card);
   });
 }
@@ -184,7 +193,7 @@ function renderRentCards(items,equity,budget){
     card.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));card.addEventListener('mouseleave',()=>stopBounce());
     const anomalyBadge=p.priceAnomaly?'<span class="tag tag-anomaly">⚠️ 이상가격</span>':'';
     const jrBadge=jeonseRateBadge(p);
-    card.innerHTML='<div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span>'+anomalyBadge+jrBadge+'<span class="pc-cname">'+typeIcon+' '+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceStr+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
+    card.innerHTML='<div class="pc-line">'+bmBtn(p)+'<span class="pc-badge-sm '+bc+'">'+p.verdict+'</span>'+anomalyBadge+jrBadge+'<span class="pc-cname">'+typeIcon+' '+p.name+'</span><span class="pc-cregion">'+p.region+'</span></div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceStr+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
     cg.appendChild(card);
   });
 }
@@ -283,6 +292,7 @@ async function loadData(){
   [PROPERTIES,RENT_PROPERTIES].forEach(props=>{
     props.forEach(p=>{const c=matchCommute(p);p.commuteSubway=c?c.subway:null;p.commuteTransit=c?c.transit:null;});
   });
+  updateBookmarkCount();
   update();
 }
 function update(){
@@ -329,6 +339,7 @@ function updatePropTable(eq,fL,eLTV,rate,term,mr){
   const wv=f.map(p=>{const reg=getRegulation(p.region);const pL=autoLtv?reg.ltv:(p.regulated?Math.min(eLTV,50):eLTV);const pLn=Math.min(Math.floor(p.price*pL/100),fL),pEq=p.price-pLn,pM=Math.floor(monthlyPayment(pLn,rate,term));let v,vt;if(pEq>eq){v='자금부족';vt='tag-danger';}else if(pM>mr){v='상환초과';vt='tag-danger';}else if(pM>mr*0.85){v='빠듯함';vt='tag-warn';}else{v='매수가능';vt='tag-ok';}return{...p,pLTV:pL,pLoan:pLn,pEquityNeeded:pEq,pMonthly:pM,verdict:v,verdictTag:vt,regZone:reg.zone};});
   let filtered=vv?wv.filter(p=>p.verdict===vv):wv;
   if(mapBoundsFilter&&mapBounds)filtered=filtered.filter(p=>inBounds(p));
+  const bmOnly=document.getElementById('buyBmOnly')?.checked;if(bmOnly)filtered=filtered.filter(p=>isBookmarked(getPropId(p)));
   const vo={'매수가능':0,'빠듯함':1,'상환초과':2,'자금부족':2};
   if(sv==='value')filtered.sort((a,b)=>(vo[a.verdict]??9)-(vo[b.verdict]??9)||(parseFloat(b.area_py)||0)-(parseFloat(a.area_py)||0));
   else if(sv==='price-asc')filtered.sort((a,b)=>a.price-b.price);else if(sv==='price-desc')filtered.sort((a,b)=>b.price-a.price);
@@ -390,6 +401,7 @@ function updateRentTable(equity,budget){
   const wv=f.map(p=>{let v,vt;if(p.deposit>budget){v='예산초과';vt='tag-danger';}else if(p.deposit>budget*0.9){v='빠듯함';vt='tag-warn';}else{v='가능';vt='tag-ok';}return{...p,verdict:v,verdictTag:vt};});
   let filtered=rvv?wv.filter(p=>p.verdict===rvv):wv;
   if(mapBoundsFilter&&mapBounds)filtered=filtered.filter(p=>inBounds(p));
+  const bmOnly=document.getElementById('rentBmOnly')?.checked;if(bmOnly)filtered=filtered.filter(p=>isBookmarked(getPropId(p)));
   const rvo={'가능':0,'빠듯함':1,'예산초과':2};
   if(rsv==='value')filtered.sort((a,b)=>(rvo[a.verdict]??9)-(rvo[b.verdict]??9)||(parseFloat(b.area_py)||0)-(parseFloat(a.area_py)||0));
   else if(rsv==='price-asc')filtered.sort((a,b)=>a.deposit-b.deposit);else if(rsv==='price-desc')filtered.sort((a,b)=>b.deposit-a.deposit);
@@ -522,7 +534,7 @@ function showFullscreenPopup(p){
   }
   const fsAnomaly=p.priceAnomaly?'<span class="tag tag-anomaly">⚠️ 이상가격</span>':'';
   const fsJr=currentMode==='rent'?jeonseRateBadge(p):'';
-  content.innerHTML='<div class="pc-compact"><div class="pc-line"><span class="pc-badge-sm '+bc+'">'+p.verdict+'</span>'+fsAnomaly+fsJr+'<span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span>'+regBadge+'</div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceStr+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'')+'</div>';
+  content.innerHTML='<div class="pc-compact"><div class="pc-line">'+bmBtn(p)+'<span class="pc-badge-sm '+bc+'">'+p.verdict+'</span>'+fsAnomaly+fsJr+'<span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span>'+regBadge+'</div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">'+priceStr+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'')+'</div>';
   popup.classList.add('show');
 }
 function hideFullscreenPopup(){const popup=document.getElementById('fsMapPopup');if(popup)popup.classList.remove('show');}
@@ -593,7 +605,7 @@ function initMapIfNeeded(){
     geocodeUnmatchedProps();
   });
 }
-function getMarkerSVG(color){return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20C24 5.4 18.6 0 12 0z" fill="'+color+'"/><circle cx="12" cy="11" r="5" fill="white" opacity="0.9"/></svg>');}
+function getMarkerSVG(color,bm){return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="24" height="32"><path d="M12 0C5.4 0 0 5.4 0 12c0 9 12 20 12 20s12-11 12-20C24 5.4 18.6 0 12 0z" fill="'+color+'"'+(bm?' stroke="#FFD700" stroke-width="2"':'')+'/>'+(bm?'<text x="12" y="15" text-anchor="middle" fill="#FFD700" font-size="14" font-weight="bold">★</text>':'<circle cx="12" cy="11" r="5" fill="white" opacity="0.9"/>')+'</svg>');}
 function updateMapMarkers(){
   if(!kakaoMap)return;
   mapMarkers.forEach(m=>m.setMap(null));mapMarkers=[];markerMap={};
@@ -605,8 +617,8 @@ function updateMapMarkers(){
     const mKey=getMarkerKey(p);if(seen[mKey])return;seen[mKey]=true;
     const verdict=currentMode==='buy'?(p.verdict==='매수가능'?'ok':p.verdict==='빠듯함'?'warn':'danger'):(p.verdict==='가능'?'ok':p.verdict==='빠듯함'?'warn':'danger');
     if(mapFilterVal&&verdict!==mapFilterVal)return;
-    const color=MARKER_COLORS[verdict];
-    const img=new kakao.maps.MarkerImage(getMarkerSVG(color),new kakao.maps.Size(24,32));
+    const color=MARKER_COLORS[verdict];const bm=isBookmarked(getPropId(p));
+    const img=new kakao.maps.MarkerImage(getMarkerSVG(color,bm),new kakao.maps.Size(24,32));
     const marker=new kakao.maps.Marker({map:kakaoMap,position:new kakao.maps.LatLng(p.lat,p.lon),image:img});
     const priceStr=currentMode==='buy'?fmtShort(p.price):fmtShort(p.deposit);
     const label=currentMode==='buy'?'매매 ':'보증금 ';
