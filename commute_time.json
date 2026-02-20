@@ -2,7 +2,7 @@
   "destination": "강남역 미림타워",
   "address": "서울 강남구 역삼동 826",
   "survey_basis": "ODsay API 대중교통 길찾기 (자동)",
-  "updated": "2026-02-21 00:47",
+  "updated": "2026-02-21 01:48",
   "data": {
     "수원 장안구 정자동": {
       "subway": 72,
@@ -260,9 +260,9 @@
       "note": "좌표 매칭 실패"
     },
     "경기 광주시 쌍령동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 53,
+      "transit": 50,
+      "note": ""
     },
     "경기 광주시 송정동": {
       "subway": null,
@@ -460,9 +460,9 @@
       "note": ""
     },
     "서울 노원구 월계동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 44,
+      "transit": 44,
+      "note": ""
     },
     "서울 구로구 개봉동": {
       "subway": 49,
@@ -523,6 +523,771 @@
       "subway": 58,
       "transit": 40,
       "note": ""
+    },
+    "부천 소사구 옥길동": {
+      "subway": 89,
+      "transit": 65,
+      "note": ""
+    },
+    "부천 소사구 송내동": {
+      "subway": 63,
+      "transit": 63,
+      "note": ""
+    },
+    "부천 원미구 중동": {
+      "subway": 66,
+      "transit": 66,
+      "note": ""
+    },
+    "부천 원미구 상동": {
+      "subway": 71,
+      "transit": 68,
+      "note": ""
+    },
+    "부천 소사구 범박동": {
+      "subway": 77,
+      "transit": 61,
+      "note": ""
+    },
+    "부천 소사구 소사본동": {
+      "subway": 54,
+      "transit": 54,
+      "note": ""
+    },
+    "부천 원미구 원미동": {
+      "subway": 68,
+      "transit": 60,
+      "note": ""
+    },
+    "부천 원미구 역곡동": {
+      "subway": 50,
+      "transit": 50,
+      "note": ""
+    },
+    "부천 원미구 심곡동": {
+      "subway": 63,
+      "transit": 63,
+      "note": ""
+    },
+    "부천 소사구 괴안동": {
+      "subway": 61,
+      "transit": 58,
+      "note": ""
+    },
+    "부천 소사구 심곡본동": {
+      "subway": 60,
+      "transit": 50,
+      "note": ""
+    },
+    "서울 강남구 율현동": {
+      "subway": 53,
+      "transit": 33,
+      "note": ""
+    },
+    "서울 강남구 자곡동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 서초구 우면동": {
+      "subway": 28,
+      "transit": 23,
+      "note": ""
+    },
+    "서울 송파구 가락동": {
+      "subway": 33,
+      "transit": 33,
+      "note": ""
+    },
+    "서울 송파구 장지동": {
+      "subway": 30,
+      "transit": 30,
+      "note": ""
+    },
+    "서울 송파구 신천동": {
+      "subway": 19,
+      "transit": 19,
+      "note": ""
+    },
+    "서울 송파구 오금동": {
+      "subway": 44,
+      "transit": 37,
+      "note": ""
+    },
+    "서울 강동구 명일동": {
+      "subway": 43,
+      "transit": 43,
+      "note": ""
+    },
+    "서울 강동구 둔촌동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 강동구 강일동": {
+      "subway": 61,
+      "transit": 53,
+      "note": ""
+    },
+    "서울 동작구 상도동": {
+      "subway": 32,
+      "transit": 30,
+      "note": ""
+    },
+    "경기 안양 동안구 호계동": {
+      "subway": 59,
+      "transit": 50,
+      "note": ""
+    },
+    "경기 성남 수정구 단대동": {
+      "subway": 35,
+      "transit": 35,
+      "note": ""
+    },
+    "성남 중원구 중앙동": {
+      "subway": 42,
+      "transit": 42,
+      "note": ""
+    },
+    "성남 분당구 서현동": {
+      "subway": 34,
+      "transit": 31,
+      "note": ""
+    },
+    "성남 분당구 이매동": {
+      "subway": 23,
+      "transit": 23,
+      "note": ""
+    },
+    "경기 하남시 덕풍동": {
+      "subway": 48,
+      "transit": 48,
+      "note": ""
+    },
+    "서울 성북구 돈암동": {
+      "subway": 46,
+      "transit": 46,
+      "note": ""
+    },
+    "서울 영등포구 신길동": {
+      "subway": 46,
+      "transit": 38,
+      "note": ""
+    },
+    "서울 영등포구 대림동": {
+      "subway": 31,
+      "transit": 31,
+      "note": ""
+    },
+    "서울 구로구 천왕동": {
+      "subway": 59,
+      "transit": 56,
+      "note": ""
+    },
+    "부천 원미구 약대동": {
+      "subway": 74,
+      "transit": 70,
+      "note": ""
+    },
+    "부천 오정구 삼정동": {
+      "subway": 69,
+      "transit": 69,
+      "note": ""
+    },
+    "서울 송파구 거여동": {
+      "subway": 51,
+      "transit": 44,
+      "note": ""
+    },
+    "서울 강동구 성내동": {
+      "subway": 44,
+      "transit": 44,
+      "note": ""
+    },
+    "경기 광명시 소하동": {
+      "subway": 74,
+      "transit": 53,
+      "note": ""
+    },
+    "경기 성남 수정구 창곡동": {
+      "subway": 41,
+      "transit": 41,
+      "note": ""
+    },
+    "경기 하남시 선동": {
+      "subway": 63,
+      "transit": 43,
+      "note": ""
+    },
+    "서울 송파구 잠실동": {
+      "subway": 28,
+      "transit": 25,
+      "note": ""
+    },
+    "서울 동작구 흑석동": {
+      "subway": 38,
+      "transit": 35,
+      "note": ""
+    },
+    "경기 과천시 원문동": {
+      "subway": 33,
+      "transit": 33,
+      "note": ""
+    },
+    "경기 광명시 하안동": {
+      "subway": 54,
+      "transit": 42,
+      "note": ""
+    },
+    "경기 안양 동안구 평촌동": {
+      "subway": 36,
+      "transit": 36,
+      "note": ""
+    },
+    "경기 안양 동안구 관양동": {
+      "subway": 53,
+      "transit": 45,
+      "note": ""
+    },
+    "경기 성남 수정구 신흥동": {
+      "subway": 41,
+      "transit": 41,
+      "note": ""
+    },
+    "성남 중원구 금광동": {
+      "subway": 49,
+      "transit": 49,
+      "note": ""
+    },
+    "용인 수지구 상현동": {
+      "subway": 58,
+      "transit": 49,
+      "note": ""
+    },
+    "서울 금천구 독산동": {
+      "subway": 52,
+      "transit": 40,
+      "note": ""
+    },
+    "서울 성북구 종암동": {
+      "subway": 48,
+      "transit": 47,
+      "note": ""
+    },
+    "서울 성북구 하월곡동": {
+      "subway": 54,
+      "transit": 54,
+      "note": ""
+    },
+    "서울 노원구 하계동": {
+      "subway": 58,
+      "transit": 49,
+      "note": ""
+    },
+    "서울 영등포구 도림동": {
+      "subway": 51,
+      "transit": 38,
+      "note": ""
+    },
+    "고양 일산동구 마두동": {
+      "subway": 71,
+      "transit": 68,
+      "note": ""
+    },
+    "인천 남동구 도림동": {
+      "subway": 110,
+      "transit": 66,
+      "note": ""
+    },
+    "서울 강남구 개포동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 강남구 대치동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 강동구 상일동": {
+      "subway": 43,
+      "transit": 37,
+      "note": ""
+    },
+    "서울 동작구 대방동": {
+      "subway": 91,
+      "transit": 80,
+      "note": ""
+    },
+    "서울 관악구 봉천동": {
+      "subway": 37,
+      "transit": 28,
+      "note": ""
+    },
+    "경기 의왕시 삼동": {
+      "subway": 59,
+      "transit": 77,
+      "note": ""
+    },
+    "성남 분당구 수내동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "수원 장안구 파장동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 강동구 고덕동": {
+      "subway": 43,
+      "transit": 43,
+      "note": ""
+    },
+    "경기 의왕시 포일동": {
+      "subway": 40,
+      "transit": 40,
+      "note": ""
+    },
+    "용인 수지구 동천동": {
+      "subway": 40,
+      "transit": 37,
+      "note": ""
+    },
+    "수원 장안구 송죽동": {
+      "subway": 19,
+      "transit": 56,
+      "note": ""
+    },
+    "서울 강서구 염창동": {
+      "subway": 43,
+      "transit": 37,
+      "note": ""
+    },
+    "서울 강서구 내발산동": {
+      "subway": 61,
+      "transit": 61,
+      "note": ""
+    },
+    "서울 강서구 마곡동": {
+      "subway": 59,
+      "transit": 59,
+      "note": ""
+    },
+    "서울 영등포구 문래동6가": {
+      "subway": 40,
+      "transit": 40,
+      "note": ""
+    },
+    "서울 영등포구 양평동2가": {
+      "subway": 44,
+      "transit": 43,
+      "note": ""
+    },
+    "인천 서구 검암동": {
+      "subway": 59,
+      "transit": 59,
+      "note": ""
+    },
+    "부천 오정구 오정동": {
+      "subway": 90,
+      "transit": 70,
+      "note": ""
+    },
+    "서울 강남구 삼성동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 강남구 압구정동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 서초구 서초동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 송파구 방이동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 강동구 천호동": {
+      "subway": 54,
+      "transit": 44,
+      "note": ""
+    },
+    "서울 동작구 노량진동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "성남 분당구 판교동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "성남 분당구 야탑동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 하남시 신장동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 하남시 망월동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 하남시 풍산동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "수원 영통구 하동": {
+      "subway": 38,
+      "transit": 38,
+      "note": ""
+    },
+    "서울 강남구 역삼동": {
+      "subway": 14,
+      "transit": 14,
+      "note": ""
+    },
+    "경기 광주시 역동": {
+      "subway": 42,
+      "transit": 42,
+      "note": ""
+    },
+    "서울 강서구 화곡동": {
+      "subway": 59,
+      "transit": 59,
+      "note": ""
+    },
+    "서울 영등포구 당산동4가": {
+      "subway": 38,
+      "transit": 38,
+      "note": ""
+    },
+    "서울 영등포구 영등포동8가": {
+      "subway": 66,
+      "transit": 59,
+      "note": ""
+    },
+    "서울 영등포구 양평동5가": {
+      "subway": 44,
+      "transit": 44,
+      "note": ""
+    },
+    "서울 영등포구 당산동3가": {
+      "subway": 39,
+      "transit": 39,
+      "note": ""
+    },
+    "인천 서구 석남동": {
+      "subway": 94,
+      "transit": 73,
+      "note": ""
+    },
+    "인천 서구 왕길동": {
+      "subway": 83,
+      "transit": 83,
+      "note": ""
+    },
+    "인천 서구 경서동": {
+      "subway": 30,
+      "transit": 93,
+      "note": ""
+    },
+    "서울 서초구 내곡동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 서초구 양재동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 송파구 풍납동": {
+      "subway": 33,
+      "transit": 33,
+      "note": ""
+    },
+    "경기 의왕시 고천동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 수지구 신봉동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "용인 기흥구 청덕동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "수원 영통구 이의동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 성북구 보문동1가": {
+      "subway": 39,
+      "transit": 39,
+      "note": ""
+    },
+    "서울 도봉구 방학동": {
+      "subway": 71,
+      "transit": 70,
+      "note": ""
+    },
+    "서울 영등포구 문래동5가": {
+      "subway": 38,
+      "transit": 38,
+      "note": ""
+    },
+    "서울 구로구 온수동": {
+      "subway": 50,
+      "transit": 50,
+      "note": ""
+    },
+    "부천 오정구 원종동": {
+      "subway": 74,
+      "transit": 67,
+      "note": ""
+    },
+    "서울 서초구 반포동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 동작구 사당동": {
+      "subway": 30,
+      "transit": 74,
+      "note": ""
+    },
+    "경기 광명시 일직동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 성남 수정구 복정동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "성남 분당구 구미동": {
+      "subway": 41,
+      "transit": 35,
+      "note": ""
+    },
+    "경기 하남시 감이동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 하남시 창우동": {
+      "subway": 36,
+      "transit": 36,
+      "note": ""
+    },
+    "서울 성북구 장위동": {
+      "subway": 62,
+      "transit": 61,
+      "note": ""
+    },
+    "서울 강서구 방화동": {
+      "subway": 58,
+      "transit": 58,
+      "note": ""
+    },
+    "서울 강서구 가양동": {
+      "subway": 62,
+      "transit": 62,
+      "note": ""
+    },
+    "서울 영등포구 여의도동": {
+      "subway": 65,
+      "transit": 65,
+      "note": ""
+    },
+    "서울 구로구 항동": {
+      "subway": 59,
+      "transit": 56,
+      "note": ""
+    },
+    "인천 서구 백석동": {
+      "subway": 73,
+      "transit": 80,
+      "note": ""
+    },
+    "서울 강남구 논현동": {
+      "subway": 71,
+      "transit": 71,
+      "note": ""
+    },
+    "서울 동작구 신대방동": {
+      "subway": 35,
+      "transit": 31,
+      "note": ""
+    },
+    "경기 광명시 광명동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 의왕시 학의동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 성남 수정구 태평동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "성남 분당구 분당동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 광주시 고산동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 성북구 석관동": {
+      "subway": 49,
+      "transit": 49,
+      "note": ""
+    },
+    "서울 구로구 신도림동": {
+      "subway": 42,
+      "transit": 41,
+      "note": ""
+    },
+    "부천 오정구 여월동": {
+      "subway": 69,
+      "transit": 66,
+      "note": ""
+    },
+    "서울 동작구 본동": {
+      "subway": 68,
+      "transit": 54,
+      "note": ""
+    },
+    "용인 기흥구 언남동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 성북구 상월곡동": {
+      "subway": 49,
+      "transit": 49,
+      "note": ""
+    },
+    "서울 강동구 암사동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 의왕시 내손동": {
+      "subway": 42,
+      "transit": 42,
+      "note": ""
+    },
+    "성남 중원구 도촌동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "성남 분당구 정자동": {
+      "subway": 65,
+      "transit": 60,
+      "note": ""
+    },
+    "서울 성북구 안암동1가": {
+      "subway": 44,
+      "transit": 44,
+      "note": ""
+    },
+    "서울 영등포구 영등포동": {
+      "subway": 44,
+      "transit": 40,
+      "note": ""
+    },
+    "서울 영등포구 영등포동7가": {
+      "subway": 60,
+      "transit": 47,
+      "note": ""
+    },
+    "서울 송파구 송파동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 송파구 문정동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "성남 분당구 금곡동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 동작구 동작동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 강남구 도곡동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 강남구 세곡동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 강남구 일원동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 서초구 신원동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "서울 서초구 잠원동": {
+      "subway": 33,
+      "transit": 33,
+      "note": ""
+    },
+    "서울 서초구 방배동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "성남 중원구 상대원동": {
+      "subway": 43,
+      "transit": 43,
+      "note": ""
+    },
+    "용인 기흥구 구갈동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
     }
   }
 }
