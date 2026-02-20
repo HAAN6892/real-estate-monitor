@@ -2,7 +2,7 @@
   "destination": "강남역 미림타워",
   "address": "서울 강남구 역삼동 826",
   "survey_basis": "ODsay API 대중교통 길찾기 (자동)",
-  "updated": "2026-02-21 01:48",
+  "updated": "2026-02-21 08:39",
   "data": {
     "수원 장안구 정자동": {
       "subway": 72,
@@ -245,9 +245,9 @@
       "note": ""
     },
     "용인 기흥구 동백동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 81,
+      "transit": 56,
+      "note": ""
     },
     "용인 기흥구 마북동": {
       "subway": null,
@@ -270,9 +270,9 @@
       "note": "좌표 매칭 실패"
     },
     "경기 의왕시 오전동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 69,
+      "transit": 56,
+      "note": ""
     },
     "용인 기흥구 고매동": {
       "subway": 69,
@@ -830,9 +830,9 @@
       "note": ""
     },
     "성남 분당구 수내동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 39,
+      "transit": 37,
+      "note": ""
     },
     "수원 장안구 파장동": {
       "subway": null,
@@ -895,9 +895,9 @@
       "note": ""
     },
     "서울 강남구 삼성동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 17,
+      "transit": 17,
+      "note": ""
     },
     "서울 강남구 압구정동": {
       "subway": null,
@@ -910,9 +910,9 @@
       "note": "좌표 매칭 실패"
     },
     "서울 송파구 방이동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 33,
+      "transit": 33,
+      "note": ""
     },
     "서울 강동구 천호동": {
       "subway": 54,
@@ -935,9 +935,9 @@
       "note": "좌표 매칭 실패"
     },
     "경기 하남시 신장동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 57,
+      "transit": 55,
+      "note": ""
     },
     "경기 하남시 망월동": {
       "subway": null,
@@ -1005,14 +1005,14 @@
       "note": ""
     },
     "서울 서초구 내곡동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 23,
+      "transit": 23,
+      "note": ""
     },
     "서울 서초구 양재동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 14,
+      "transit": 14,
+      "note": ""
     },
     "서울 송파구 풍납동": {
       "subway": 33,
@@ -1030,9 +1030,9 @@
       "note": "좌표 매칭 실패"
     },
     "용인 기흥구 청덕동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 40,
+      "transit": 52,
+      "note": ""
     },
     "수원 영통구 이의동": {
       "subway": null,
@@ -1090,9 +1090,9 @@
       "note": ""
     },
     "경기 하남시 감이동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 64,
+      "transit": 45,
+      "note": ""
     },
     "경기 하남시 창우동": {
       "subway": 36,
@@ -1140,9 +1140,9 @@
       "note": ""
     },
     "경기 광명시 광명동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 58,
+      "transit": 56,
+      "note": ""
     },
     "경기 의왕시 학의동": {
       "subway": null,
@@ -1160,9 +1160,9 @@
       "note": "좌표 매칭 실패"
     },
     "경기 광주시 고산동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 110,
+      "transit": 51,
+      "note": ""
     },
     "서울 성북구 석관동": {
       "subway": 49,
@@ -1245,9 +1245,9 @@
       "note": "좌표 매칭 실패"
     },
     "서울 동작구 동작동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 29,
+      "transit": 27,
+      "note": ""
     },
     "서울 강남구 도곡동": {
       "subway": null,
@@ -1260,9 +1260,9 @@
       "note": "좌표 매칭 실패"
     },
     "서울 강남구 일원동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 26,
+      "transit": 26,
+      "note": ""
     },
     "서울 서초구 신원동": {
       "subway": null,
@@ -1285,9 +1285,44 @@
       "note": ""
     },
     "용인 기흥구 구갈동": {
+      "subway": 39,
+      "transit": 39,
+      "note": ""
+    },
+    "인천 남동구 남촌동": {
+      "subway": 107,
+      "transit": 88,
+      "note": ""
+    },
+    "성남 분당구 운중동": {
+      "subway": null,
+      "transit": 34,
+      "note": ""
+    },
+    "성남 분당구 삼평동": {
       "subway": null,
       "transit": null,
       "note": "좌표 매칭 실패"
+    },
+    "서울 구로구 궁동": {
+      "subway": 51,
+      "transit": 51,
+      "note": ""
+    },
+    "부천 원미구 도당동": {
+      "subway": null,
+      "transit": null,
+      "note": "좌표 매칭 실패"
+    },
+    "경기 하남시 학암동": {
+      "subway": 57,
+      "transit": 45,
+      "note": ""
+    },
+    "서울 금천구 가산동": {
+      "subway": 49,
+      "transit": 49,
+      "note": ""
     }
   }
 }
