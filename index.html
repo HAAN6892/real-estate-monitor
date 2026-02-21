@@ -65,6 +65,7 @@
   <div class="tab-nav" id="tabNav">
     <button class="tab-btn active" onclick="switchTab('properties')" id="tabBtnProperties">📊 매물 시뮬레이션</button>
     <button class="tab-btn" onclick="switchTab('policy')" id="tabBtnPolicy">📜 정책 · 대출</button>
+    <button class="tab-btn" onclick="switchTab('wishlist')" id="tabBtnWishlist">📌 관심 매물 <span id="wishlistCount"></span></button>
   </div>
   <div class="tab-content active" id="tab-properties">
     <div class="buy-only"><div class="section" style="margin-top:0;margin-bottom:0"><div class="section-header"><div class="section-title">🏘️ 관심 매물 시뮬레이션</div><div class="section-badge" id="propertyBadge">데이터 없음</div></div>
@@ -108,6 +109,33 @@
     <div class="section"><div class="section-header"><div class="section-title">🎯 정책대출 자격 체크</div><div class="section-badge" id="policyBadge">소득 연동 자동 판정</div></div>
       <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px" id="policyDateLabel">📅 기준: 2026년 2월 · 출처: 주택도시기금·한국주택금융공사 공시</div>
       <div class="policy-grid" id="policyGrid"></div>
+    </div>
+  </div>
+  <div class="tab-content" id="tab-wishlist">
+    <div class="wishlist-summary" id="wishlistSummary"></div>
+    <div class="wishlist-toolbar">
+      <select class="filter-select" id="wishlistSort" onchange="renderWishlistCards()">
+        <option value="date-desc">등록일 최신순</option>
+        <option value="date-asc">등록일 오래된순</option>
+        <option value="price-desc">가격 높은순</option>
+        <option value="price-asc">가격 낮은순</option>
+        <option value="user">등록자별</option>
+      </select>
+    </div>
+    <div class="split-layout" id="wishlistSplitLayout">
+      <div class="mobile-split-tabs" id="wlMobileSplitTabs"><button class="mobile-split-tab" data-split="map" onclick="switchWlMobileSplit('map')">🗺 지도</button><button class="mobile-split-tab active" data-split="list" onclick="switchWlMobileSplit('list')">📋 리스트</button></div>
+      <div class="split-map">
+        <div id="wishlistMapContainer"></div>
+        <div class="map-info-badge" id="wishlistMapBadge">관심 매물 지도</div>
+      </div>
+      <div class="split-list" id="wishlistSplitList">
+        <div class="card-grid" id="wishlistCards"></div>
+      </div>
+    </div>
+    <div class="wishlist-empty" id="wishlistEmpty" style="display:none">
+      <div style="font-size:36px;margin-bottom:12px">📌</div>
+      <div style="font-size:15px;font-weight:700;margin-bottom:6px">관심 매물이 없습니다</div>
+      <div style="font-size:12px;color:var(--text-dim);line-height:1.6">텔레그램 봇에서 네이버부동산 링크를 보내면<br>여기에 자동으로 표시됩니다.</div>
     </div>
   </div>
   <div class="footer">설정(⚙️)에서 소득·자금·대출 조건을 변경하면 모든 숫자가 실시간으로 재계산됩니다</div>

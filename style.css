@@ -324,4 +324,51 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
   .mobile-map-popup::before{content:'';display:block;width:40px;height:4px;background:var(--border-hover);border-radius:2px;margin:0 auto 12px}
   .mobile-map-popup.show{transform:translateY(0)}
   .mobile-map-popup .pc-compact{padding:0}
+  #wishlistSplitLayout{flex-direction:column;height:auto;gap:0}
+  #wishlistSplitLayout .split-map{flex:none;height:calc(100vh - 180px);min-height:300px}
+  #wishlistSplitLayout.mobile-list .split-map{display:none}
+  #wishlistSplitLayout.mobile-map .split-list{display:none}
+  #wishlistSplitLayout .split-list{height:auto;min-height:auto;overflow-y:visible}
+}
+/* ─── 관심 매물 탭 ─── */
+.tab-btn#tabBtnWishlist.active{color:#d97706;border-bottom-color:#d97706}
+#wishlistCount{font-size:10px;color:#d97706}
+.wishlist-summary{background:var(--surface);border:1px solid #fbbf24;border-radius:10px;padding:10px 16px;margin-bottom:12px;font-size:12px;color:var(--text-mid);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.wishlist-summary .wl-stat{font-weight:600;color:#f59e0b}
+.wishlist-toolbar{display:flex;gap:8px;margin-bottom:10px;align-items:center}
+#wishlistSplitLayout{display:flex;gap:12px;margin-top:10px}
+#wishlistSplitLayout .split-map{flex:0 0 58%;height:calc(100vh - 360px);min-height:400px;position:relative;border-radius:10px;overflow:hidden}
+#wishlistSplitLayout .split-map #wishlistMapContainer{width:100%;height:100%;border-radius:10px;border:1px solid var(--border);background:var(--surface2)}
+#wishlistSplitLayout .split-list{flex:1;height:calc(100vh - 360px);min-height:400px;overflow-y:auto;overflow-x:hidden;min-width:0;padding-right:4px}
+#wishlistSplitLayout .split-list .card-grid{grid-template-columns:1fr;gap:6px}
+.wishlist-card{border:1px solid #fbbf24;border-radius:8px;padding:12px;background:var(--surface);transition:background 0.2s,border-color 0.2s;cursor:pointer}
+.wishlist-card:hover{background:#1a1708;border-color:#f59e0b}
+.wishlist-card.highlight{border-color:#f59e0b!important;box-shadow:0 0 16px rgba(245,158,11,0.4)}
+.wishlist-card-header{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.wishlist-id{font-weight:bold;color:#d97706;font-family:var(--mono);font-size:12px}
+.wishlist-name{font-size:14px;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wishlist-region{font-size:11px;color:var(--text-dim);white-space:nowrap}
+.wishlist-card-body{margin-bottom:6px}
+.wishlist-price{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.wishlist-price .trade-type{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.wishlist-price .trade-type.buy{background:rgba(37,99,235,0.15);color:#60a5fa}
+.wishlist-price .trade-type.rent{background:rgba(52,211,153,0.15);color:#34d399}
+.wishlist-price .price{font-family:var(--mono);font-size:15px;font-weight:700;color:#f59e0b}
+.wishlist-details{font-size:11px;color:var(--text-dim);display:flex;gap:8px;flex-wrap:wrap}
+.wishlist-card-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:6px;border-top:1px solid var(--border);font-size:11px}
+.wishlist-card-footer .added-by{color:var(--text-dim)}
+.wishlist-card-footer .added-at{color:var(--text-dim);font-family:var(--mono);font-size:10px}
+.wishlist-card-footer .naver-link{color:#f59e0b;text-decoration:none;font-weight:600;white-space:nowrap}
+.wishlist-card-footer .naver-link:hover{text-decoration:underline}
+.wishlist-card--unparsed{background:var(--surface2);border-color:var(--border)}
+.wishlist-card--unparsed:hover{background:var(--surface3);border-color:var(--border-hover)}
+.wishlist-memo{margin-top:6px}
+.wishlist-memo textarea{width:100%;background:var(--surface2);border:1px solid var(--border);color:var(--text-mid);padding:6px 8px;border-radius:6px;font-size:11px;font-family:'Noto Sans KR',sans-serif;resize:vertical;min-height:28px;outline:none}
+.wishlist-memo textarea:focus{border-color:#f59e0b}
+.wishlist-empty{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:40px 20px;text-align:center}
+#wlMobileSplitTabs{display:none}
+@media(max-width:768px){
+  #wlMobileSplitTabs{display:flex;gap:0;margin-bottom:8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;overflow:hidden}
+  #wlMobileSplitTabs .mobile-split-tab{flex:1;background:none;border:none;color:var(--text-dim);padding:10px 0;font-size:13px;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif;text-align:center}
+  #wlMobileSplitTabs .mobile-split-tab.active{background:#d97706;color:#fff}
 }

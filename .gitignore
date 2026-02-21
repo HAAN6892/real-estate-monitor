@@ -3,6 +3,7 @@ apt_info_cache.json
 __pycache__/
 *.pyc
 config.json
+.env
 
 # Claude Code 임시 파일
 settings.local.json

@@ -88,8 +88,21 @@ function switchTab(tabId){
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
   document.getElementById('tab-'+tabId).classList.add('active');
-  if(tabId==='properties'){document.getElementById('tabBtnProperties').classList.add('active');initMapIfNeeded();if(kakaoMap)setTimeout(()=>kakaoMap.relayout(),50);}
-  else document.getElementById('tabBtnPolicy').classList.add('active');
+  if(tabId==='properties'){
+    document.getElementById('tabBtnProperties').classList.add('active');
+    // 관심 매물 탭에서 돌아올 때 기존 마커 복원
+    if(_wishlistTabActive){_wishlistTabActive=false;if(mapInitialized)updateMapMarkers();}
+    initMapIfNeeded();if(kakaoMap)setTimeout(()=>kakaoMap.relayout(),50);
+  }else if(tabId==='wishlist'){
+    document.getElementById('tabBtnWishlist').classList.add('active');
+    _wishlistTabActive=true;
+    initWishlistMapIfNeeded();
+    renderWishlistCards();
+    renderWishlistMap();
+  }else{
+    document.getElementById('tabBtnPolicy').classList.add('active');
+    if(_wishlistTabActive){_wishlistTabActive=false;if(mapInitialized)updateMapMarkers();}
+  }
 }
 function changePageSize(v){pageSize=parseInt(v);currentPage=1;update();}
 function changeRentPageSize(v){pageSize=parseInt(v);rentPage=1;update();}
@@ -722,6 +735,153 @@ window.addEventListener('resize',()=>{
 });
 // 모바일: 즉시 리스트 모드 적용 (데이터 로드 전에도 올바른 레이아웃)
 if(isMobile())switchMobileSplit('list');
+
+// ─── 관심 매물 (wishlist) ───
+let wishlistData={items:[]},_wishlistTabActive=false,wishlistMap=null,wishlistMapInitialized=false,wishlistMapMarkers=[],wishlistMarkerMap={},_wlFocusedId=null;
+
+async function loadWishlist(){
+  try{
+    const res=await fetch('wishlist.json?'+Date.now());
+    if(res.ok)wishlistData=await res.json();
+    else wishlistData={items:[]};
+  }catch(e){
+    console.log('wishlist.json 로드 실패 (아직 생성 안 됨)');
+    wishlistData={items:[]};
+  }
+  updateWishlistCount();
+}
+function updateWishlistCount(){
+  const el=document.getElementById('wishlistCount');
+  if(el)el.textContent=wishlistData.items.length>0?'('+wishlistData.items.length+'건)':'';
+}
+function getWishlistMarkerSVG(){
+  return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="28" height="36" viewBox="0 0 28 36"><path d="M14 0C6.3 0 0 6.3 0 14c0 10.5 14 22 14 22s14-11.5 14-22C28 6.3 21.7 0 14 0z" fill="#f59e0b"/><text x="14" y="18" text-anchor="middle" fill="white" font-size="12" font-weight="bold">★</text></svg>');
+}
+function initWishlistMapIfNeeded(){
+  if(wishlistMapInitialized)return;
+  if(typeof kakao==='undefined'||!kakao.maps)return;
+  kakao.maps.load(()=>{
+    const container=document.getElementById('wishlistMapContainer');
+    if(!container)return;
+    wishlistMap=new kakao.maps.Map(container,{center:new kakao.maps.LatLng(37.38,127.08),level:8});
+    wishlistMapInitialized=true;
+    renderWishlistMap();
+  });
+}
+function renderWishlistMap(){
+  if(!wishlistMap)return;
+  wishlistMapMarkers.forEach(m=>m.setMap(null));
+  wishlistMapMarkers=[];wishlistMarkerMap={};
+  const items=wishlistData.items.filter(i=>i.lat&&i.lng&&i.lat!==0&&i.lng!==0);
+  if(items.length===0){document.getElementById('wishlistMapBadge').textContent='표시할 매물 없음';return;}
+  const img=new kakao.maps.MarkerImage(getWishlistMarkerSVG(),new kakao.maps.Size(28,36),{offset:new kakao.maps.Point(14,36)});
+  const bounds=new kakao.maps.LatLngBounds();
+  items.forEach(item=>{
+    const pos=new kakao.maps.LatLng(item.lat,item.lng);
+    bounds.extend(pos);
+    const marker=new kakao.maps.Marker({map:wishlistMap,position:pos,image:img});
+    const priceStr=item.price?fmtShort(item.price):'가격 미확인';
+    kakao.maps.event.addListener(marker,'click',()=>{
+      focusWishlistCard(item.id);
+    });
+    wishlistMarkerMap[item.id]=marker;
+    wishlistMapMarkers.push(marker);
+  });
+  wishlistMap.setBounds(bounds,80);
+  document.getElementById('wishlistMapBadge').textContent=items.length+'개 매물 표시';
+}
+function focusWishlistCard(id){
+  _wlFocusedId=id;
+  const el=document.querySelector('.wishlist-card[data-id="'+id+'"]');
+  if(!el)return;
+  el.scrollIntoView({behavior:'smooth',block:'center'});
+  document.querySelectorAll('.wishlist-card.highlight').forEach(e=>e.classList.remove('highlight'));
+  el.classList.add('highlight');
+  setTimeout(()=>{if(el.classList)el.classList.remove('highlight');},2500);
+}
+function renderWishlistCards(){
+  const cg=document.getElementById('wishlistCards');
+  const empty=document.getElementById('wishlistEmpty');
+  const summary=document.getElementById('wishlistSummary');
+  const splitLayout=document.getElementById('wishlistSplitLayout');
+  if(!cg)return;
+  const items=[...wishlistData.items];
+  if(items.length===0){
+    cg.innerHTML='';
+    if(empty)empty.style.display='';
+    if(splitLayout)splitLayout.style.display='none';
+    if(summary)summary.innerHTML='';
+    return;
+  }
+  if(empty)empty.style.display='none';
+  if(splitLayout)splitLayout.style.display='';
+  // 정렬
+  const sortVal=(document.getElementById('wishlistSort')||{}).value||'date-desc';
+  if(sortVal==='date-desc')items.sort((a,b)=>(b.added_at||'').localeCompare(a.added_at||''));
+  else if(sortVal==='date-asc')items.sort((a,b)=>(a.added_at||'').localeCompare(b.added_at||''));
+  else if(sortVal==='price-desc')items.sort((a,b)=>(b.price||0)-(a.price||0));
+  else if(sortVal==='price-asc')items.sort((a,b)=>(a.price||0)-(b.price||0));
+  else if(sortVal==='user')items.sort((a,b)=>(a.added_by||'').localeCompare(b.added_by||''));
+  // 요약
+  const buyCount=items.filter(i=>i.trade_type==='매매').length;
+  const rentCount=items.filter(i=>i.trade_type==='전세').length;
+  const latest=items.reduce((a,b)=>(a.added_at||'')>(b.added_at||'')?a:b,{});
+  const latestDate=latest.added_at?latest.added_at.split('T')[0]:'—';
+  if(summary)summary.innerHTML='📌 관심 매물 <span class="wl-stat">'+items.length+'건</span> | 매매 <span class="wl-stat">'+buyCount+'건</span> · 전세 <span class="wl-stat">'+rentCount+'건</span> | 최근 등록: <span class="wl-stat">'+latestDate+'</span>';
+  // 카드 렌더링
+  cg.innerHTML='';
+  items.forEach(item=>{
+    const card=document.createElement('div');
+    if(item.name==='(파싱 전)'){
+      card.className='wishlist-card wishlist-card--unparsed';
+      card.dataset.id=item.id;
+      card.innerHTML='<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span class="wishlist-id">#'+item.id+'</span><span style="color:var(--text-dim)">(파싱 전)</span><a href="'+escHtml(item.url)+'" target="_blank" class="naver-link">📎 링크 열기</a><span class="added-by" style="margin-left:auto">👤 '+(item.added_by||'—')+' | '+(item.added_at?item.added_at.split('T')[0]:'—')+'</span></div>';
+    }else{
+      card.className='wishlist-card';
+      card.dataset.id=item.id;
+      const typeClass=item.trade_type==='매매'?'buy':'rent';
+      const priceStr=item.price?fmtShort(item.price):'가격 미확인';
+      const areaStr=item.area_m2?item.area_m2+'㎡'+(item.area_pyeong?'('+item.area_pyeong+'평)':''):'';
+      const floorStr=item.floor||'';
+      const builtStr=item.built_year?item.built_year+'년':'';
+      const hhStr=item.households?item.households+'세대':'';
+      const details=[areaStr,floorStr?floorStr+'층':'',builtStr,hhStr].filter(Boolean);
+      card.innerHTML='<div class="wishlist-card-header"><span class="wishlist-id">#'+item.id+'</span><span class="wishlist-name">'+(item.name||'—')+'</span><span class="wishlist-region">'+(item.region||'')+'</span></div><div class="wishlist-card-body"><div class="wishlist-price"><span class="trade-type '+typeClass+'">'+(item.trade_type||'—')+'</span><span class="price">'+priceStr+'</span></div><div class="wishlist-details">'+details.map(d=>'<span>'+d+'</span>').join('')+'</div></div><div class="wishlist-card-footer"><span class="added-by">👤 '+(item.added_by||'—')+'</span><span class="added-at">'+(item.added_at?item.added_at.split('T')[0]:'—')+'</span><a href="'+escHtml(item.url)+'" target="_blank" class="naver-link">📎 네이버부동산</a></div>'+(item.memo?'<div class="wishlist-memo"><textarea placeholder="메모...">'+escHtml(item.memo)+'</textarea></div>':'<div class="wishlist-memo"><textarea placeholder="메모..."></textarea></div>');
+    }
+    // 카드 클릭 → 지도 연동
+    card.addEventListener('click',e=>{
+      if(e.target.tagName==='A'||e.target.tagName==='TEXTAREA')return;
+      if(item.lat&&item.lng&&item.lat!==0&&item.lng!==0&&wishlistMap){
+        wishlistMap.setCenter(new kakao.maps.LatLng(item.lat,item.lng));
+        wishlistMap.setLevel(5);
+        // 마커 바운스
+        const m=wishlistMarkerMap[item.id];
+        if(m&&m.a)m.a.style.animation='markerBounce 0.6s ease infinite';
+        setTimeout(()=>{if(m&&m.a)m.a.style.animation='';},1800);
+      }
+    });
+    card.addEventListener('mouseenter',()=>{
+      const m=wishlistMarkerMap[item.id];
+      if(m&&m.a)m.a.style.animation='markerBounce 0.6s ease infinite';
+    });
+    card.addEventListener('mouseleave',()=>{
+      const m=wishlistMarkerMap[item.id];
+      if(m&&m.a)try{m.a.style.animation='';}catch(e){}
+    });
+    cg.appendChild(card);
+  });
+}
+function escHtml(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+let wlMobileSplitMode='list';
+function switchWlMobileSplit(mode){
+  wlMobileSplitMode=mode;
+  const sl=document.getElementById('wishlistSplitLayout');if(!sl)return;
+  document.querySelectorAll('#wlMobileSplitTabs .mobile-split-tab').forEach(b=>b.classList.toggle('active',b.dataset.split===mode));
+  sl.classList.remove('mobile-map','mobile-list');sl.classList.add('mobile-'+mode);
+  if(mode==='map'){initWishlistMapIfNeeded();if(wishlistMap)setTimeout(()=>{wishlistMap.relayout();renderWishlistMap();},200);}
+}
+
 loadSettings().then(()=>loadData().then(()=>{
   initMapIfNeeded();
+  loadWishlist();
 }));
