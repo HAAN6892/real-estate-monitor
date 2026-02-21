@@ -105,7 +105,7 @@ def parse_and_register(url: str, user_name: str) -> dict:
                 return {"duplicate": True, "name": item.get("name", "")}
 
     # 네이버 API 파싱
-    article_info = parse_article(article_id, complex_no)
+    article_info = parse_article(article_id, complex_no, url=url)
     if not article_info or not article_info.get("name"):
         return None
 
