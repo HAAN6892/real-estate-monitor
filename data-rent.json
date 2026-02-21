@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-02-21 20:13",
-  "total_count": 1959,
-  "new_count": 0,
+  "updated_at": "2026-02-22 08:22",
+  "total_count": 1960,
+  "new_count": 1,
   "properties": [
     {
       "name": "양재리본타워",
@@ -4252,6 +4252,31 @@
       "link": "https://m.land.naver.com/search/result/%EC%84%9C%EC%B0%BD%EB%8F%99%20%EB%8D%94%ED%8F%AC%EB%A0%88%EC%8A%A4%ED%8A%B8",
       "lat": 37.428238047702,
       "lon": 126.743545582439
+    },
+    {
+      "name": "태하",
+      "region": "경기 안양 동안구",
+      "dong": "호계동",
+      "area_m2": 59.9,
+      "area_py": 18.1,
+      "deposit": 17000,
+      "monthly_rent": 0,
+      "rent_type": "전세",
+      "deposit_per_py": 939,
+      "floor": 3,
+      "built_year": 1987,
+      "households": 0,
+      "station": "의왕",
+      "line": "1호선",
+      "walk_min": 30,
+      "trade_date": "2026-02-19",
+      "contract_term": "26.05~28.05",
+      "renewal": "",
+      "prev_deposit": "",
+      "prev_monthly": "",
+      "link": "https://m.land.naver.com/search/result/%ED%98%B8%EA%B3%84%EB%8F%99%20%ED%83%9C%ED%95%98",
+      "lat": 37.36256618215013,
+      "lon": 126.96511574970293
     },
     {
       "name": "서초네이처힐5단지",
