@@ -2,7 +2,7 @@
   "destination": "강남역 미림타워",
   "address": "서울 강남구 역삼동 826",
   "survey_basis": "ODsay API 대중교통 길찾기 (자동)",
-  "updated": "2026-02-23 20:38",
+  "updated": "2026-02-24 08:46",
   "data": {
     "수원 장안구 정자동": {
       "subway": 72,
@@ -170,9 +170,9 @@
       "note": ""
     },
     "서울 강동구 길동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 40,
+      "transit": 41,
+      "note": ""
     },
     "경기 안양 동안구 비산동": {
       "subway": 62,
@@ -250,9 +250,9 @@
       "note": ""
     },
     "용인 기흥구 마북동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 61,
+      "transit": 45,
+      "note": ""
     },
     "경기 광주시 곤지암읍 삼리": {
       "subway": null,
@@ -805,9 +805,9 @@
       "note": "좌표 매칭 실패"
     },
     "서울 강남구 대치동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 28,
+      "transit": 18,
+      "note": ""
     },
     "서울 강동구 상일동": {
       "subway": 43,
@@ -945,9 +945,9 @@
       "note": "좌표 매칭 실패"
     },
     "경기 하남시 풍산동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 47,
+      "transit": 47,
+      "note": ""
     },
     "수원 영통구 하동": {
       "subway": 38,
@@ -1185,9 +1185,9 @@
       "note": ""
     },
     "용인 기흥구 언남동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 57,
+      "transit": 50,
+      "note": ""
     },
     "서울 성북구 상월곡동": {
       "subway": 49,
@@ -1240,9 +1240,9 @@
       "note": "좌표 매칭 실패"
     },
     "성남 분당구 금곡동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 19,
+      "transit": 66,
+      "note": ""
     },
     "서울 동작구 동작동": {
       "subway": 29,
@@ -1250,9 +1250,9 @@
       "note": ""
     },
     "서울 강남구 도곡동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 15,
+      "transit": 15,
+      "note": ""
     },
     "서울 강남구 세곡동": {
       "subway": null,
@@ -1322,6 +1322,41 @@
     "서울 금천구 가산동": {
       "subway": 49,
       "transit": 49,
+      "note": ""
+    },
+    "경기 광주시 초월읍 용수리": {
+      "subway": 110,
+      "transit": 53,
+      "note": ""
+    },
+    "경기 광주시 추자동": {
+      "subway": 110,
+      "transit": 61,
+      "note": ""
+    },
+    "서울 성북구 삼선동4가": {
+      "subway": 31,
+      "transit": 31,
+      "note": ""
+    },
+    "서울 강남구 청담동": {
+      "subway": 30,
+      "transit": 24,
+      "note": ""
+    },
+    "경기 과천시 별양동": {
+      "subway": 52,
+      "transit": 43,
+      "note": ""
+    },
+    "부천 원미구 춘의동": {
+      "subway": 57,
+      "transit": 57,
+      "note": ""
+    },
+    "경기 과천시 중앙동": {
+      "subway": 31,
+      "transit": 31,
       "note": ""
     }
   }
