@@ -2,7 +2,7 @@
   "destination": "강남역 미림타워",
   "address": "서울 강남구 역삼동 826",
   "survey_basis": "ODsay API 대중교통 길찾기 (자동)",
-  "updated": "2026-02-24 20:39",
+  "updated": "2026-02-25 08:42",
   "data": {
     "수원 장안구 정자동": {
       "subway": 72,
@@ -907,7 +907,7 @@
     "서울 서초구 서초동": {
       "subway": null,
       "transit": null,
-      "note": "좌표 매칭 실패"
+      "note": ""
     },
     "서울 송파구 방이동": {
       "subway": 33,
@@ -926,8 +926,8 @@
     },
     "성남 분당구 판교동": {
       "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "transit": 31,
+      "note": ""
     },
     "성남 분당구 야탑동": {
       "subway": null,
@@ -940,9 +940,9 @@
       "note": ""
     },
     "경기 하남시 망월동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 51,
+      "transit": 45,
+      "note": ""
     },
     "경기 하남시 풍산동": {
       "subway": 47,
@@ -1025,9 +1025,9 @@
       "note": "좌표 매칭 실패"
     },
     "용인 수지구 신봉동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 36,
+      "transit": 36,
+      "note": ""
     },
     "용인 기흥구 청덕동": {
       "subway": 40,
@@ -1357,6 +1357,16 @@
     "경기 과천시 중앙동": {
       "subway": 31,
       "transit": 31,
+      "note": ""
+    },
+    "서울 강서구 등촌동": {
+      "subway": 52,
+      "transit": 52,
+      "note": ""
+    },
+    "경기 의왕시 왕곡동": {
+      "subway": null,
+      "transit": 46,
       "note": ""
     }
   }
