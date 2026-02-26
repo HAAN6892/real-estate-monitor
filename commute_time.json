@@ -2,7 +2,7 @@
   "destination": "강남역 미림타워",
   "address": "서울 강남구 역삼동 826",
   "survey_basis": "ODsay API 대중교통 길찾기 (자동)",
-  "updated": "2026-02-26 20:38",
+  "updated": "2026-02-27 08:40",
   "data": {
     "수원 장안구 정자동": {
       "subway": 72,
@@ -280,9 +280,9 @@
       "note": ""
     },
     "경기 광주시 초월읍 쌍동리": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 54,
+      "transit": 49,
+      "note": ""
     },
     "수원 장안구 조원동": {
       "subway": 19,
@@ -1020,9 +1020,9 @@
       "note": ""
     },
     "경기 의왕시 고천동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 69,
+      "transit": 51,
+      "note": ""
     },
     "용인 수지구 신봉동": {
       "subway": 36,
@@ -1035,9 +1035,9 @@
       "note": ""
     },
     "수원 영통구 이의동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 42,
+      "transit": 42,
+      "note": ""
     },
     "서울 성북구 보문동1가": {
       "subway": 39,
@@ -1075,9 +1075,9 @@
       "note": ""
     },
     "경기 광명시 일직동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 53,
+      "transit": 48,
+      "note": ""
     },
     "경기 성남 수정구 복정동": {
       "subway": null,
@@ -1377,6 +1377,21 @@
     "서울 영등포구 양평동4가": {
       "subway": 42,
       "transit": 42,
+      "note": ""
+    },
+    "경기 광주시 초월읍 산이리": {
+      "subway": 52,
+      "transit": 48,
+      "note": ""
+    },
+    "부천 원미구 소사동": {
+      "subway": 69,
+      "transit": 61,
+      "note": ""
+    },
+    "서울 영등포구 당산동1가": {
+      "subway": 60,
+      "transit": 60,
       "note": ""
     }
   }
