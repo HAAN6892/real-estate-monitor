@@ -2,7 +2,7 @@
   "destination": "강남역 미림타워",
   "address": "서울 강남구 역삼동 826",
   "survey_basis": "ODsay API 대중교통 길찾기 (자동)",
-  "updated": "2026-03-03 20:29",
+  "updated": "2026-03-04 08:40",
   "data": {
     "수원 장안구 정자동": {
       "subway": 72,
@@ -585,9 +585,9 @@
       "note": ""
     },
     "서울 강남구 자곡동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 44,
+      "transit": 40,
+      "note": ""
     },
     "서울 서초구 우면동": {
       "subway": 28,
@@ -620,9 +620,9 @@
       "note": ""
     },
     "서울 강동구 둔촌동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 58,
+      "transit": 58,
+      "note": ""
     },
     "서울 강동구 강일동": {
       "subway": 61,
@@ -800,9 +800,9 @@
       "note": ""
     },
     "서울 강남구 개포동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 24,
+      "transit": 24,
+      "note": ""
     },
     "서울 강남구 대치동": {
       "subway": 28,
@@ -1065,9 +1065,9 @@
       "note": ""
     },
     "서울 서초구 반포동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 14,
+      "transit": 14,
+      "note": ""
     },
     "서울 동작구 사당동": {
       "subway": 30,
@@ -1146,8 +1146,8 @@
     },
     "경기 의왕시 학의동": {
       "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "transit": 57,
+      "note": ""
     },
     "경기 성남 수정구 태평동": {
       "subway": null,
@@ -1265,9 +1265,9 @@
       "note": ""
     },
     "서울 서초구 신원동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 16,
+      "transit": 16,
+      "note": ""
     },
     "서울 서초구 잠원동": {
       "subway": 33,
@@ -1397,6 +1397,31 @@
     "서울 영등포구 영등포동5가": {
       "subway": 61,
       "transit": 61,
+      "note": ""
+    },
+    "고양 일산동구 식사동": {
+      "subway": 17,
+      "transit": 79,
+      "note": ""
+    },
+    "서울 강남구 신사동": {
+      "subway": 16,
+      "transit": 16,
+      "note": ""
+    },
+    "서울 영등포구 문래동4가": {
+      "subway": 36,
+      "transit": 36,
+      "note": ""
+    },
+    "부천 오정구 고강동": {
+      "subway": 71,
+      "transit": 81,
+      "note": ""
+    },
+    "서울 강남구 수서동": {
+      "subway": 35,
+      "transit": 33,
       "note": ""
     }
   }
