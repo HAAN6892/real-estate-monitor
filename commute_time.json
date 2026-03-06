@@ -2,7 +2,7 @@
   "destination": "강남역 미림타워",
   "address": "서울 강남구 역삼동 826",
   "survey_basis": "ODsay API 대중교통 길찾기 (자동)",
-  "updated": "2026-03-06 20:27",
+  "updated": "2026-03-07 08:37",
   "data": {
     "수원 장안구 정자동": {
       "subway": 72,
@@ -1235,9 +1235,9 @@
       "note": ""
     },
     "서울 송파구 문정동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 37,
+      "transit": 36,
+      "note": ""
     },
     "성남 분당구 금곡동": {
       "subway": 19,
@@ -1437,6 +1437,21 @@
     "용인 기흥구 보정동": {
       "subway": 43,
       "transit": 43,
+      "note": ""
+    },
+    "서울 성북구 삼선동2가": {
+      "subway": 41,
+      "transit": 41,
+      "note": ""
+    },
+    "서울 영등포구 당산동5가": {
+      "subway": 34,
+      "transit": 34,
+      "note": ""
+    },
+    "서울 영등포구 당산동2가": {
+      "subway": 34,
+      "transit": 34,
       "note": ""
     }
   }
