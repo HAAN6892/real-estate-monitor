@@ -18,7 +18,11 @@ logger = logging.getLogger(__name__)
 # 주 API (m.land — 안정적)
 MLAND_ARTICLE_LIST = (
     "https://m.land.naver.com/complex/getComplexArticleList"
-    "?hscpNo={complex_no}&tradTpCd=&order=prc&showR0=Y&page={page}"
+    "?hscpNo={complex_no}&tradTpCd={trad_tp_cd}&order=prc&showR0=Y&page={page}"
+)
+NEWLAND_ARTICLE_API = (
+    "https://new.land.naver.com/api/articles/{article_id}"
+    "?complexNo={complex_no}"
 )
 NEWLAND_COMPLEX_API = (
     "https://new.land.naver.com/api/complexes/{complex_no}"
@@ -36,10 +40,13 @@ session.headers.update({
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
         "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/131.0.0.0 Safari/537.36"
+        "Chrome/133.0.0.0 Safari/537.36"
     ),
     "Accept": "application/json, text/plain, */*",
     "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+    "sec-ch-ua": '"Chromium";v="133", "Not(A:Brand";v="99", "Google Chrome";v="133"',
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": '"Windows"',
 })
 
 # ─── URL 패턴 ───
@@ -72,19 +79,28 @@ def extract_article_id(url: str) -> tuple[str | None, str | None]:
 # ─── m.land API (주력) ───
 
 def fetch_mland_article_list(
-    complex_no: str, article_id: str | None = None, max_pages: int = 5
+    complex_no: str,
+    article_id: str | None = None,
+    max_pages: int = 10,
+    trad_tp_cd: str = "",
 ) -> tuple[list[dict], dict | None]:
     """m.land 단지 매물 리스트 조회 (페이지네이션).
 
     article_id 지정 시 해당 매물을 찾을 때까지 페이지를 넘김.
+    trad_tp_cd: A1=매매, B1=전세, B2=월세, ""=전체
     Returns: (전체 매물 리스트, 매칭된 매물 또는 None)
     """
     all_articles = []
     matched = None
 
     for page in range(1, max_pages + 1):
-        url = MLAND_ARTICLE_LIST.format(complex_no=complex_no, page=page)
-        logger.info("m.land 매물 리스트 조회: hscpNo=%s page=%d", complex_no, page)
+        url = MLAND_ARTICLE_LIST.format(
+            complex_no=complex_no, trad_tp_cd=trad_tp_cd, page=page
+        )
+        logger.info(
+            "m.land 매물 리스트 조회: hscpNo=%s tradTpCd=%s page=%d",
+            complex_no, trad_tp_cd or "(전체)", page,
+        )
         try:
             resp = session.get(
                 url, headers={"Referer": "https://m.land.naver.com/"}, timeout=10
@@ -100,7 +116,8 @@ def fetch_mland_article_list(
 
             if article_id:
                 for art in articles:
-                    if str(art.get("atclNo")) == str(article_id):
+                    # atclNo 필드: 문자열/정수 모두 대응
+                    if str(art.get("atclNo", "")) == str(article_id):
                         matched = art
                         break
                 if matched:
@@ -110,12 +127,15 @@ def fetch_mland_article_list(
             if len(all_articles) >= total:
                 break
 
-            time.sleep(0.5)
+            time.sleep(0.3)
         except Exception as e:
             logger.error("m.land 호출 실패: %s", e)
             break
 
-    logger.info("m.land 총 %d건 조회, 매칭=%s", len(all_articles), matched is not None)
+    logger.info(
+        "m.land 총 %d건 조회 (tradTpCd=%s), 매칭=%s",
+        len(all_articles), trad_tp_cd or "전체", matched is not None,
+    )
     return all_articles, matched
 
 
@@ -153,6 +173,60 @@ def fetch_complex_info(complex_no: str) -> dict | None:
     return None
 
 
+def fetch_newland_article(article_id: str, complex_no: str = "") -> dict | None:
+    """new.land 매물 직접 조회 API (429 가능).
+
+    m.land 리스트에 없는 매물도 직접 조회 가능.
+    """
+    url = NEWLAND_ARTICLE_API.format(article_id=article_id, complex_no=complex_no)
+    logger.info("new.land 매물 직접 조회: articleNo=%s", article_id)
+    try:
+        for attempt in range(2):
+            resp = session.get(
+                url,
+                headers={
+                    "Referer": f"https://new.land.naver.com/complexes/{complex_no}?articleNo={article_id}",
+                    "sec-fetch-dest": "empty",
+                    "sec-fetch-mode": "cors",
+                    "sec-fetch-site": "same-origin",
+                },
+                timeout=10,
+            )
+            if resp.status_code == 200:
+                return resp.json()
+            if resp.status_code == 429 and attempt == 0:
+                logger.info("new.land article 429 → 5초 대기")
+                time.sleep(5)
+                continue
+            logger.info("new.land article status=%d", resp.status_code)
+            break
+    except Exception as e:
+        logger.error("new.land article 호출 실패: %s", e)
+    return None
+
+
+def parse_newland_article(data: dict) -> dict:
+    """new.land 매물 직접 조회 응답 → 표준 형식 변환."""
+    body = data.get("articleDetail", data)
+    area_m2 = _safe_float(body.get("exclusiveArea") or body.get("area2"))
+    price = parse_price(
+        body.get("dealOrWarrantPrc", "")
+        or body.get("prc", "")
+        or body.get("formattedPrice", "")
+    )
+    floor_info = body.get("floorInfo", "")
+    return {
+        "article_id": body.get("articleNo", ""),
+        "name": body.get("complexName", body.get("articleName", "")),
+        "trade_type": body.get("tradeTypeName", ""),
+        "price": price,
+        "area_m2": round(area_m2, 1) if area_m2 else None,
+        "area_pyeong": round(area_m2 / 3.3058, 1) if area_m2 else None,
+        "floor": floor_info,
+        "direction": body.get("direction", ""),
+    }
+
+
 def parse_mland_article(article: dict) -> dict:
     """m.land 매물 데이터 → 표준 형식 변환."""
     area_m2 = float(article.get("spc2", 0)) if article.get("spc2") else None
@@ -187,13 +261,16 @@ def _fetch_fin(url: str, label: str) -> dict | None:
                     "sec-fetch-dest": "empty",
                     "sec-fetch-mode": "cors",
                     "sec-fetch-site": "same-origin",
+                    "sec-ch-ua": '"Chromium";v="133", "Not(A:Brand";v="99", "Google Chrome";v="133"',
+                    "sec-ch-ua-mobile": "?0",
+                    "sec-ch-ua-platform": '"Windows"',
                 },
                 timeout=10,
             )
             if resp.status_code == 200:
                 return resp.json()
             if resp.status_code == 429 and attempt < 2:
-                wait = 3 * (2 ** attempt)  # 3초, 6초, 12초
+                wait = 5 * (2 ** attempt)  # 5초, 10초
                 logger.info("fin.land %s 429 → %d초 대기 (%d/3)", label, wait, attempt + 1)
                 time.sleep(wait)
                 continue
@@ -207,22 +284,30 @@ def _fetch_fin(url: str, label: str) -> dict | None:
 # ─── 통합 파서 ───
 
 def _merge_complex_info(result: dict, complex_data: dict):
-    """단지 정보 API 응답을 result에 병합 (new.land / fin.land 호환)."""
+    """단지 정보 API 응답을 result에 병합 (m.land / new.land / fin.land 호환)."""
     body = complex_data.get("result", complex_data)
     if not result["name"]:
         result["name"] = (
             body.get("complexName")
             or body.get("hscpNm")
+            or body.get("nm")
             or ""
         )
     if not result["built_year"]:
-        raw = body.get("useApproveYmd") or body.get("useApproveYear") or body.get("approveYear") or ""
+        raw = (
+            body.get("useApproveYmd")
+            or body.get("useApproveYear")
+            or body.get("approveYear")
+            or body.get("useAprvYmd")
+            or ""
+        )
         result["built_year"] = _safe_int(str(raw)[:4]) if raw else None
     if not result["households"]:
         result["households"] = _safe_int(
             body.get("totalHouseholdCount")
             or body.get("householdCount")
             or body.get("totHsehCnt")
+            or body.get("totalHouseHoldCount")
         )
     if not result["lat"]:
         result["lat"] = _safe_float(
@@ -233,12 +318,21 @@ def _merge_complex_info(result: dict, complex_data: dict):
             body.get("longitude") or body.get("lng")
         )
     if not result["region"]:
-        result["region"] = (
+        # 주소 필드 탐색 (여러 API 포맷 호환)
+        addr = (
             body.get("address")
             or body.get("roadAddress")
             or body.get("cortarAddress")
             or ""
         )
+        # cortarNo 기반 주소가 없으면 개별 필드 조합
+        if not addr:
+            parts = []
+            for key in ("sido", "sigungu", "roadName", "eupMyeonDongName"):
+                if body.get(key):
+                    parts.append(body[key])
+            addr = " ".join(parts)
+        result["region"] = addr
 
 
 def extract_coords_from_url(url: str) -> tuple[float | None, float | None]:
@@ -279,32 +373,56 @@ def parse_article(
     if complex_no:
         logger.info("[전략1] m.land API complexNo=%s", complex_no)
 
-        # 1-a. 매물 리스트 (페이지네이션으로 정확한 매물 검색)
-        articles, matched = fetch_mland_article_list(complex_no, article_id)
-        time.sleep(1)
+        # 1-a. 매물 리스트: 거래유형별로 순차 조회 (매매→전세→월세→전체)
+        matched = None
+        all_articles = []
+        for tp_cd in ["A1", "B1", "B2", ""]:
+            articles, matched = fetch_mland_article_list(
+                complex_no, article_id, trad_tp_cd=tp_cd
+            )
+            all_articles.extend(articles)
+            if matched:
+                logger.info(
+                    "매물 찾음 (tradTpCd=%s): %s %s",
+                    tp_cd, matched.get("atclNm"), matched.get("prcInfo"),
+                )
+                break
+            time.sleep(0.5)
 
         if matched:
-            logger.info("매물 찾음: %s %s", matched.get("atclNm"), matched.get("prcInfo"))
             parsed = parse_mland_article(matched)
             result.update({k: v for k, v in parsed.items() if v})
-        elif articles:
-            # 매칭 실패 → 같은 단지 매물 중 첫 번째 가격을 참고값으로 사용
-            logger.info("articleId=%s 미매칭 → 동일 단지 매물 가격 참고", article_id)
-            fallback = articles[0]
-            result["name"] = fallback.get("atclNm", "")
-            fallback_price = parse_price(fallback.get("prcInfo", ""))
-            if fallback_price:
-                result["price"] = fallback_price
-                result["trade_type"] = fallback.get("tradTpNm", "")
+        elif all_articles:
+            # 매칭 실패 → 단지명만 가져오고 가격은 가져오지 않음 (틀린 가격 방지)
+            logger.warning(
+                "articleId=%s 미매칭 (%d건 조회). 다른 매물 가격 폴백 안함.",
+                article_id, len(all_articles),
+            )
+            result["name"] = all_articles[0].get("atclNm", "")
 
-        # 1-b. 단지 정보 (좌표, 세대수, 준공년도)
+        time.sleep(0.5)
+
+        # 1-b. m.land에서 못 찾으면 new.land 직접 조회
+        if not result["price"]:
+            logger.info("[전략1-b] new.land 매물 직접 조회")
+            newland_data = fetch_newland_article(article_id, complex_no)
+            if newland_data:
+                parsed = parse_newland_article(newland_data)
+                result.update({k: v for k, v in parsed.items() if v})
+            time.sleep(0.5)
+
+        # 1-c. 단지 정보 (좌표, 세대수, 준공년도)
         complex_data = fetch_complex_info(complex_no)
-        time.sleep(1)
+        time.sleep(0.5)
         if complex_data:
             _merge_complex_info(result, complex_data)
 
-    # ── 전략 2: fin.land API ──
-    logger.info("[전략2] fin.land API")
+    # ── 전략 2: fin.land API (전략1에서 부족한 정보 보완) ──
+    needs_fin = not result["price"] or not result["trade_type"] or not complex_no
+    if needs_fin:
+        logger.info("[전략2] fin.land API")
+    else:
+        logger.info("[전략2] fin.land 스킵 (전략1에서 충분한 정보 획득)")
 
     # KEY API → complexNo 획득
     if not complex_no:
@@ -318,9 +436,11 @@ def parse_article(
             if not result["trade_type"]:
                 result["trade_type"] = body.get("tradeTypeName", "")
 
-    # BASIC API → 매물 상세
-    basic_data = _fetch_fin(FIN_BASIC_API.format(article_id=article_id), "BASIC")
-    time.sleep(1)
+    # BASIC API → 매물 상세 (가격/거래유형이 없을 때만)
+    basic_data = None
+    if not result["price"] or not result["trade_type"]:
+        basic_data = _fetch_fin(FIN_BASIC_API.format(article_id=article_id), "BASIC")
+        time.sleep(1)
     if basic_data:
         body = basic_data.get("result", basic_data)
         if not result["name"]:
@@ -351,23 +471,27 @@ def parse_article(
 
         result["dong"] = result["dong"] or body.get("legalDivisionName", body.get("dongName", ""))
 
-    # 단지 정보 보완 (전략1에서 못 가져온 경우)
-    if complex_no and (not result["lat"] or not result["built_year"]):
-        complex_data = fetch_complex_info(complex_no)
-        if complex_data:
-            _merge_complex_info(result, complex_data)
+    # 단지 정보 보완 (전략1에서 못 가져온 경우, fin.land에서 complexNo 새로 확보 시)
+    if complex_no and complex_no != result.get("complex_no"):
+        # complexNo가 새로 확보된 경우 단지 정보 재시도
+        if not result["lat"] or not result["built_year"]:
+            complex_data = fetch_complex_info(complex_no)
+            if complex_data:
+                _merge_complex_info(result, complex_data)
 
-    # m.land에서 complexNo 새로 확보했으면 매물+단지 재시도
+    # m.land에서 complexNo 새로 확보했으면 매물 재시도
     if complex_no and complex_no != result.get("complex_no") and not result.get("price"):
         result["complex_no"] = complex_no
-        articles, matched = fetch_mland_article_list(complex_no, article_id)
-        if matched:
-            parsed = parse_mland_article(matched)
-            result.update({k: v for k, v in parsed.items() if v})
-        elif articles:
-            fallback_price = parse_price(articles[0].get("prcInfo", ""))
-            if fallback_price and not result["price"]:
-                result["price"] = fallback_price
+        # 거래유형별 순차 조회
+        for tp_cd in ["A1", "B1", "B2", ""]:
+            articles, matched = fetch_mland_article_list(
+                complex_no, article_id, trad_tp_cd=tp_cd
+            )
+            if matched:
+                parsed = parse_mland_article(matched)
+                result.update({k: v for k, v in parsed.items() if v})
+                break
+            time.sleep(0.5)
 
         if not result["lat"]:
             cinfo = fetch_complex_info(complex_no)

@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-02-22T01:05:15",
+  "updated_at": "2026-02-22T20:55:18",
   "items": [
     {
       "id": 1,
@@ -16,12 +16,12 @@
       "direction": "",
       "built_year": 0,
       "households": 0,
-      "lat": 0,
-      "lng": 0,
+      "lat": 37.2723349,
+      "lng": 127.1204839,
       "station": "",
       "walk_min": 0,
       "url": "https://new.land.naver.com/complexes/111334?ms=37.2723349,127.1204839,18&a=APT:JGC:PRE&b=A1&e=RETAIL&h=66&i=132&l=300&articleNo=2609769013",
-      "added_at": "2026-02-22T01:05:15",
+      "added_at": "2026-02-22T20:55:18",
       "added_by": "아아아아",
       "memo": ""
     }
