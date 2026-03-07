@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=12e8b95a1df898f6b847892500770551&autoload=false&libraries=services"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div class="main" id="main">
@@ -66,6 +67,7 @@
     <button class="tab-btn active" onclick="switchTab('properties')" id="tabBtnProperties">📊 매물 시뮬레이션</button>
     <button class="tab-btn" onclick="switchTab('policy')" id="tabBtnPolicy">📜 정책 · 대출</button>
     <button class="tab-btn" onclick="switchTab('wishlist')" id="tabBtnWishlist">📌 관심 매물 <span id="wishlistCount"></span></button>
+    <button class="tab-btn" onclick="switchTab('flagship')" id="tabBtnFlagship">📈 시세 추이</button>
   </div>
   <div class="tab-content active" id="tab-properties">
     <div class="buy-only"><div class="section" style="margin-top:0;margin-bottom:0"><div class="section-header"><div class="section-title">🏘️ 관심 매물 시뮬레이션</div><div class="section-badge" id="propertyBadge">데이터 없음</div></div>
@@ -138,6 +140,19 @@
       <div style="font-size:15px;font-weight:700;margin-bottom:6px">관심 매물이 없습니다</div>
       <div style="font-size:12px;color:var(--text-dim);line-height:1.6">텔레그램 봇에서 네이버부동산 링크를 보내면<br>여기에 자동으로 표시됩니다.</div>
     </div>
+  </div>
+  <div class="tab-content" id="tab-flagship">
+    <div class="flagship-gu-bar" id="fgGuBar">
+      <button class="fg-chip active" data-gu="all" onclick="setFgFilter('all')">전체</button>
+      <button class="fg-chip fg-group" data-gu="동북권" onclick="setFgFilter('동북권')">동북권</button>
+      <button class="fg-chip fg-group" data-gu="남서권" onclick="setFgFilter('남서권')">남서권</button>
+      <span class="fg-divider">|</span>
+      <span id="fgGuChips"></span>
+    </div>
+    <div class="flagship-chart-wrap">
+      <canvas id="flagshipChart"></canvas>
+    </div>
+    <div class="flagship-cards" id="flagshipCards"></div>
   </div>
   <div class="footer">설정(⚙️)에서 소득·자금·대출 조건을 변경하면 모든 숫자가 실시간으로 재계산됩니다</div>
 </div>

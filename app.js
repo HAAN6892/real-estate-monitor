@@ -107,6 +107,11 @@ function switchTab(tabId){
     initWishlistMapIfNeeded();
     renderWishlistCards();
     renderWishlistMap();
+  }else if(tabId==='flagship'){
+    document.getElementById('tabBtnFlagship').classList.add('active');
+    if(_wishlistTabActive){_wishlistTabActive=false;if(mapInitialized)updateMapMarkers();}
+    if(!FLAGSHIP_HISTORY){loadFlagshipData().then(()=>renderFlagshipTab());}
+    else{renderFlagshipTab();}
   }else{
     document.getElementById('tabBtnPolicy').classList.add('active');
     if(_wishlistTabActive){_wishlistTabActive=false;if(mapInitialized)updateMapMarkers();}
@@ -896,6 +901,247 @@ function switchWlMobileSplit(mode){
   document.querySelectorAll('#wlMobileSplitTabs .mobile-split-tab').forEach(b=>b.classList.toggle('active',b.dataset.split===mode));
   sl.classList.remove('mobile-map','mobile-list');sl.classList.add('mobile-'+mode);
   if(mode==='map'){initWishlistMapIfNeeded();if(wishlistMap)setTimeout(()=>{wishlistMap.relayout();renderWishlistMap();},200);}
+}
+
+// ─── 시세 추이 (Flagship) ───
+const FG_GU_GROUPS={
+  '동북권':['노원구','도봉구','강북구','중랑구','광진구','동대문구','강동구'],
+  '남서권':['양천구','관악구','금천구'],
+};
+const FG_GU_COLORS={
+  '노원구':'#3B82F6','도봉구':'#8B5CF6','강북구':'#EC4899',
+  '중랑구':'#F59E0B','광진구':'#10B981','동대문구':'#6366F1',
+  '강동구':'#EF4444','양천구':'#0EA5E9','관악구':'#F97316','금천구':'#A855F7',
+};
+const FG_GU_ORDER=['노원구','도봉구','강북구','중랑구','광진구','동대문구','강동구','양천구','관악구','금천구'];
+
+let FLAGSHIP_HISTORY=null;
+let flagshipChartInstance=null;
+let currentFgFilter='all';
+let _fgEntryMonthMaps=[];
+
+function fgMonthKeys(){
+  const now=new Date(),keys=[];
+  for(let i=11;i>=0;i--){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    keys.push(d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'));
+  }
+  return keys;
+}
+function fgMonthLabels(){
+  return fgMonthKeys().map(k=>{const[y,m]=k.split('-');return String(y).slice(-2)+'.'+m;});
+}
+function fgPrevMonth(dateStr){
+  const[y,m]=dateStr.split('-').map(Number);
+  if(m===1)return(y-1)+'-12';
+  return y+'-'+String(m-1).padStart(2,'0');
+}
+function fgFmtPrice(v){
+  if(v>=10000){const a=v/10000;return(a===Math.floor(a)?Math.floor(a):a.toFixed(1))+'억';}
+  return v.toLocaleString()+'만';
+}
+
+async function loadFlagshipData(){
+  try{
+    const res=await fetch('flagship_history.json');
+    if(!res.ok)throw new Error(res.status);
+    FLAGSHIP_HISTORY=await res.json();
+    initFlagshipGuChips();
+  }catch(e){
+    console.warn('flagship_history.json 로드 실패:',e);
+    FLAGSHIP_HISTORY=null;
+  }
+}
+
+function initFlagshipGuChips(){
+  const wrap=document.getElementById('fgGuChips');
+  if(!wrap||!FLAGSHIP_HISTORY)return;
+  const watchlist=FLAGSHIP_HISTORY.watchlist||[];
+  const gus=[...new Set(watchlist.map(e=>e.gu))].sort((a,b)=>{
+    const ia=FG_GU_ORDER.indexOf(a),ib=FG_GU_ORDER.indexOf(b);
+    return(ia<0?99:ia)-(ib<0?99:ib);
+  });
+  wrap.innerHTML=gus.map(gu=>{
+    const color=FG_GU_COLORS[gu]||'#9CA3AF';
+    return`<button class="fg-chip fg-gu" data-gu="${gu}" onclick="setFgFilter('${gu}')" style="--fg-color:${color}">${gu.replace('구','')}</button>`;
+  }).join('');
+}
+
+function setFgFilter(gu){
+  currentFgFilter=gu;
+  document.querySelectorAll('.fg-chip').forEach(b=>b.classList.toggle('active',b.dataset.gu===gu));
+  renderFlagshipTab();
+}
+
+function getFlagshipChartEntries(){
+  if(!FLAGSHIP_HISTORY)return[];
+  const watchlist=FLAGSHIP_HISTORY.watchlist||[];
+  if(currentFgFilter==='all'){
+    const byGu={};
+    watchlist.forEach(e=>{if(!byGu[e.gu]||e.transactions.length>byGu[e.gu].transactions.length)byGu[e.gu]=e;});
+    return FG_GU_ORDER.map(g=>byGu[g]).filter(Boolean);
+  }
+  if(FG_GU_GROUPS[currentFgFilter])return watchlist.filter(e=>FG_GU_GROUPS[currentFgFilter].includes(e.gu));
+  return watchlist.filter(e=>e.gu===currentFgFilter);
+}
+
+function getFlagshipCardEntries(){
+  if(!FLAGSHIP_HISTORY)return[];
+  const watchlist=FLAGSHIP_HISTORY.watchlist||[];
+  if(currentFgFilter==='all')return watchlist;
+  if(FG_GU_GROUPS[currentFgFilter])return watchlist.filter(e=>FG_GU_GROUPS[currentFgFilter].includes(e.gu));
+  return watchlist.filter(e=>e.gu===currentFgFilter);
+}
+
+function renderFlagshipTab(){
+  const cardsEl=document.getElementById('flagshipCards');
+  // 구 칩 active 동기화
+  document.querySelectorAll('.fg-chip').forEach(b=>b.classList.toggle('active',b.dataset.gu===currentFgFilter));
+
+  if(!FLAGSHIP_HISTORY){
+    if(flagshipChartInstance){flagshipChartInstance.destroy();flagshipChartInstance=null;}
+    const wrap=document.querySelector('.flagship-chart-wrap');
+    if(wrap)wrap.innerHTML='<canvas id="flagshipChart"></canvas>';
+    if(cardsEl)cardsEl.innerHTML='<div class="fg-empty">데이터 수집 중...<br>GitHub Actions에서 <strong>flagship-backfill</strong> 워크플로우를 먼저 실행해주세요.</div>';
+    return;
+  }
+  const watchlist=FLAGSHIP_HISTORY.watchlist||[];
+  if(watchlist.length===0){
+    if(cardsEl)cardsEl.innerHTML='<div class="fg-empty">거래 데이터가 없습니다.</div>';
+    return;
+  }
+  renderFlagshipChart(getFlagshipChartEntries());
+  renderFlagshipCards(getFlagshipCardEntries());
+}
+
+function renderFlagshipChart(entries){
+  // canvas 복원 (이전에 에러 메시지로 교체된 경우 대비)
+  const wrap=document.querySelector('.flagship-chart-wrap');
+  if(wrap&&!document.getElementById('flagshipChart')){
+    wrap.innerHTML='<canvas id="flagshipChart"></canvas>';
+  }
+  const canvas=document.getElementById('flagshipChart');
+  if(!canvas)return;
+
+  if(flagshipChartInstance){flagshipChartInstance.destroy();flagshipChartInstance=null;}
+
+  if(typeof Chart==='undefined'){
+    wrap.innerHTML='<div class="fg-empty fg-chart-error">Chart.js를 불러올 수 없습니다. 인터넷 연결을 확인해주세요.</div>';
+    return;
+  }
+
+  const monthKeys=fgMonthKeys();
+  const monthLabels=fgMonthLabels();
+
+  // 단지별 월→최고가 거래 맵
+  _fgEntryMonthMaps=entries.map(entry=>{
+    const m={};
+    (entry.transactions||[]).forEach(t=>{if(!m[t.date]||t.price>m[t.date].price)m[t.date]=t;});
+    return m;
+  });
+
+  const datasets=entries.map((entry,i)=>{
+    const color=FG_GU_COLORS[entry.gu]||'#9CA3AF';
+    return{
+      label:entry.name,
+      data:monthKeys.map(k=>_fgEntryMonthMaps[i][k]?_fgEntryMonthMaps[i][k].price:null),
+      borderColor:color,
+      backgroundColor:color+'18',
+      borderWidth:2,
+      pointRadius:5,
+      pointHoverRadius:7,
+      pointBackgroundColor:color,
+      tension:0.3,
+      spanGaps:false,
+    };
+  });
+
+  flagshipChartInstance=new Chart(canvas,{
+    type:'line',
+    data:{labels:monthLabels,datasets},
+    options:{
+      responsive:true,
+      maintainAspectRatio:true,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{
+          display:true,
+          position:'bottom',
+          labels:{color:'#a0a0b8',font:{size:11,family:"'Noto Sans KR',sans-serif"},boxWidth:14,padding:10},
+        },
+        tooltip:{
+          backgroundColor:'#0d0d14',
+          borderColor:'#232336',
+          borderWidth:1,
+          titleColor:'#7a7a95',
+          bodyColor:'#eeeef5',
+          padding:10,
+          callbacks:{
+            title(items){return items[0]?.label?'20'+items[0].label:'';},
+            label(ctx){
+              if(ctx.raw==null)return null;
+              const entry=entries[ctx.datasetIndex];
+              const monthKey=monthKeys[ctx.dataIndex];
+              const tx=_fgEntryMonthMaps[ctx.datasetIndex][monthKey];
+              if(!tx)return null;
+              return` ${entry.name}  ${fmtShort(tx.price)}  ${tx.floor}층`;
+            },
+          },
+        },
+      },
+      scales:{
+        x:{ticks:{color:'#7a7a95',font:{size:11}},grid:{color:'#232336'}},
+        y:{
+          ticks:{
+            color:'#7a7a95',
+            font:{size:11},
+            callback(v){
+              if(v>=10000){const a=v/10000;return(a===Math.floor(a)?Math.floor(a):a.toFixed(1))+'억';}
+              return v.toLocaleString();
+            },
+          },
+          grid:{color:'#232336'},
+        },
+      },
+    },
+  });
+}
+
+function renderFlagshipCards(entries){
+  const container=document.getElementById('flagshipCards');
+  if(!container)return;
+  const sorted=[...entries].sort((a,b)=>(b.transactions[0]?.date||'').localeCompare(a.transactions[0]?.date||''));
+  if(!sorted.length){container.innerHTML='<div class="fg-empty">표시할 단지가 없습니다.</div>';return;}
+
+  container.innerHTML=sorted.map(entry=>{
+    const color=FG_GU_COLORS[entry.gu]||'#9CA3AF';
+    const guShort=entry.gu.replace('구','');
+    const tx=entry.transactions[0];
+    if(!tx){
+      return`<div class="flagship-card"><div class="fc-header"><span class="dc-badge" style="background:${color}">${guShort}</span><span class="fc-name">${entry.name}</span><span class="fc-area">${entry.area_target}㎡</span></div><div class="fc-empty">거래 없음</div></div>`;
+    }
+    const prevTx=entry.transactions.find(t=>t.date===fgPrevMonth(tx.date));
+    let diffHtml='';
+    if(prevTx){
+      const diff=tx.price-prevTx.price;
+      if(diff>0)diffHtml=`<div class="fc-diff"><span class="price-up">▲ ${fmtShort(diff)}</span><span class="fc-diff-vs"> vs 전월</span></div>`;
+      else if(diff<0)diffHtml=`<div class="fc-diff"><span class="price-down">▼ ${fmtShort(Math.abs(diff))}</span><span class="fc-diff-vs"> vs 전월</span></div>`;
+      else diffHtml=`<div class="fc-diff"><span class="price-flat">→ 보합</span><span class="fc-diff-vs"> vs 전월</span></div>`;
+    }
+    const q=encodeURIComponent(entry.name);
+    const qDong=encodeURIComponent(entry.dong+' '+entry.name);
+    return`<div class="flagship-card">
+  <div class="fc-header"><span class="dc-badge" style="background:${color}">${guShort}</span><span class="fc-name">${entry.name}</span><span class="fc-area">${entry.area_target}㎡</span></div>
+  <div class="fc-price">${fmtShort(tx.price)}</div>
+  <div class="fc-meta">${tx.floor}층&nbsp;|&nbsp;${tx.date.replace('-','.')} (${tx.deal_day}일)</div>
+  ${diffHtml}
+  <div class="fc-links">
+    <a href="https://m.land.naver.com/search/result/${qDong}" target="_blank" class="fc-link">네이버</a>
+    <a href="https://hogangnono.com/search?q=${q}" target="_blank" class="fc-link">호갱</a>
+    <a href="https://asil.kr/search/${q}" target="_blank" class="fc-link">아실</a>
+  </div>
+</div>`;
+  }).join('');
 }
 
 loadSettings().then(()=>loadData().then(()=>{
