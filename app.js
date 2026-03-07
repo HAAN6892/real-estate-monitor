@@ -976,12 +976,18 @@ function setFgFilter(gu){
 function getFlagshipChartEntries(){
   if(!FLAGSHIP_HISTORY)return[];
   const watchlist=FLAGSHIP_HISTORY.watchlist||[];
-  if(currentFgFilter==='all'){
+  // 전체 · 그룹: 구당 대표 1개 (거래 많은 단지), 거래 없는 단지 제외
+  if(currentFgFilter==='all'||FG_GU_GROUPS[currentFgFilter]){
+    const pool=currentFgFilter==='all'
+      ?watchlist
+      :watchlist.filter(e=>FG_GU_GROUPS[currentFgFilter].includes(e.gu));
     const byGu={};
-    watchlist.forEach(e=>{if(!byGu[e.gu]||e.transactions.length>byGu[e.gu].transactions.length)byGu[e.gu]=e;});
+    pool.filter(e=>e.transactions.length>0).forEach(e=>{
+      if(!byGu[e.gu]||e.transactions.length>byGu[e.gu].transactions.length)byGu[e.gu]=e;
+    });
     return FG_GU_ORDER.map(g=>byGu[g]).filter(Boolean);
   }
-  if(FG_GU_GROUPS[currentFgFilter])return watchlist.filter(e=>FG_GU_GROUPS[currentFgFilter].includes(e.gu));
+  // 개별 구: 해당 구 모든 단지 표시
   return watchlist.filter(e=>e.gu===currentFgFilter);
 }
 
@@ -1047,14 +1053,29 @@ function renderFlagshipChart(entries){
       data:monthKeys.map(k=>_fgEntryMonthMaps[i][k]?_fgEntryMonthMaps[i][k].price:null),
       borderColor:color,
       backgroundColor:color+'18',
-      borderWidth:2,
-      pointRadius:5,
-      pointHoverRadius:7,
+      borderWidth:2.5,
+      pointRadius:4,
+      pointHoverRadius:6,
       pointBackgroundColor:color,
       tension:0.3,
-      spanGaps:false,
+      spanGaps:true,
+      segment:{
+        borderDash:ctx=>(ctx.p0.skip||ctx.p1.skip)?[6,4]:undefined,
+        borderColor:ctx=>(ctx.p0.skip||ctx.p1.skip)?color+'88':color,
+      },
     };
   });
+
+  // Y축 범위: 현재 데이터 min/max에 10% 여백
+  const allPrices=[];
+  _fgEntryMonthMaps.forEach(m=>Object.values(m).forEach(tx=>allPrices.push(tx.price)));
+  let yMin,yMax;
+  if(allPrices.length){
+    const lo=Math.min(...allPrices),hi=Math.max(...allPrices);
+    const pad=Math.max((hi-lo)*0.1,1000);
+    yMin=Math.max(0,Math.floor((lo-pad)/1000)*1000);
+    yMax=Math.ceil((hi+pad)/1000)*1000;
+  }
 
   flagshipChartInstance=new Chart(canvas,{
     type:'line',
@@ -1066,8 +1087,16 @@ function renderFlagshipChart(entries){
       plugins:{
         legend:{
           display:true,
-          position:'bottom',
-          labels:{color:'#a0a0b8',font:{size:11,family:"'Noto Sans KR',sans-serif"},boxWidth:14,padding:10},
+          position:'right',
+          align:'start',
+          labels:{
+            color:'#a0a0b8',
+            font:{size:11,family:"'Noto Sans KR',sans-serif"},
+            boxWidth:14,
+            padding:10,
+            usePointStyle:true,
+            pointStyle:'line',
+          },
         },
         tooltip:{
           backgroundColor:'#0d0d14',
@@ -1092,6 +1121,8 @@ function renderFlagshipChart(entries){
       scales:{
         x:{ticks:{color:'#7a7a95',font:{size:11}},grid:{color:'#232336'}},
         y:{
+          min:yMin,
+          max:yMax,
           ticks:{
             color:'#7a7a95',
             font:{size:11},
