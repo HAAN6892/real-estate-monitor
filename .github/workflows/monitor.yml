@@ -48,7 +48,7 @@ jobs:
                   "min_floor": 1,
                   "max_build_year": 9999,
                   "min_households": 200,
-                  "max_days_ago": 14,
+                  "max_days_ago": 30,
                   "rent": {
                       "min_deposit": 0,
                       "max_deposit": 50000,

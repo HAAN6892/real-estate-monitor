@@ -439,7 +439,7 @@ def fetch_rent_trades(api_key, region_code, deal_ymd):
 def filter_trades(trades, filters):
     filtered = []
     today = datetime.now().date()
-    max_days = filters.get("max_days_ago", 14)
+    max_days = filters.get("max_days_ago", 30)
 
     for t in trades:
         try:
@@ -851,8 +851,8 @@ def main():
 
     KST = timezone(timedelta(hours=9))
     now = datetime.now(KST)
-    months = [now.strftime("%Y%m"), (now - timedelta(days=30)).strftime("%Y%m")]
-    months = list(dict.fromkeys(months))
+    prev_month = (now.replace(day=1) - timedelta(days=1))
+    months = [prev_month.strftime("%Y%m"), now.strftime("%Y%m")]
 
     total_new_trade = 0
     total_new_rent = 0
