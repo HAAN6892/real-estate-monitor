@@ -1,22 +1,11 @@
 // ─── 지역별 규제등급 매핑 (2025.10.15 대책 기준) ───
 const REGULATION_MAP={
-  // 투기과열지구 (LTV 40%) — 서울 전역은 fallback 처리
+  // 서울 투기과열지구 (LTV 40%) — 서울 전역은 fallback 처리
   '서울 강남구':{zone:'투기과열',ltv:40},'서울 서초구':{zone:'투기과열',ltv:40},'서울 송파구':{zone:'투기과열',ltv:40},
-  '서울 강동구':{zone:'투기과열',ltv:40},'서울 동작구':{zone:'투기과열',ltv:40},'서울 관악구':{zone:'투기과열',ltv:40},
-  '서울 금천구':{zone:'투기과열',ltv:40},'서울 성북구':{zone:'투기과열',ltv:40},'서울 강서구':{zone:'투기과열',ltv:40},
-  '서울 노원구':{zone:'투기과열',ltv:40},'서울 도봉구':{zone:'투기과열',ltv:40},'서울 영등포구':{zone:'투기과열',ltv:40},
-  '서울 구로구':{zone:'투기과열',ltv:40},'서울 용산구':{zone:'투기과열',ltv:40},
-  // 경기 투기과열
-  '경기 과천시':{zone:'투기과열',ltv:40},'경기 광명시':{zone:'투기과열',ltv:40},
-  '성남 수정구':{zone:'투기과열',ltv:40},'성남 중원구':{zone:'투기과열',ltv:40},'성남 분당구':{zone:'투기과열',ltv:40},
-  '수원 영통구':{zone:'투기과열',ltv:40},'수원 장안구':{zone:'투기과열',ltv:40},'수원 팔달구':{zone:'투기과열',ltv:40},
-  '경기 안양 동안구':{zone:'투기과열',ltv:40},'용인 수지구':{zone:'투기과열',ltv:40},
-  '경기 의왕시':{zone:'투기과열',ltv:40},'경기 하남시':{zone:'투기과열',ltv:40},
-  // 비규제지역 (LTV 70%)
-  '경기 안양 만안구':{zone:'비규제',ltv:70},'용인 기흥구':{zone:'비규제',ltv:70},
-  '경기 광주시':{zone:'비규제',ltv:70},'경기 구리시':{zone:'비규제',ltv:70},'경기 군포시':{zone:'비규제',ltv:70},
-  '부천 원미구':{zone:'비규제',ltv:70},'부천 소사구':{zone:'비규제',ltv:70},'부천 오정구':{zone:'비규제',ltv:70},'고양 일산동구':{zone:'비규제',ltv:70},'수원 권선구':{zone:'비규제',ltv:70},
-  '인천 서구':{zone:'비규제',ltv:70},'인천 남동구':{zone:'비규제',ltv:70}
+  '서울 강동구':{zone:'투기과열',ltv:40},'서울 관악구':{zone:'투기과열',ltv:40},'서울 금천구':{zone:'투기과열',ltv:40},
+  '서울 노원구':{zone:'투기과열',ltv:40},'서울 도봉구':{zone:'투기과열',ltv:40},
+  '서울 강북구':{zone:'투기과열',ltv:40},'서울 중랑구':{zone:'투기과열',ltv:40},
+  '서울 광진구':{zone:'투기과열',ltv:40},'서울 동대문구':{zone:'투기과열',ltv:40},'서울 양천구':{zone:'투기과열',ltv:40},
 };
 function getRegulation(region){
   if(!region)return{zone:'비규제',ltv:70};
@@ -25,7 +14,26 @@ function getRegulation(region){
   return{zone:'비규제',ltv:70};
 }
 
-let currentMode='buy',isMarried=true,PROPERTIES=[],RENT_PROPERTIES=[],DATA_LOADED=false,RENT_DATA_LOADED=false,DATA_UPDATED_AT='',RENT_UPDATED_AT='',currentSort='value',rentSort='value',searchQuery='',regionFilterVal='',verdictFilterVal='',rentTypeFilterVal='',rentVerdictFilterVal='',areaUnit='py',pageSize=20,currentPage=1,rentPage=1,currentView='card';
+// ─── 구별 색상 (지역 배지 · 지도 핀) ───
+const DISTRICT_COLORS={
+  '서울 노원구':'#3B82F6','서울 도봉구':'#8B5CF6','서울 강북구':'#EC4899',
+  '서울 중랑구':'#F59E0B','서울 광진구':'#10B981','서울 동대문구':'#6366F1',
+  '서울 양천구':'#0EA5E9','서울 관악구':'#F97316','서울 금천구':'#A855F7',
+  '서울 강동구':'#EF4444',
+  '서울 강남구':'#6B7280','서울 서초구':'#6B7280','서울 송파구':'#6B7280',
+};
+const DISTRICT_GROUPS={
+  '동북권':['서울 노원구','서울 도봉구','서울 강북구','서울 중랑구','서울 광진구','서울 동대문구'],
+  '남서권':['서울 양천구','서울 관악구','서울 금천구'],
+};
+function getDistrictColor(region){return DISTRICT_COLORS[region]||'#9CA3AF';}
+function districtBadge(region){
+  const color=getDistrictColor(region);
+  const short=(region||'').replace(/^서울 /,'').replace(/^경기 /,'');
+  return '<span class="dc-badge" style="background:'+color+'">'+short+'</span>';
+}
+
+let currentMode='buy',isMarried=true,PROPERTIES=[],RENT_PROPERTIES=[],DATA_LOADED=false,RENT_DATA_LOADED=false,DATA_UPDATED_AT='',RENT_UPDATED_AT='',currentSort='value',rentSort='value',searchQuery='',regionFilterVal='',verdictFilterVal='',rentTypeFilterVal='',rentVerdictFilterVal='',districtFilterVal='',areaUnit='py',pageSize=20,currentPage=1,rentPage=1,currentView='card';
 let markerMap={},filteredBuyProps=[],filteredRentProps=[],hlTimer=null,COMMUTE_DATA={};
 // ─── 북마크 ───
 let BOOKMARKS=new Set(JSON.parse(localStorage.getItem('bookmarks')||'[]'));
@@ -163,9 +171,15 @@ function setRentVerdictFilter(btn){_focusedPropId=null;document.querySelectorAll
 function setView(v){_focusedPropId=null;currentView=v;document.querySelectorAll('.view-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));update();}
 function onBuyFilterChange(){_focusedPropId=null;currentPage=1;update();}
 function onRentFilterChange(){_focusedPropId=null;rentPage=1;update();}
+function setDistrictFilter(btn){
+  document.querySelectorAll('#districtChips .dc-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  districtFilterVal=btn.dataset.val;
+  _focusedPropId=null;currentPage=1;update();
+}
 function highlightSelects(){
   document.querySelectorAll('.filter-bar .filter-select').forEach(s=>{s.classList.toggle('active',s.selectedIndex>0);});
-  const buyActive=['regionFilter','areaFilter','buyVerdictSelect','buyBuiltYearFilter','buyCommuteFilter'].some(id=>{const el=document.getElementById(id);return el&&el.selectedIndex>0;})||document.getElementById('searchInput').value!=='';
+  const buyActive=['regionFilter','areaFilter','buyVerdictSelect','buyBuiltYearFilter','buyCommuteFilter'].some(id=>{const el=document.getElementById(id);return el&&el.selectedIndex>0;})||document.getElementById('searchInput').value!==''||districtFilterVal!=='';
   const rentActive=['rentRegionFilter','rentAreaFilter','rentVerdictSelect','rentTypeSelect','rentBuiltYearFilter','rentCommuteFilter'].some(id=>{const el=document.getElementById(id);return el&&el.selectedIndex>0;})||document.getElementById('rentSearchInput').value!=='';
   const bb=document.getElementById('buyResetBtn'),rb=document.getElementById('rentResetBtn');
   if(bb)bb.style.display=buyActive?'':'none';
@@ -174,6 +188,8 @@ function highlightSelects(){
 function resetBuyFilters(){
   ['regionFilter','areaFilter','buyVerdictSelect','buyBuiltYearFilter','buyCommuteFilter','buySortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
   const bb=document.getElementById('buyBmOnly');if(bb)bb.checked=false;
+  districtFilterVal='';
+  document.querySelectorAll('#districtChips .dc-chip').forEach((b,i)=>{b.classList.toggle('active',i===0);});
   document.getElementById('searchInput').value='';_focusedPropId=null;currentPage=1;update();
 }
 function resetRentFilters(){
@@ -227,7 +243,7 @@ function renderBuyCards(items,eq,mr){
     const card=document.createElement('div');card.className='prop-card pc-compact';card.dataset.propId=getPropId(p);
     card.addEventListener('mouseenter',()=>bounceMarker(getMarkerKey(p)));card.addEventListener('mouseleave',()=>stopBounce());
     const regBadge=p.regZone==='투기과열'?'<span class="tag tag-reg tag-reg-hot">투기과열 LTV'+p.pLTV+'%</span>':'<span class="tag tag-reg tag-reg-free">비규제 LTV'+p.pLTV+'%</span>';
-    card.innerHTML='<div class="pc-line">'+bmBtn(p)+'<span class="pc-badge-sm '+bc+'">'+p.verdict+'</span><span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span>'+regBadge+'</div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">매매 '+fmtShort(p.price)+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
+    card.innerHTML='<div class="pc-line">'+bmBtn(p)+'<span class="pc-badge-sm '+bc+'">'+p.verdict+'</span>'+districtBadge(p.region)+'<span class="pc-cname">'+p.name+'</span><span class="pc-cregion">'+p.region+'</span>'+regBadge+'</div><div class="pc-line"><span class="pc-cmeta">'+meta.join(' · ')+'</span></div><div class="pc-line"><span class="pc-cprice">매매 '+fmtShort(p.price)+'</span><span class="pc-cdetails">'+details+'</span></div><div class="pc-cfoot"><span>'+tBtn+'</span>'+commuteHtml(p)+'<div class="pc-links">'+makeLinks(p)+'</div></div>'+(hH?'<div class="pc-history">'+hH+'</div>':'');
     cg.appendChild(card);
   });
 }
@@ -397,6 +413,7 @@ function updatePropTable(eq,fL,eLTV,rate,term,mr){
   const autoLtv=document.getElementById('autoLtvCheckbox')?.checked!==false;
   const wv=f.map(p=>{const reg=getRegulation(p.region);const pL=autoLtv?reg.ltv:(p.regulated?Math.min(eLTV,50):eLTV);const pLn=Math.min(Math.floor(p.price*pL/100),fL),pEq=p.price-pLn,pM=Math.floor(monthlyPayment(pLn,rate,term));let v,vt;if(pEq>eq){v='자금부족';vt='tag-danger';}else if(pM>mr){v='상환초과';vt='tag-danger';}else if(pM>mr*0.85){v='빠듯함';vt='tag-warn';}else{v='매수가능';vt='tag-ok';}return{...p,pLTV:pL,pLoan:pLn,pEquityNeeded:pEq,pMonthly:pM,verdict:v,verdictTag:vt,regZone:reg.zone};});
   let filtered=vv?wv.filter(p=>p.verdict===vv):wv;
+  if(districtFilterVal){if(DISTRICT_GROUPS[districtFilterVal]){filtered=filtered.filter(p=>DISTRICT_GROUPS[districtFilterVal].includes(p.region));}else{filtered=filtered.filter(p=>p.region===districtFilterVal);}}
   if(mapBoundsFilter&&mapBounds)filtered=filtered.filter(p=>inBounds(p));
   const bmOnly=document.getElementById('buyBmOnly')?.checked;if(bmOnly)filtered=filtered.filter(p=>isBookmarked(getPropId(p)));
   const vo={'매수가능':0,'빠듯함':1,'상환초과':2,'자금부족':2};
@@ -679,7 +696,7 @@ function updateMapMarkers(){
     const mKey=getMarkerKey(p);if(seen[mKey])return;seen[mKey]=true;
     const verdict=currentMode==='buy'?(p.verdict==='매수가능'?'ok':p.verdict==='빠듯함'?'warn':'danger'):(p.verdict==='가능'?'ok':p.verdict==='빠듯함'?'warn':'danger');
     if(mapFilterVal&&verdict!==mapFilterVal)return;
-    const color=MARKER_COLORS[verdict];const bm=isBookmarked(getPropId(p));
+    const color=getDistrictColor(p.region);const bm=isBookmarked(getPropId(p));
     const img=new kakao.maps.MarkerImage(getMarkerSVG(color,bm),new kakao.maps.Size(24,32));
     const marker=new kakao.maps.Marker({map:kakaoMap,position:new kakao.maps.LatLng(p.lat,p.lon),image:img});
     const priceStr=currentMode==='buy'?fmtShort(p.price):fmtShort(p.deposit);

@@ -188,7 +188,19 @@ td{padding:10px;border-top:1px solid var(--border);vertical-align:top}tr:hover t
 .trade-date{color:var(--text-dim);min-width:75px}.trade-price{font-family:var(--mono);font-weight:600;min-width:85px}.trade-floor{color:var(--text-mid);min-width:30px}
 .trade-delta{font-family:var(--mono);font-size:10px;min-width:60px}.trade-delta.up{color:var(--red)}.trade-delta.down{color:var(--green)}.trade-delta.same{color:var(--text-dim)}
 .expand-btn{cursor:pointer;color:var(--mode-accent);font-size:10px;background:none;border:none;padding:0;font-family:'Noto Sans KR',sans-serif}.expand-btn:hover{opacity:0.8}
-.filter-bar{display:flex;align-items:center;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+/* 구 배지 (카드 단지명 앞) */
+.dc-badge{display:inline-block;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:9px;margin-right:3px;vertical-align:middle;line-height:1.5;white-space:nowrap;flex-shrink:0}
+/* 구 필터 바 */
+.district-filter-bar{display:flex;align-items:center;gap:4px;padding:5px 12px 8px;flex-wrap:wrap}
+.df-label{font-size:10px;color:var(--text-dim);font-weight:600;margin-right:2px;white-space:nowrap}
+.df-sep{color:#d1d5db;font-size:11px;margin:0 1px;user-select:none}
+.dc-chip{border:none;border-radius:12px;padding:3px 9px;font-size:11px;font-weight:600;cursor:pointer;background:#e5e7eb;color:#374151;transition:all 0.15s;line-height:1.4}
+.dc-chip.active{background:var(--mode-accent);color:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.15)}
+.dc-chip.dc-group{background:#dbeafe;color:#1d4ed8}
+.dc-chip.dc-group.active{background:#2563eb;color:#fff}
+.dc-chip.dc-gu{background:var(--dc,#9CA3AF);color:#fff;opacity:0.55}
+.dc-chip.dc-gu.active{opacity:1;box-shadow:0 0 0 2px var(--dc,#9CA3AF),0 1px 4px rgba(0,0,0,0.15)}
+.filter-bar{display:flex;align-items:center;gap:6px;margin-bottom:0;flex-wrap:wrap}
 .filter-bar .search-input{min-width:100px;flex:0 1 160px;padding:7px 10px;font-size:12px}
 .filter-bar-divider{width:1px;height:24px;background:var(--border);flex-shrink:0;margin:0 2px}
 .filter-select.active{border-color:var(--mode-accent);background:var(--mode-accent);color:#fff}
