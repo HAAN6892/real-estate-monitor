@@ -1,0 +1,2524 @@
+{
+  "updated_at": "2026-03-08T01:03:52",
+  "watchlist": [
+    {
+      "id": "nowon-forena",
+      "name": "포레나노원",
+      "gu": "노원구",
+      "dong": "상계동",
+      "area_target": 84,
+      "transactions": [
+        {
+          "date": "2026-02",
+          "price": 124500,
+          "floor": 7,
+          "area": 84.9084,
+          "deal_day": "12"
+        },
+        {
+          "date": "2026-02",
+          "price": 124500,
+          "floor": 26,
+          "area": 84.9014,
+          "deal_day": "10"
+        },
+        {
+          "date": "2025-12",
+          "price": 120000,
+          "floor": 10,
+          "area": 84.9014,
+          "deal_day": "10"
+        },
+        {
+          "date": "2025-12",
+          "price": 124000,
+          "floor": 26,
+          "area": 84.9084,
+          "deal_day": "09"
+        },
+        {
+          "date": "2025-12",
+          "price": 123500,
+          "floor": 18,
+          "area": 84.9728,
+          "deal_day": "06"
+        },
+        {
+          "date": "2025-11",
+          "price": 120000,
+          "floor": 5,
+          "area": 84.9014,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-10",
+          "price": 119800,
+          "floor": 11,
+          "area": 84.9014,
+          "deal_day": "17"
+        },
+        {
+          "date": "2025-10",
+          "price": 122000,
+          "floor": 25,
+          "area": 84.9728,
+          "deal_day": "16"
+        },
+        {
+          "date": "2025-10",
+          "price": 119000,
+          "floor": 10,
+          "area": 84.9014,
+          "deal_day": "14"
+        },
+        {
+          "date": "2025-10",
+          "price": 121500,
+          "floor": 19,
+          "area": 84.9014,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-10",
+          "price": 115000,
+          "floor": 2,
+          "area": 84.9014,
+          "deal_day": "07"
+        },
+        {
+          "date": "2025-09",
+          "price": 113000,
+          "floor": 12,
+          "area": 84.9728,
+          "deal_day": "23"
+        },
+        {
+          "date": "2025-09",
+          "price": 112000,
+          "floor": 8,
+          "area": 84.9014,
+          "deal_day": "02"
+        },
+        {
+          "date": "2025-08",
+          "price": 112700,
+          "floor": 15,
+          "area": 84.9014,
+          "deal_day": "27"
+        },
+        {
+          "date": "2025-08",
+          "price": 114000,
+          "floor": 9,
+          "area": 84.9728,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-08",
+          "price": 114000,
+          "floor": 15,
+          "area": 84.9014,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-08",
+          "price": 118500,
+          "floor": 3,
+          "area": 84.9728,
+          "deal_day": "11"
+        },
+        {
+          "date": "2025-08",
+          "price": 111000,
+          "floor": 4,
+          "area": 84.9014,
+          "deal_day": "09"
+        },
+        {
+          "date": "2025-08",
+          "price": 115000,
+          "floor": 24,
+          "area": 84.9014,
+          "deal_day": "07"
+        },
+        {
+          "date": "2025-08",
+          "price": 115000,
+          "floor": 20,
+          "area": 84.9014,
+          "deal_day": "04"
+        },
+        {
+          "date": "2025-08",
+          "price": 119000,
+          "floor": 14,
+          "area": 84.9728,
+          "deal_day": "04"
+        },
+        {
+          "date": "2025-06",
+          "price": 113000,
+          "floor": 29,
+          "area": 84.9014,
+          "deal_day": "19"
+        },
+        {
+          "date": "2025-04",
+          "price": 110000,
+          "floor": 6,
+          "area": 84.9728,
+          "deal_day": "23"
+        },
+        {
+          "date": "2025-04",
+          "price": 109000,
+          "floor": 4,
+          "area": 84.9084,
+          "deal_day": "08"
+        }
+      ]
+    },
+    {
+      "id": "nowon-lotte",
+      "name": "노원롯데캐슬시그니처",
+      "gu": "노원구",
+      "dong": "상계동",
+      "area_target": 84,
+      "transactions": [
+        {
+          "date": "2026-02",
+          "price": 107000,
+          "floor": 9,
+          "area": 84.999,
+          "deal_day": "21"
+        },
+        {
+          "date": "2026-02",
+          "price": 112300,
+          "floor": 3,
+          "area": 84.999,
+          "deal_day": "07"
+        },
+        {
+          "date": "2026-01",
+          "price": 109000,
+          "floor": 21,
+          "area": 84.999,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-12",
+          "price": 116500,
+          "floor": 18,
+          "area": 84.997,
+          "deal_day": "26"
+        },
+        {
+          "date": "2025-12",
+          "price": 113000,
+          "floor": 15,
+          "area": 84.999,
+          "deal_day": "10"
+        },
+        {
+          "date": "2025-11",
+          "price": 113000,
+          "floor": 14,
+          "area": 84.999,
+          "deal_day": "22"
+        },
+        {
+          "date": "2025-11",
+          "price": 113000,
+          "floor": 17,
+          "area": 84.999,
+          "deal_day": "20"
+        },
+        {
+          "date": "2025-10",
+          "price": 126000,
+          "floor": 20,
+          "area": 84.999,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-10",
+          "price": 105000,
+          "floor": 10,
+          "area": 84.999,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-10",
+          "price": 104000,
+          "floor": 20,
+          "area": 84.999,
+          "deal_day": "16"
+        },
+        {
+          "date": "2025-10",
+          "price": 114700,
+          "floor": 12,
+          "area": 84.999,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-10",
+          "price": 107000,
+          "floor": 15,
+          "area": 84.999,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-10",
+          "price": 108700,
+          "floor": 13,
+          "area": 84.999,
+          "deal_day": "03"
+        },
+        {
+          "date": "2025-07",
+          "price": 107000,
+          "floor": 3,
+          "area": 84.997,
+          "deal_day": "30"
+        },
+        {
+          "date": "2025-07",
+          "price": 105000,
+          "floor": 9,
+          "area": 84.997,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-06",
+          "price": 100000,
+          "floor": 2,
+          "area": 84.997,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-06",
+          "price": 104000,
+          "floor": 9,
+          "area": 84.999,
+          "deal_day": "20"
+        },
+        {
+          "date": "2025-06",
+          "price": 104500,
+          "floor": 6,
+          "area": 84.999,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-06",
+          "price": 104300,
+          "floor": 12,
+          "area": 84.999,
+          "deal_day": "02"
+        },
+        {
+          "date": "2025-06",
+          "price": 127000,
+          "floor": 23,
+          "area": 84.999,
+          "deal_day": "02"
+        },
+        {
+          "date": "2025-04",
+          "price": 105000,
+          "floor": 10,
+          "area": 84.999,
+          "deal_day": "07"
+        }
+      ]
+    },
+    {
+      "id": "nowon-mujigae",
+      "name": "중계무지개",
+      "gu": "노원구",
+      "dong": "중계동",
+      "area_target": 84,
+      "transactions": []
+    },
+    {
+      "id": "dobong-dongah",
+      "name": "동아청솔",
+      "gu": "도봉구",
+      "dong": "창동",
+      "area_target": 84,
+      "transactions": [
+        {
+          "date": "2026-02",
+          "price": 104400,
+          "floor": 22,
+          "area": 84.97,
+          "deal_day": "27"
+        },
+        {
+          "date": "2026-02",
+          "price": 98000,
+          "floor": 9,
+          "area": 84.97,
+          "deal_day": "14"
+        },
+        {
+          "date": "2026-01",
+          "price": 103000,
+          "floor": 19,
+          "area": 84.97,
+          "deal_day": "02"
+        },
+        {
+          "date": "2025-12",
+          "price": 103000,
+          "floor": 9,
+          "area": 84.97,
+          "deal_day": "24"
+        },
+        {
+          "date": "2025-12",
+          "price": 102500,
+          "floor": 20,
+          "area": 84.97,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-11",
+          "price": 99500,
+          "floor": 4,
+          "area": 84.97,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-11",
+          "price": 99000,
+          "floor": 2,
+          "area": 84.97,
+          "deal_day": "19"
+        },
+        {
+          "date": "2025-11",
+          "price": 96700,
+          "floor": 6,
+          "area": 84.97,
+          "deal_day": "19"
+        },
+        {
+          "date": "2025-10",
+          "price": 95700,
+          "floor": 6,
+          "area": 84.97,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-10",
+          "price": 100000,
+          "floor": 5,
+          "area": 84.97,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-10",
+          "price": 92200,
+          "floor": 10,
+          "area": 88.23,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-10",
+          "price": 90000,
+          "floor": 15,
+          "area": 88.23,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-09",
+          "price": 87000,
+          "floor": 4,
+          "area": 84.97,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-09",
+          "price": 94000,
+          "floor": 4,
+          "area": 84.97,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-09",
+          "price": 105000,
+          "floor": 20,
+          "area": 84.97,
+          "deal_day": "06"
+        },
+        {
+          "date": "2025-08",
+          "price": 68000,
+          "floor": 7,
+          "area": 84.97,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-07",
+          "price": 102700,
+          "floor": 6,
+          "area": 84.97,
+          "deal_day": "19"
+        },
+        {
+          "date": "2025-06",
+          "price": 98500,
+          "floor": 17,
+          "area": 84.97,
+          "deal_day": "27"
+        },
+        {
+          "date": "2025-06",
+          "price": 82500,
+          "floor": 4,
+          "area": 88.23,
+          "deal_day": "25"
+        },
+        {
+          "date": "2025-06",
+          "price": 102600,
+          "floor": 16,
+          "area": 84.97,
+          "deal_day": "17"
+        },
+        {
+          "date": "2025-06",
+          "price": 71000,
+          "floor": 21,
+          "area": 84.97,
+          "deal_day": "17"
+        },
+        {
+          "date": "2025-06",
+          "price": 96800,
+          "floor": 6,
+          "area": 84.97,
+          "deal_day": "16"
+        },
+        {
+          "date": "2025-05",
+          "price": 91500,
+          "floor": 4,
+          "area": 84.97,
+          "deal_day": "23"
+        },
+        {
+          "date": "2025-05",
+          "price": 89000,
+          "floor": 8,
+          "area": 84.97,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-05",
+          "price": 94000,
+          "floor": 4,
+          "area": 84.97,
+          "deal_day": "19"
+        },
+        {
+          "date": "2025-04",
+          "price": 99000,
+          "floor": 12,
+          "area": 84.97,
+          "deal_day": "04"
+        }
+      ]
+    },
+    {
+      "id": "dobong-raemian",
+      "name": "삼성래미안",
+      "gu": "도봉구",
+      "dong": "창동",
+      "area_target": 84,
+      "transactions": [
+        {
+          "date": "2026-02",
+          "price": 92800,
+          "floor": 12,
+          "area": 84.87,
+          "deal_day": "07"
+        },
+        {
+          "date": "2026-01",
+          "price": 86200,
+          "floor": 7,
+          "area": 84.87,
+          "deal_day": "30"
+        },
+        {
+          "date": "2026-01",
+          "price": 84000,
+          "floor": 11,
+          "area": 84.87,
+          "deal_day": "23"
+        },
+        {
+          "date": "2026-01",
+          "price": 89500,
+          "floor": 9,
+          "area": 84.87,
+          "deal_day": "23"
+        },
+        {
+          "date": "2026-01",
+          "price": 86500,
+          "floor": 8,
+          "area": 84.87,
+          "deal_day": "21"
+        },
+        {
+          "date": "2026-01",
+          "price": 81750,
+          "floor": 13,
+          "area": 84.87,
+          "deal_day": "17"
+        },
+        {
+          "date": "2026-01",
+          "price": 79500,
+          "floor": 1,
+          "area": 84.87,
+          "deal_day": "15"
+        },
+        {
+          "date": "2026-01",
+          "price": 89000,
+          "floor": 12,
+          "area": 84.87,
+          "deal_day": "14"
+        },
+        {
+          "date": "2026-01",
+          "price": 84700,
+          "floor": 7,
+          "area": 84.87,
+          "deal_day": "10"
+        },
+        {
+          "date": "2025-11",
+          "price": 81000,
+          "floor": 1,
+          "area": 84.87,
+          "deal_day": "29"
+        },
+        {
+          "date": "2025-10",
+          "price": 80000,
+          "floor": 4,
+          "area": 84.87,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-10",
+          "price": 80000,
+          "floor": 10,
+          "area": 84.937,
+          "deal_day": "14"
+        },
+        {
+          "date": "2025-10",
+          "price": 81500,
+          "floor": 12,
+          "area": 84.87,
+          "deal_day": "02"
+        },
+        {
+          "date": "2025-09",
+          "price": 82000,
+          "floor": 4,
+          "area": 84.87,
+          "deal_day": "26"
+        },
+        {
+          "date": "2025-09",
+          "price": 82500,
+          "floor": 11,
+          "area": 84.87,
+          "deal_day": "26"
+        },
+        {
+          "date": "2025-09",
+          "price": 79200,
+          "floor": 13,
+          "area": 84.75,
+          "deal_day": "24"
+        },
+        {
+          "date": "2025-09",
+          "price": 82000,
+          "floor": 17,
+          "area": 84.87,
+          "deal_day": "22"
+        },
+        {
+          "date": "2025-09",
+          "price": 82000,
+          "floor": 20,
+          "area": 84.87,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-09",
+          "price": 80500,
+          "floor": 12,
+          "area": 84.75,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-09",
+          "price": 77500,
+          "floor": 4,
+          "area": 84.87,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-09",
+          "price": 79000,
+          "floor": 6,
+          "area": 84.87,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-09",
+          "price": 81000,
+          "floor": 6,
+          "area": 84.87,
+          "deal_day": "12"
+        },
+        {
+          "date": "2025-08",
+          "price": 82400,
+          "floor": 7,
+          "area": 84.87,
+          "deal_day": "30"
+        },
+        {
+          "date": "2025-08",
+          "price": 81000,
+          "floor": 7,
+          "area": 84.87,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-08",
+          "price": 79000,
+          "floor": 17,
+          "area": 84.75,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-08",
+          "price": 86000,
+          "floor": 16,
+          "area": 84.87,
+          "deal_day": "12"
+        },
+        {
+          "date": "2025-07",
+          "price": 80000,
+          "floor": 19,
+          "area": 84.87,
+          "deal_day": "24"
+        },
+        {
+          "date": "2025-07",
+          "price": 73000,
+          "floor": 9,
+          "area": 84.9383,
+          "deal_day": "17"
+        },
+        {
+          "date": "2025-07",
+          "price": 72000,
+          "floor": 2,
+          "area": 84.87,
+          "deal_day": "14"
+        },
+        {
+          "date": "2025-07",
+          "price": 95000,
+          "floor": 8,
+          "area": 84.937,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-07",
+          "price": 82500,
+          "floor": 13,
+          "area": 84.937,
+          "deal_day": "03"
+        },
+        {
+          "date": "2025-06",
+          "price": 82700,
+          "floor": 18,
+          "area": 84.87,
+          "deal_day": "27"
+        },
+        {
+          "date": "2025-06",
+          "price": 77500,
+          "floor": 4,
+          "area": 84.937,
+          "deal_day": "25"
+        },
+        {
+          "date": "2025-06",
+          "price": 87900,
+          "floor": 17,
+          "area": 84.937,
+          "deal_day": "20"
+        },
+        {
+          "date": "2025-06",
+          "price": 90000,
+          "floor": 9,
+          "area": 84.87,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-06",
+          "price": 81000,
+          "floor": 2,
+          "area": 84.87,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-06",
+          "price": 81000,
+          "floor": 11,
+          "area": 84.87,
+          "deal_day": "07"
+        },
+        {
+          "date": "2025-06",
+          "price": 88000,
+          "floor": 19,
+          "area": 84.937,
+          "deal_day": "07"
+        },
+        {
+          "date": "2025-06",
+          "price": 84500,
+          "floor": 19,
+          "area": 84.937,
+          "deal_day": "02"
+        },
+        {
+          "date": "2025-05",
+          "price": 79500,
+          "floor": 9,
+          "area": 84.87,
+          "deal_day": "19"
+        },
+        {
+          "date": "2025-05",
+          "price": 81500,
+          "floor": 2,
+          "area": 84.937,
+          "deal_day": "17"
+        },
+        {
+          "date": "2025-04",
+          "price": 80500,
+          "floor": 18,
+          "area": 84.87,
+          "deal_day": "27"
+        },
+        {
+          "date": "2025-04",
+          "price": 82000,
+          "floor": 8,
+          "area": 84.937,
+          "deal_day": "17"
+        },
+        {
+          "date": "2025-04",
+          "price": 88000,
+          "floor": 22,
+          "area": 84.937,
+          "deal_day": "03"
+        }
+      ]
+    },
+    {
+      "id": "gangbuk-sk",
+      "name": "SK북한산시티",
+      "gu": "강북구",
+      "dong": "미아동",
+      "area_target": 84,
+      "transactions": []
+    },
+    {
+      "id": "gangbuk-ipark",
+      "name": "꿈의숲아이파크",
+      "gu": "강북구",
+      "dong": "미아동",
+      "area_target": 59,
+      "transactions": []
+    },
+    {
+      "id": "jungrang-ipark",
+      "name": "사가정센트럴아이파크",
+      "gu": "중랑구",
+      "dong": "면목동",
+      "area_target": 84,
+      "transactions": [
+        {
+          "date": "2026-02",
+          "price": 139500,
+          "floor": 26,
+          "area": 84.87,
+          "deal_day": "11"
+        },
+        {
+          "date": "2026-02",
+          "price": 142700,
+          "floor": 25,
+          "area": 84.956,
+          "deal_day": "10"
+        },
+        {
+          "date": "2026-02",
+          "price": 140000,
+          "floor": 21,
+          "area": 84.87,
+          "deal_day": "07"
+        },
+        {
+          "date": "2026-02",
+          "price": 140700,
+          "floor": 19,
+          "area": 84.87,
+          "deal_day": "07"
+        },
+        {
+          "date": "2026-02",
+          "price": 138000,
+          "floor": 25,
+          "area": 84.87,
+          "deal_day": "02"
+        },
+        {
+          "date": "2026-01",
+          "price": 132500,
+          "floor": 7,
+          "area": 84.87,
+          "deal_day": "30"
+        },
+        {
+          "date": "2026-01",
+          "price": 129000,
+          "floor": 16,
+          "area": 84.956,
+          "deal_day": "24"
+        },
+        {
+          "date": "2026-01",
+          "price": 140000,
+          "floor": 28,
+          "area": 84.87,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-12",
+          "price": 131000,
+          "floor": 14,
+          "area": 84.956,
+          "deal_day": "29"
+        },
+        {
+          "date": "2025-12",
+          "price": 132500,
+          "floor": 7,
+          "area": 84.87,
+          "deal_day": "27"
+        },
+        {
+          "date": "2025-12",
+          "price": 128000,
+          "floor": 12,
+          "area": 84.87,
+          "deal_day": "24"
+        },
+        {
+          "date": "2025-12",
+          "price": 134000,
+          "floor": 10,
+          "area": 84.87,
+          "deal_day": "11"
+        },
+        {
+          "date": "2025-12",
+          "price": 128000,
+          "floor": 15,
+          "area": 84.87,
+          "deal_day": "05"
+        },
+        {
+          "date": "2025-12",
+          "price": 128500,
+          "floor": 8,
+          "area": 84.956,
+          "deal_day": "04"
+        },
+        {
+          "date": "2025-12",
+          "price": 125500,
+          "floor": 17,
+          "area": 84.87,
+          "deal_day": "04"
+        },
+        {
+          "date": "2025-12",
+          "price": 118000,
+          "floor": 21,
+          "area": 84.87,
+          "deal_day": "02"
+        },
+        {
+          "date": "2025-12",
+          "price": 129000,
+          "floor": 14,
+          "area": 84.87,
+          "deal_day": "01"
+        },
+        {
+          "date": "2025-11",
+          "price": 125500,
+          "floor": 22,
+          "area": 84.87,
+          "deal_day": "26"
+        },
+        {
+          "date": "2025-11",
+          "price": 128000,
+          "floor": 14,
+          "area": 84.87,
+          "deal_day": "19"
+        },
+        {
+          "date": "2025-11",
+          "price": 122000,
+          "floor": 2,
+          "area": 84.87,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-11",
+          "price": 127000,
+          "floor": 13,
+          "area": 84.87,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-10",
+          "price": 119500,
+          "floor": 8,
+          "area": 84.87,
+          "deal_day": "19"
+        },
+        {
+          "date": "2025-10",
+          "price": 124000,
+          "floor": 21,
+          "area": 84.87,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-10",
+          "price": 122000,
+          "floor": 4,
+          "area": 84.87,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-10",
+          "price": 124000,
+          "floor": 17,
+          "area": 84.87,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-10",
+          "price": 125000,
+          "floor": 12,
+          "area": 84.87,
+          "deal_day": "17"
+        },
+        {
+          "date": "2025-10",
+          "price": 125000,
+          "floor": 18,
+          "area": 84.87,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-10",
+          "price": 128000,
+          "floor": 21,
+          "area": 84.956,
+          "deal_day": "14"
+        },
+        {
+          "date": "2025-10",
+          "price": 129000,
+          "floor": 28,
+          "area": 84.87,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-10",
+          "price": 125000,
+          "floor": 14,
+          "area": 84.956,
+          "deal_day": "11"
+        },
+        {
+          "date": "2025-10",
+          "price": 124500,
+          "floor": 13,
+          "area": 84.87,
+          "deal_day": "11"
+        },
+        {
+          "date": "2025-10",
+          "price": 127000,
+          "floor": 20,
+          "area": 84.87,
+          "deal_day": "11"
+        },
+        {
+          "date": "2025-10",
+          "price": 127000,
+          "floor": 21,
+          "area": 84.956,
+          "deal_day": "10"
+        },
+        {
+          "date": "2025-09",
+          "price": 124500,
+          "floor": 12,
+          "area": 84.956,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-09",
+          "price": 126000,
+          "floor": 13,
+          "area": 84.87,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-09",
+          "price": 122500,
+          "floor": 12,
+          "area": 84.87,
+          "deal_day": "10"
+        },
+        {
+          "date": "2025-08",
+          "price": 127000,
+          "floor": 29,
+          "area": 84.87,
+          "deal_day": "29"
+        },
+        {
+          "date": "2025-08",
+          "price": 122000,
+          "floor": 7,
+          "area": 84.956,
+          "deal_day": "27"
+        },
+        {
+          "date": "2025-08",
+          "price": 124000,
+          "floor": 7,
+          "area": 84.956,
+          "deal_day": "27"
+        },
+        {
+          "date": "2025-08",
+          "price": 124500,
+          "floor": 22,
+          "area": 84.956,
+          "deal_day": "22"
+        },
+        {
+          "date": "2025-07",
+          "price": 115000,
+          "floor": 3,
+          "area": 84.956,
+          "deal_day": "25"
+        },
+        {
+          "date": "2025-07",
+          "price": 123000,
+          "floor": 18,
+          "area": 84.87,
+          "deal_day": "05"
+        },
+        {
+          "date": "2025-07",
+          "price": 126000,
+          "floor": 17,
+          "area": 84.956,
+          "deal_day": "03"
+        },
+        {
+          "date": "2025-06",
+          "price": 123000,
+          "floor": 25,
+          "area": 84.87,
+          "deal_day": "29"
+        },
+        {
+          "date": "2025-06",
+          "price": 124500,
+          "floor": 22,
+          "area": 84.956,
+          "deal_day": "24"
+        },
+        {
+          "date": "2025-06",
+          "price": 126000,
+          "floor": 15,
+          "area": 84.87,
+          "deal_day": "22"
+        },
+        {
+          "date": "2025-06",
+          "price": 126000,
+          "floor": 11,
+          "area": 84.87,
+          "deal_day": "16"
+        },
+        {
+          "date": "2025-06",
+          "price": 116250,
+          "floor": 1,
+          "area": 84.87,
+          "deal_day": "16"
+        },
+        {
+          "date": "2025-06",
+          "price": 124000,
+          "floor": 9,
+          "area": 84.87,
+          "deal_day": "14"
+        },
+        {
+          "date": "2025-06",
+          "price": 126000,
+          "floor": 18,
+          "area": 84.87,
+          "deal_day": "11"
+        },
+        {
+          "date": "2025-06",
+          "price": 119000,
+          "floor": 8,
+          "area": 84.956,
+          "deal_day": "06"
+        },
+        {
+          "date": "2025-06",
+          "price": 123000,
+          "floor": 10,
+          "area": 84.956,
+          "deal_day": "03"
+        },
+        {
+          "date": "2025-05",
+          "price": 124300,
+          "floor": 19,
+          "area": 84.87,
+          "deal_day": "24"
+        },
+        {
+          "date": "2025-05",
+          "price": 120000,
+          "floor": 4,
+          "area": 84.87,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-05",
+          "price": 123000,
+          "floor": 9,
+          "area": 84.956,
+          "deal_day": "06"
+        },
+        {
+          "date": "2025-04",
+          "price": 128000,
+          "floor": 18,
+          "area": 84.87,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-04",
+          "price": 120000,
+          "floor": 19,
+          "area": 84.87,
+          "deal_day": "05"
+        }
+      ]
+    },
+    {
+      "id": "jungrang-hanshin",
+      "name": "한신",
+      "gu": "중랑구",
+      "dong": "망우동",
+      "area_target": 84,
+      "transactions": [
+        {
+          "date": "2026-02",
+          "price": 85000,
+          "floor": 23,
+          "area": 84.03,
+          "deal_day": "09"
+        },
+        {
+          "date": "2026-01",
+          "price": 72900,
+          "floor": 7,
+          "area": 84.51,
+          "deal_day": "31"
+        },
+        {
+          "date": "2026-01",
+          "price": 66000,
+          "floor": 5,
+          "area": 82.39,
+          "deal_day": "31"
+        },
+        {
+          "date": "2026-01",
+          "price": 66000,
+          "floor": 13,
+          "area": 84.92,
+          "deal_day": "30"
+        },
+        {
+          "date": "2026-01",
+          "price": 88500,
+          "floor": 13,
+          "area": 84.69,
+          "deal_day": "16"
+        },
+        {
+          "date": "2026-01",
+          "price": 86800,
+          "floor": 11,
+          "area": 84.03,
+          "deal_day": "14"
+        },
+        {
+          "date": "2026-01",
+          "price": 60000,
+          "floor": 7,
+          "area": 82.39,
+          "deal_day": "09"
+        },
+        {
+          "date": "2026-01",
+          "price": 78000,
+          "floor": 1,
+          "area": 84.87,
+          "deal_day": "08"
+        },
+        {
+          "date": "2026-01",
+          "price": 78700,
+          "floor": 17,
+          "area": 84.51,
+          "deal_day": "08"
+        },
+        {
+          "date": "2026-01",
+          "price": 83000,
+          "floor": 7,
+          "area": 84.03,
+          "deal_day": "03"
+        },
+        {
+          "date": "2025-12",
+          "price": 83000,
+          "floor": 3,
+          "area": 84.03,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-12",
+          "price": 64000,
+          "floor": 3,
+          "area": 84.92,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-11",
+          "price": 68000,
+          "floor": 13,
+          "area": 84.92,
+          "deal_day": "29"
+        },
+        {
+          "date": "2025-11",
+          "price": 59500,
+          "floor": 4,
+          "area": 82.39,
+          "deal_day": "22"
+        },
+        {
+          "date": "2025-11",
+          "price": 61000,
+          "floor": 2,
+          "area": 82.39,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-10",
+          "price": 69500,
+          "floor": 12,
+          "area": 82.39,
+          "deal_day": "19"
+        },
+        {
+          "date": "2025-10",
+          "price": 62500,
+          "floor": 6,
+          "area": 84.92,
+          "deal_day": "19"
+        },
+        {
+          "date": "2025-10",
+          "price": 84800,
+          "floor": 9,
+          "area": 84.03,
+          "deal_day": "19"
+        },
+        {
+          "date": "2025-10",
+          "price": 70000,
+          "floor": 3,
+          "area": 84.51,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-10",
+          "price": 85000,
+          "floor": 16,
+          "area": 84.03,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-10",
+          "price": 81000,
+          "floor": 8,
+          "area": 84.03,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-10",
+          "price": 82500,
+          "floor": 20,
+          "area": 84.03,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-10",
+          "price": 78500,
+          "floor": 6,
+          "area": 84.03,
+          "deal_day": "11"
+        },
+        {
+          "date": "2025-09",
+          "price": 82000,
+          "floor": 11,
+          "area": 84.03,
+          "deal_day": "20"
+        },
+        {
+          "date": "2025-09",
+          "price": 81000,
+          "floor": 24,
+          "area": 84.69,
+          "deal_day": "16"
+        },
+        {
+          "date": "2025-08",
+          "price": 78500,
+          "floor": 15,
+          "area": 84.87,
+          "deal_day": "24"
+        },
+        {
+          "date": "2025-07",
+          "price": 57000,
+          "floor": 1,
+          "area": 84.51,
+          "deal_day": "30"
+        },
+        {
+          "date": "2025-07",
+          "price": 79500,
+          "floor": 13,
+          "area": 84.03,
+          "deal_day": "12"
+        },
+        {
+          "date": "2025-07",
+          "price": 75000,
+          "floor": 22,
+          "area": 84.03,
+          "deal_day": "01"
+        },
+        {
+          "date": "2025-06",
+          "price": 78900,
+          "floor": 4,
+          "area": 84.2,
+          "deal_day": "29"
+        },
+        {
+          "date": "2025-06",
+          "price": 75000,
+          "floor": 14,
+          "area": 84.2,
+          "deal_day": "24"
+        },
+        {
+          "date": "2025-06",
+          "price": 67500,
+          "floor": 7,
+          "area": 84.92,
+          "deal_day": "24"
+        },
+        {
+          "date": "2025-06",
+          "price": 82800,
+          "floor": 3,
+          "area": 84.03,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-06",
+          "price": 76000,
+          "floor": 3,
+          "area": 84.69,
+          "deal_day": "06"
+        },
+        {
+          "date": "2025-06",
+          "price": 61900,
+          "floor": 7,
+          "area": 84.92,
+          "deal_day": "06"
+        },
+        {
+          "date": "2025-05",
+          "price": 60500,
+          "floor": 3,
+          "area": 84.92,
+          "deal_day": "01"
+        },
+        {
+          "date": "2025-04",
+          "price": 77800,
+          "floor": 23,
+          "area": 84.03,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-04",
+          "price": 72500,
+          "floor": 5,
+          "area": 84.51,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-04",
+          "price": 78800,
+          "floor": 6,
+          "area": 84.03,
+          "deal_day": "03"
+        }
+      ]
+    },
+    {
+      "id": "gwangjin-hyundai",
+      "name": "광장현대",
+      "gu": "광진구",
+      "dong": "광장동",
+      "area_target": 84,
+      "transactions": [
+        {
+          "date": "2025-10",
+          "price": 195000,
+          "floor": 5,
+          "area": 84.96,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-10",
+          "price": 198000,
+          "floor": 22,
+          "area": 84.96,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-10",
+          "price": 195000,
+          "floor": 6,
+          "area": 84.96,
+          "deal_day": "14"
+        },
+        {
+          "date": "2025-10",
+          "price": 203000,
+          "floor": 15,
+          "area": 84.96,
+          "deal_day": "12"
+        },
+        {
+          "date": "2025-10",
+          "price": 190300,
+          "floor": 14,
+          "area": 84.96,
+          "deal_day": "01"
+        },
+        {
+          "date": "2025-09",
+          "price": 179000,
+          "floor": 3,
+          "area": 84.96,
+          "deal_day": "17"
+        },
+        {
+          "date": "2025-06",
+          "price": 173000,
+          "floor": 1,
+          "area": 84.96,
+          "deal_day": "27"
+        },
+        {
+          "date": "2025-06",
+          "price": 150000,
+          "floor": 3,
+          "area": 84.96,
+          "deal_day": "05"
+        },
+        {
+          "date": "2025-05",
+          "price": 153500,
+          "floor": 13,
+          "area": 84.96,
+          "deal_day": "16"
+        },
+        {
+          "date": "2025-05",
+          "price": 160000,
+          "floor": 21,
+          "area": 84.96,
+          "deal_day": "02"
+        },
+        {
+          "date": "2025-05",
+          "price": 158000,
+          "floor": 19,
+          "area": 84.96,
+          "deal_day": "01"
+        },
+        {
+          "date": "2025-04",
+          "price": 153000,
+          "floor": 7,
+          "area": 84.96,
+          "deal_day": "25"
+        },
+        {
+          "date": "2025-04",
+          "price": 148500,
+          "floor": 16,
+          "area": 84.96,
+          "deal_day": "22"
+        }
+      ]
+    },
+    {
+      "id": "gwangjin-raemian",
+      "name": "래미안프리미어",
+      "gu": "광진구",
+      "dong": "자양동",
+      "area_target": 84,
+      "transactions": [
+        {
+          "date": "2026-01",
+          "price": 161000,
+          "floor": 24,
+          "area": 84.79,
+          "deal_day": "14"
+        },
+        {
+          "date": "2025-10",
+          "price": 154000,
+          "floor": 17,
+          "area": 84.79,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-10",
+          "price": 150000,
+          "floor": 8,
+          "area": 84.92,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-09",
+          "price": 158500,
+          "floor": 17,
+          "area": 84.92,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-06",
+          "price": 155000,
+          "floor": 18,
+          "area": 84.92,
+          "deal_day": "17"
+        },
+        {
+          "date": "2025-05",
+          "price": 151000,
+          "floor": 13,
+          "area": 84.92,
+          "deal_day": "09"
+        }
+      ]
+    },
+    {
+      "id": "gangdong-foreon",
+      "name": "올림픽파크포레온",
+      "gu": "강동구",
+      "dong": "둔촌동",
+      "area_target": 84,
+      "transactions": []
+    },
+    {
+      "id": "gangdong-godk",
+      "name": "고덕래미안힐스테이트",
+      "gu": "강동구",
+      "dong": "고덕동",
+      "area_target": 84,
+      "transactions": []
+    },
+    {
+      "id": "ddm-raemian",
+      "name": "래미안크레시티",
+      "gu": "동대문구",
+      "dong": "전농동",
+      "area_target": 59,
+      "transactions": [
+        {
+          "date": "2026-02",
+          "price": 160000,
+          "floor": 17,
+          "area": 59.99,
+          "deal_day": "24"
+        },
+        {
+          "date": "2026-01",
+          "price": 155000,
+          "floor": 6,
+          "area": 59.99,
+          "deal_day": "31"
+        },
+        {
+          "date": "2026-01",
+          "price": 158000,
+          "floor": 15,
+          "area": 59.99,
+          "deal_day": "17"
+        },
+        {
+          "date": "2026-01",
+          "price": 157000,
+          "floor": 6,
+          "area": 59.99,
+          "deal_day": "12"
+        },
+        {
+          "date": "2026-01",
+          "price": 156000,
+          "floor": 8,
+          "area": 59.99,
+          "deal_day": "10"
+        },
+        {
+          "date": "2026-01",
+          "price": 152500,
+          "floor": 3,
+          "area": 59.99,
+          "deal_day": "03"
+        },
+        {
+          "date": "2025-10",
+          "price": 147500,
+          "floor": 6,
+          "area": 59.99,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-10",
+          "price": 140300,
+          "floor": 14,
+          "area": 59.99,
+          "deal_day": "17"
+        },
+        {
+          "date": "2025-10",
+          "price": 150500,
+          "floor": 7,
+          "area": 59.99,
+          "deal_day": "12"
+        },
+        {
+          "date": "2025-09",
+          "price": 137000,
+          "floor": 5,
+          "area": 59.99,
+          "deal_day": "28"
+        },
+        {
+          "date": "2025-09",
+          "price": 137500,
+          "floor": 9,
+          "area": 59.99,
+          "deal_day": "27"
+        },
+        {
+          "date": "2025-09",
+          "price": 142200,
+          "floor": 16,
+          "area": 59.99,
+          "deal_day": "26"
+        },
+        {
+          "date": "2025-09",
+          "price": 132000,
+          "floor": 2,
+          "area": 59.99,
+          "deal_day": "24"
+        },
+        {
+          "date": "2025-09",
+          "price": 143500,
+          "floor": 6,
+          "area": 59.99,
+          "deal_day": "24"
+        },
+        {
+          "date": "2025-09",
+          "price": 135000,
+          "floor": 6,
+          "area": 59.99,
+          "deal_day": "12"
+        },
+        {
+          "date": "2025-09",
+          "price": 135500,
+          "floor": 7,
+          "area": 59.99,
+          "deal_day": "07"
+        },
+        {
+          "date": "2025-09",
+          "price": 124000,
+          "floor": 1,
+          "area": 59.99,
+          "deal_day": "07"
+        },
+        {
+          "date": "2025-09",
+          "price": 129000,
+          "floor": 4,
+          "area": 59.99,
+          "deal_day": "05"
+        },
+        {
+          "date": "2025-09",
+          "price": 131000,
+          "floor": 6,
+          "area": 59.99,
+          "deal_day": "01"
+        },
+        {
+          "date": "2025-08",
+          "price": 124000,
+          "floor": 1,
+          "area": 59.99,
+          "deal_day": "30"
+        },
+        {
+          "date": "2025-08",
+          "price": 130000,
+          "floor": 7,
+          "area": 59.99,
+          "deal_day": "27"
+        },
+        {
+          "date": "2025-08",
+          "price": 134700,
+          "floor": 8,
+          "area": 59.99,
+          "deal_day": "24"
+        },
+        {
+          "date": "2025-08",
+          "price": 129500,
+          "floor": 17,
+          "area": 59.99,
+          "deal_day": "22"
+        },
+        {
+          "date": "2025-08",
+          "price": 130500,
+          "floor": 10,
+          "area": 59.99,
+          "deal_day": "16"
+        },
+        {
+          "date": "2025-08",
+          "price": 108000,
+          "floor": 4,
+          "area": 59.99,
+          "deal_day": "09"
+        },
+        {
+          "date": "2025-07",
+          "price": 114000,
+          "floor": 1,
+          "area": 59.99,
+          "deal_day": "23"
+        },
+        {
+          "date": "2025-07",
+          "price": 130000,
+          "floor": 13,
+          "area": 59.99,
+          "deal_day": "14"
+        },
+        {
+          "date": "2025-06",
+          "price": 131250,
+          "floor": 4,
+          "area": 59.99,
+          "deal_day": "28"
+        },
+        {
+          "date": "2025-06",
+          "price": 127000,
+          "floor": 3,
+          "area": 59.99,
+          "deal_day": "27"
+        },
+        {
+          "date": "2025-06",
+          "price": 126800,
+          "floor": 8,
+          "area": 59.99,
+          "deal_day": "26"
+        },
+        {
+          "date": "2025-06",
+          "price": 130000,
+          "floor": 9,
+          "area": 59.99,
+          "deal_day": "25"
+        },
+        {
+          "date": "2025-06",
+          "price": 119500,
+          "floor": 2,
+          "area": 59.99,
+          "deal_day": "22"
+        },
+        {
+          "date": "2025-06",
+          "price": 125000,
+          "floor": 5,
+          "area": 59.99,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-06",
+          "price": 126000,
+          "floor": 3,
+          "area": 59.99,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-06",
+          "price": 125000,
+          "floor": 7,
+          "area": 59.99,
+          "deal_day": "17"
+        },
+        {
+          "date": "2025-06",
+          "price": 124800,
+          "floor": 5,
+          "area": 59.99,
+          "deal_day": "14"
+        },
+        {
+          "date": "2025-06",
+          "price": 126500,
+          "floor": 4,
+          "area": 59.99,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-06",
+          "price": 127000,
+          "floor": 5,
+          "area": 59.99,
+          "deal_day": "10"
+        },
+        {
+          "date": "2025-06",
+          "price": 124000,
+          "floor": 6,
+          "area": 59.99,
+          "deal_day": "05"
+        },
+        {
+          "date": "2025-05",
+          "price": 126000,
+          "floor": 10,
+          "area": 59.99,
+          "deal_day": "26"
+        },
+        {
+          "date": "2025-05",
+          "price": 120000,
+          "floor": 2,
+          "area": 59.99,
+          "deal_day": "22"
+        },
+        {
+          "date": "2025-05",
+          "price": 128000,
+          "floor": 9,
+          "area": 59.99,
+          "deal_day": "20"
+        },
+        {
+          "date": "2025-05",
+          "price": 120000,
+          "floor": 12,
+          "area": 59.99,
+          "deal_day": "10"
+        },
+        {
+          "date": "2025-05",
+          "price": 119500,
+          "floor": 2,
+          "area": 59.99,
+          "deal_day": "10"
+        },
+        {
+          "date": "2025-05",
+          "price": 127500,
+          "floor": 11,
+          "area": 59.99,
+          "deal_day": "07"
+        },
+        {
+          "date": "2025-04",
+          "price": 126000,
+          "floor": 5,
+          "area": 59.99,
+          "deal_day": "26"
+        },
+        {
+          "date": "2025-04",
+          "price": 123500,
+          "floor": 13,
+          "area": 59.99,
+          "deal_day": "25"
+        },
+        {
+          "date": "2025-04",
+          "price": 121500,
+          "floor": 15,
+          "area": 59.99,
+          "deal_day": "23"
+        },
+        {
+          "date": "2025-04",
+          "price": 123000,
+          "floor": 4,
+          "area": 59.99,
+          "deal_day": "19"
+        },
+        {
+          "date": "2025-04",
+          "price": 120500,
+          "floor": 8,
+          "area": 59.99,
+          "deal_day": "19"
+        },
+        {
+          "date": "2025-04",
+          "price": 126000,
+          "floor": 9,
+          "area": 59.99,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-04",
+          "price": 123000,
+          "floor": 6,
+          "area": 59.99,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-04",
+          "price": 124000,
+          "floor": 11,
+          "area": 59.99,
+          "deal_day": "10"
+        },
+        {
+          "date": "2025-04",
+          "price": 128000,
+          "floor": 10,
+          "area": 59.99,
+          "deal_day": "08"
+        }
+      ]
+    },
+    {
+      "id": "yangcheon-mokdong7",
+      "name": "목동신시가지7단지",
+      "gu": "양천구",
+      "dong": "목동",
+      "area_target": 84,
+      "transactions": []
+    },
+    {
+      "id": "gwanak-dream",
+      "name": "관악드림타운",
+      "gu": "관악구",
+      "dong": "봉천동",
+      "area_target": 84,
+      "transactions": []
+    },
+    {
+      "id": "geumcheon-lotte",
+      "name": "롯데캐슬골드파크",
+      "gu": "금천구",
+      "dong": "시흥동",
+      "area_target": 84,
+      "transactions": [
+        {
+          "date": "2026-02",
+          "price": 115000,
+          "floor": 5,
+          "area": 84.8114,
+          "deal_day": "11"
+        },
+        {
+          "date": "2026-02",
+          "price": 118500,
+          "floor": 10,
+          "area": 84.8114,
+          "deal_day": "07"
+        },
+        {
+          "date": "2026-02",
+          "price": 123500,
+          "floor": 33,
+          "area": 84.408,
+          "deal_day": "06"
+        },
+        {
+          "date": "2026-02",
+          "price": 110000,
+          "floor": 2,
+          "area": 84.4417,
+          "deal_day": "04"
+        },
+        {
+          "date": "2026-02",
+          "price": 124000,
+          "floor": 17,
+          "area": 84.408,
+          "deal_day": "04"
+        },
+        {
+          "date": "2026-02",
+          "price": 105000,
+          "floor": 28,
+          "area": 84.97,
+          "deal_day": "02"
+        },
+        {
+          "date": "2026-01",
+          "price": 124000,
+          "floor": 24,
+          "area": 84.8114,
+          "deal_day": "31"
+        },
+        {
+          "date": "2026-01",
+          "price": 124000,
+          "floor": 16,
+          "area": 84.408,
+          "deal_day": "27"
+        },
+        {
+          "date": "2026-01",
+          "price": 119000,
+          "floor": 24,
+          "area": 84.4855,
+          "deal_day": "24"
+        },
+        {
+          "date": "2026-01",
+          "price": 122000,
+          "floor": 15,
+          "area": 84.408,
+          "deal_day": "17"
+        },
+        {
+          "date": "2026-01",
+          "price": 117000,
+          "floor": 8,
+          "area": 84.8114,
+          "deal_day": "17"
+        },
+        {
+          "date": "2026-01",
+          "price": 113000,
+          "floor": 25,
+          "area": 84.4633,
+          "deal_day": "14"
+        },
+        {
+          "date": "2026-01",
+          "price": 113500,
+          "floor": 4,
+          "area": 84.4623,
+          "deal_day": "14"
+        },
+        {
+          "date": "2026-01",
+          "price": 119000,
+          "floor": 9,
+          "area": 84.8114,
+          "deal_day": "10"
+        },
+        {
+          "date": "2025-12",
+          "price": 113000,
+          "floor": 16,
+          "area": 84.3963,
+          "deal_day": "27"
+        },
+        {
+          "date": "2025-12",
+          "price": 111500,
+          "floor": 16,
+          "area": 84.3963,
+          "deal_day": "20"
+        },
+        {
+          "date": "2025-12",
+          "price": 114500,
+          "floor": 20,
+          "area": 84.3963,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-12",
+          "price": 120700,
+          "floor": 6,
+          "area": 84.4417,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-12",
+          "price": 117500,
+          "floor": 22,
+          "area": 84.8114,
+          "deal_day": "05"
+        },
+        {
+          "date": "2025-12",
+          "price": 115000,
+          "floor": 22,
+          "area": 84.4623,
+          "deal_day": "01"
+        },
+        {
+          "date": "2025-11",
+          "price": 115000,
+          "floor": 13,
+          "area": 84.8114,
+          "deal_day": "29"
+        },
+        {
+          "date": "2025-11",
+          "price": 110000,
+          "floor": 6,
+          "area": 84.408,
+          "deal_day": "24"
+        },
+        {
+          "date": "2025-11",
+          "price": 111200,
+          "floor": 10,
+          "area": 84.8114,
+          "deal_day": "21"
+        },
+        {
+          "date": "2025-11",
+          "price": 108000,
+          "floor": 20,
+          "area": 84.95,
+          "deal_day": "15"
+        },
+        {
+          "date": "2025-11",
+          "price": 113500,
+          "floor": 6,
+          "area": 84.408,
+          "deal_day": "10"
+        },
+        {
+          "date": "2025-11",
+          "price": 110000,
+          "floor": 26,
+          "area": 84.4214,
+          "deal_day": "04"
+        },
+        {
+          "date": "2025-10",
+          "price": 125000,
+          "floor": 31,
+          "area": 84.408,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-10",
+          "price": 117250,
+          "floor": 20,
+          "area": 84.3963,
+          "deal_day": "13"
+        },
+        {
+          "date": "2025-10",
+          "price": 112000,
+          "floor": 14,
+          "area": 84.4623,
+          "deal_day": "11"
+        },
+        {
+          "date": "2025-10",
+          "price": 117800,
+          "floor": 7,
+          "area": 84.408,
+          "deal_day": "09"
+        },
+        {
+          "date": "2025-09",
+          "price": 117500,
+          "floor": 19,
+          "area": 84.8114,
+          "deal_day": "23"
+        },
+        {
+          "date": "2025-09",
+          "price": 117500,
+          "floor": 21,
+          "area": 84.8114,
+          "deal_day": "09"
+        },
+        {
+          "date": "2025-09",
+          "price": 120000,
+          "floor": 35,
+          "area": 84.8114,
+          "deal_day": "03"
+        },
+        {
+          "date": "2025-08",
+          "price": 111500,
+          "floor": 23,
+          "area": 84.3963,
+          "deal_day": "28"
+        },
+        {
+          "date": "2025-08",
+          "price": 117000,
+          "floor": 22,
+          "area": 84.8114,
+          "deal_day": "20"
+        },
+        {
+          "date": "2025-08",
+          "price": 107000,
+          "floor": 9,
+          "area": 84.97,
+          "deal_day": "19"
+        },
+        {
+          "date": "2025-08",
+          "price": 112900,
+          "floor": 13,
+          "area": 84.8114,
+          "deal_day": "14"
+        },
+        {
+          "date": "2025-08",
+          "price": 107000,
+          "floor": 27,
+          "area": 84.95,
+          "deal_day": "09"
+        },
+        {
+          "date": "2025-08",
+          "price": 127500,
+          "floor": 36,
+          "area": 84.2236,
+          "deal_day": "01"
+        },
+        {
+          "date": "2025-07",
+          "price": 124000,
+          "floor": 26,
+          "area": 84.408,
+          "deal_day": "29"
+        },
+        {
+          "date": "2025-07",
+          "price": 120000,
+          "floor": 12,
+          "area": 84.4623,
+          "deal_day": "28"
+        },
+        {
+          "date": "2025-07",
+          "price": 112500,
+          "floor": 19,
+          "area": 84.8114,
+          "deal_day": "26"
+        },
+        {
+          "date": "2025-07",
+          "price": 118700,
+          "floor": 21,
+          "area": 84.8114,
+          "deal_day": "22"
+        },
+        {
+          "date": "2025-07",
+          "price": 121000,
+          "floor": 25,
+          "area": 84.408,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-06",
+          "price": 135000,
+          "floor": 35,
+          "area": 84.408,
+          "deal_day": "28"
+        },
+        {
+          "date": "2025-06",
+          "price": 116000,
+          "floor": 10,
+          "area": 84.408,
+          "deal_day": "26"
+        },
+        {
+          "date": "2025-06",
+          "price": 111400,
+          "floor": 30,
+          "area": 84.8114,
+          "deal_day": "11"
+        },
+        {
+          "date": "2025-06",
+          "price": 119500,
+          "floor": 13,
+          "area": 84.8114,
+          "deal_day": "04"
+        },
+        {
+          "date": "2025-06",
+          "price": 120900,
+          "floor": 15,
+          "area": 84.8114,
+          "deal_day": "03"
+        },
+        {
+          "date": "2025-05",
+          "price": 108500,
+          "floor": 34,
+          "area": 84.95,
+          "deal_day": "18"
+        },
+        {
+          "date": "2025-04",
+          "price": 115500,
+          "floor": 6,
+          "area": 84.408,
+          "deal_day": "26"
+        },
+        {
+          "date": "2025-04",
+          "price": 106000,
+          "floor": 6,
+          "area": 84.4214,
+          "deal_day": "14"
+        },
+        {
+          "date": "2025-04",
+          "price": 107000,
+          "floor": 2,
+          "area": 84.3963,
+          "deal_day": "12"
+        },
+        {
+          "date": "2025-04",
+          "price": 110000,
+          "floor": 8,
+          "area": 84.4633,
+          "deal_day": "10"
+        },
+        {
+          "date": "2025-04",
+          "price": 111500,
+          "floor": 16,
+          "area": 84.8114,
+          "deal_day": "03"
+        }
+      ]
+    }
+  ]
+}
