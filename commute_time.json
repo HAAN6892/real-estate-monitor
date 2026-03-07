@@ -2,7 +2,7 @@
   "destination": "강남역 미림타워",
   "address": "서울 강남구 역삼동 826",
   "survey_basis": "ODsay API 대중교통 길찾기 (자동)",
-  "updated": "2026-03-07 08:37",
+  "updated": "2026-03-07 16:33",
   "data": {
     "수원 장안구 정자동": {
       "subway": 72,
@@ -1275,9 +1275,9 @@
       "note": ""
     },
     "서울 서초구 방배동": {
-      "subway": null,
-      "transit": null,
-      "note": "좌표 매칭 실패"
+      "subway": 14,
+      "transit": 14,
+      "note": ""
     },
     "성남 중원구 상대원동": {
       "subway": 43,
@@ -1452,6 +1452,131 @@
     "서울 영등포구 당산동2가": {
       "subway": 34,
       "transit": 34,
+      "note": ""
+    },
+    "서울 중랑구 신내동": {
+      "subway": 17,
+      "transit": 17,
+      "note": ""
+    },
+    "서울 양천구 신월동": {
+      "subway": 59,
+      "transit": 56,
+      "note": ""
+    },
+    "서울 강북구 미아동": {
+      "subway": 49,
+      "transit": 49,
+      "note": ""
+    },
+    "서울 중랑구 상봉동": {
+      "subway": 37,
+      "transit": 36,
+      "note": ""
+    },
+    "서울 광진구 중곡동": {
+      "subway": 36,
+      "transit": 36,
+      "note": ""
+    },
+    "서울 양천구 신정동": {
+      "subway": 56,
+      "transit": 55,
+      "note": ""
+    },
+    "서울 강북구 번동": {
+      "subway": 59,
+      "transit": 57,
+      "note": ""
+    },
+    "서울 중랑구 묵동": {
+      "subway": 52,
+      "transit": 51,
+      "note": ""
+    },
+    "서울 중랑구 중화동": {
+      "subway": 46,
+      "transit": 46,
+      "note": ""
+    },
+    "서울 동대문구 회기동": {
+      "subway": 79,
+      "transit": 72,
+      "note": ""
+    },
+    "서울 양천구 목동": {
+      "subway": 29,
+      "transit": 29,
+      "note": ""
+    },
+    "서울 강북구 수유동": {
+      "subway": 54,
+      "transit": 54,
+      "note": ""
+    },
+    "서울 중랑구 망우동": {
+      "subway": 42,
+      "transit": 42,
+      "note": ""
+    },
+    "서울 동대문구 이문동": {
+      "subway": 38,
+      "transit": 38,
+      "note": ""
+    },
+    "서울 동대문구 장안동": {
+      "subway": 74,
+      "transit": 55,
+      "note": ""
+    },
+    "서울 동대문구 답십리동": {
+      "subway": 41,
+      "transit": 36,
+      "note": ""
+    },
+    "서울 송파구 석촌동": {
+      "subway": 25,
+      "transit": 25,
+      "note": ""
+    },
+    "서울 중랑구 면목동": {
+      "subway": null,
+      "transit": 46,
+      "note": ""
+    },
+    "서울 광진구 자양동": {
+      "subway": 26,
+      "transit": 26,
+      "note": ""
+    },
+    "서울 동대문구 전농동": {
+      "subway": 33,
+      "transit": 33,
+      "note": ""
+    },
+    "서울 동대문구 휘경동": {
+      "subway": 38,
+      "transit": 38,
+      "note": ""
+    },
+    "서울 동대문구 제기동": {
+      "subway": 44,
+      "transit": 44,
+      "note": ""
+    },
+    "서울 동대문구 용두동": {
+      "subway": 38,
+      "transit": 38,
+      "note": ""
+    },
+    "서울 광진구 광장동": {
+      "subway": 40,
+      "transit": 62,
+      "note": ""
+    },
+    "서울 광진구 구의동": {
+      "subway": 29,
+      "transit": 27,
       "note": ""
     }
   }
