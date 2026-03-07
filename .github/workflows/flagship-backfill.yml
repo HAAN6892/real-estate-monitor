@@ -1,0 +1,46 @@
+name: 대장아파트 가격 추이 백필
+
+on:
+  workflow_dispatch:
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 패키지 설치
+        run: pip install requests
+
+      - name: config.json 생성
+        env:
+          MY_API_KEY: ${{ secrets.API_KEY }}
+        run: |
+          python3 << 'EOF'
+          import json, os
+          config = {
+              "api_key": os.environ["MY_API_KEY"]
+          }
+          with open("config.json", "w", encoding="utf-8") as f:
+              json.dump(config, f, ensure_ascii=False, indent=2)
+          print("config.json 생성 완료")
+          EOF
+
+      - name: 백필 실행
+        run: python flagship_backfill.py
+
+      - name: 결과 커밋 및 푸시
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add flagship_history.json
+          git diff --cached --quiet || git commit -m "📊 flagship_history 백필 업데이트 $(date +'%Y-%m-%d %H:%M')"
+          git pull --rebase origin main || true
+          git push || true

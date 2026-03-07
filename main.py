@@ -25,6 +25,8 @@ COORD_CACHE_PATH = BASE_DIR / "coord_cache.json"
 APT_INFO_CACHE_PATH = BASE_DIR / "apt_info_cache.json"
 DATA_JSON_PATH = BASE_DIR / "data.json"
 DATA_RENT_JSON_PATH = BASE_DIR / "data-rent.json"
+FLAGSHIP_CONFIG_PATH = BASE_DIR / "flagship_config.json"
+FLAGSHIP_HISTORY_PATH = BASE_DIR / "flagship_history.json"
 
 # ─── 대시보드 URL ───
 DASHBOARD_URL = "https://haan6892.github.io/real-estate-monitor/"
@@ -205,6 +207,80 @@ def save_data_json(data, path):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
     print(f"  [data] {path.name} 저장 완료 ({len(data['properties'])}건)")
+
+
+def load_flagship_config():
+    if not FLAGSHIP_CONFIG_PATH.exists():
+        return None
+    with open(FLAGSHIP_CONFIG_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def load_flagship_history():
+    if FLAGSHIP_HISTORY_PATH.exists():
+        with open(FLAGSHIP_HISTORY_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return {"updated_at": "", "watchlist": []}
+
+
+def save_flagship_history(data):
+    with open(FLAGSHIP_HISTORY_PATH, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+
+
+def update_flagship_from_trades(raw_trades_by_code, flagship_config, flagship_history, kst_now):
+    """수집된 실거래 원본에서 워치리스트 단지 매칭 후 flagship_history 업데이트"""
+    watchlist = flagship_config["watchlist"]
+    history_map = {entry["id"]: entry for entry in flagship_history.get("watchlist", [])}
+
+    for item in watchlist:
+        if item["id"] not in history_map:
+            history_map[item["id"]] = {
+                "id": item["id"],
+                "name": item["name"],
+                "gu": item["gu"],
+                "dong": item["dong"],
+                "area_target": item["area_target"],
+                "transactions": [],
+            }
+
+        code = item["code"]
+        trades = raw_trades_by_code.get(code, [])
+        entry = history_map[item["id"]]
+        target_area = item["area_target"]
+
+        existing_keys = {
+            f"{t['date']}_{t['floor']}_{t['price']}"
+            for t in entry["transactions"]
+        }
+
+        for trade in trades:
+            apt_name = trade["아파트"]
+            if item["name"] not in apt_name and apt_name not in item["name"]:
+                continue
+            if abs(trade["면적"] - target_area) > 5:
+                continue
+
+            date_str = f"{trade['거래년도']}-{trade['거래월']:02d}"
+            key = f"{date_str}_{trade['층']}_{trade['거래금액']}"
+            if key in existing_keys:
+                continue
+
+            entry["transactions"].append({
+                "date": date_str,
+                "price": trade["거래금액"],
+                "floor": trade["층"],
+                "area": trade["면적"],
+                "deal_day": f"{trade['거래일']:02d}",
+            })
+            existing_keys.add(key)
+
+    for entry in history_map.values():
+        entry["transactions"].sort(key=lambda x: (x["date"], x["deal_day"]), reverse=True)
+
+    flagship_history["updated_at"] = kst_now.strftime("%Y-%m-%dT%H:%M:%S")
+    flagship_history["watchlist"] = list(history_map.values())
+    return flagship_history
 
 
 def fetch_region_apt_list(api_key, sigungu_code, apt_list_cache):
@@ -820,6 +896,7 @@ def main():
     coord_cache = load_coord_cache()
     apt_info_cache = load_apt_info_cache()
     apt_list_cache = {}
+    raw_trades_by_code = {}  # flagship 워치리스트 매칭용 원본 데이터
     min_households = filters.get("min_households", 200)
 
     # 기존 데이터 로드
@@ -872,6 +949,8 @@ def main():
         for month in months:
             print(f"  📅 매매 {month} 조회...")
             trades = fetch_trades(api_key, region_code, month)
+            # flagship 워치리스트 매칭을 위해 원본 저장
+            raw_trades_by_code.setdefault(region_code, []).extend(trades)
             print(f"  → {len(trades)}건 조회됨")
             filtered = filter_trades(trades, filters)
             print(f"  → {len(filtered)}건 필터 통과")
@@ -1001,6 +1080,19 @@ def main():
         "new_count": len(all_new_rent_items),
         "properties": all_rent_properties
     }, DATA_RENT_JSON_PATH)
+
+    # ─── flagship 워치리스트 업데이트 ───
+    flagship_config = load_flagship_config()
+    if flagship_config:
+        flagship_history = load_flagship_history()
+        flagship_history = update_flagship_from_trades(
+            raw_trades_by_code, flagship_config, flagship_history, now
+        )
+        save_flagship_history(flagship_history)
+        total_flagship_tx = sum(
+            len(e["transactions"]) for e in flagship_history["watchlist"]
+        )
+        print(f"  📈 워치리스트 flagship_history.json 업데이트 (총 {total_flagship_tx}건)")
 
     # 저장
     save_history(history)

@@ -1,0 +1,21 @@
+{
+  "watchlist": [
+    {"id": "nowon-forena", "name": "포레나노원", "gu": "노원구", "dong": "상계동", "code": "11350", "area_target": 84},
+    {"id": "nowon-lotte", "name": "노원롯데캐슬시그니처", "gu": "노원구", "dong": "상계동", "code": "11350", "area_target": 84},
+    {"id": "nowon-mujigae", "name": "중계무지개", "gu": "노원구", "dong": "중계동", "code": "11350", "area_target": 84},
+    {"id": "dobong-dongah", "name": "동아청솔", "gu": "도봉구", "dong": "창동", "code": "11320", "area_target": 84},
+    {"id": "dobong-raemian", "name": "삼성래미안", "gu": "도봉구", "dong": "창동", "code": "11320", "area_target": 84},
+    {"id": "gangbuk-sk", "name": "SK북한산시티", "gu": "강북구", "dong": "미아동", "code": "11305", "area_target": 84},
+    {"id": "gangbuk-ipark", "name": "꿈의숲아이파크", "gu": "강북구", "dong": "미아동", "code": "11305", "area_target": 59},
+    {"id": "jungrang-ipark", "name": "사가정센트럴아이파크", "gu": "중랑구", "dong": "면목동", "code": "11260", "area_target": 84},
+    {"id": "jungrang-hanshin", "name": "한신", "gu": "중랑구", "dong": "망우동", "code": "11260", "area_target": 84},
+    {"id": "gwangjin-hyundai", "name": "광장현대", "gu": "광진구", "dong": "광장동", "code": "11215", "area_target": 84},
+    {"id": "gwangjin-raemian", "name": "래미안프리미어", "gu": "광진구", "dong": "자양동", "code": "11215", "area_target": 84},
+    {"id": "gangdong-foreon", "name": "올림픽파크포레온", "gu": "강동구", "dong": "둔촌동", "code": "11740", "area_target": 84},
+    {"id": "gangdong-godk", "name": "고덕래미안힐스테이트", "gu": "강동구", "dong": "고덕동", "code": "11740", "area_target": 84},
+    {"id": "ddm-raemian", "name": "래미안크레시티", "gu": "동대문구", "dong": "전농동", "code": "11230", "area_target": 59},
+    {"id": "yangcheon-mokdong7", "name": "목동신시가지7단지", "gu": "양천구", "dong": "목동", "code": "11470", "area_target": 84},
+    {"id": "gwanak-dream", "name": "관악드림타운", "gu": "관악구", "dong": "봉천동", "code": "11620", "area_target": 84},
+    {"id": "geumcheon-lotte", "name": "롯데캐슬골드파크", "gu": "금천구", "dong": "시흥동", "code": "11545", "area_target": 84}
+  ]
+}
