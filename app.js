@@ -278,7 +278,38 @@ function renderRentCards(items,equity,budget){
   });
 }
 
+function saveSettings(){
+  const userSettings={
+    income1:+document.getElementById('income1').value,
+    income2:+document.getElementById('income2').value,
+    cash:+document.getElementById('cash').value,
+    interior:+(document.getElementById('interior')?.value||5000),
+    rate:+(document.getElementById('rate')?.value||4),
+    term:+(document.getElementById('term')?.value||30),
+    monthlyLimit:+(document.getElementById('monthlyLimit')?.value||200),
+    mgmt:+(document.getElementById('mgmt')?.value||35),
+    houseCount:+(document.getElementById('houseCount')?.value||1),
+  };
+  localStorage.setItem('userSettings',JSON.stringify(userSettings));
+}
+function resetSettings(){
+  localStorage.removeItem('userSettings');
+  fetch('settings.json').then(r=>r.json()).then(s=>{
+    ['income1','income2','cash','interior','rate','term','monthlyLimit','mgmt','ltv','dsr'].forEach(id=>{if(s[id]!==undefined){const sl=document.getElementById(id),ip=document.getElementById(id+'Val');if(sl)sl.value=s[id];if(ip)ip.value=s[id];}});
+    if(s.houseCount!==undefined)document.getElementById('houseCount').value=s.houseCount;
+    update();
+  }).catch(()=>{update();});
+}
 async function loadSettings(){
+  const saved=localStorage.getItem('userSettings');
+  if(saved){
+    try{
+      const s=JSON.parse(saved);
+      ['income1','income2','cash','interior','rate','term','monthlyLimit','mgmt','ltv','dsr'].forEach(id=>{if(s[id]!==undefined){const sl=document.getElementById(id),ip=document.getElementById(id+'Val');if(sl)sl.value=s[id];if(ip)ip.value=s[id];}});
+      if(s.houseCount!==undefined)document.getElementById('houseCount').value=s.houseCount;
+      return;
+    }catch(e){/* 파싱 실패 시 settings.json 폴백 */}
+  }
   try{const r=await fetch('settings.json');if(!r.ok)throw 0;const s=await r.json();
   ['income1','income2','cash','interior','rate','term','monthlyLimit','mgmt','ltv','dsr'].forEach(id=>{if(s[id]!==undefined){const sl=document.getElementById(id),ip=document.getElementById(id+'Val');if(sl)sl.value=s[id];if(ip)ip.value=s[id];}});
   if(s.houseCount!==undefined)document.getElementById('houseCount').value=s.houseCount;
@@ -381,6 +412,7 @@ function update(){
   const sl=document.getElementById('splitLayout');
   if(sl){if(currentMode==='rent'&&(!RENT_DATA_LOADED||RENT_PROPERTIES.length===0))sl.style.display='none';else sl.style.display='';}
   if(mapInitialized)updateMapMarkers();
+  saveSettings();
 }
 function updateStatus(){
   const s=document.getElementById('dataStatus');
