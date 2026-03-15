@@ -554,6 +554,9 @@ function updateRentTable(equity,budget){
 function updatePolicyTimeline(){
   const tl=document.getElementById('policyTimeline');
   const policies=[
+    {date:'2026.03',level:'high',title:'스트레스 DSR 3단계 효과 본격화',impact:'수도권 규제지역 스트레스 금리 3.0% 적용 중',detail:'→ 2026년 1분기 30대 신규 주담대 전분기比 약 11% 감소. 같은 소득에서 대출한도 약 2~3천만원 축소.',myImpactType:'negative',myImpactBuy:'DSR 40% 기준 대출한도가 실질적으로 줄어듦. 시뮬레이션에서 스트레스 DSR 반영 필요 (향후 개선 사항)',myImpactRent:'전세대출 한도에도 간접 영향. 스트레스 금리 적용 시 실질 한도 축소 가능'},
+    {date:'2026.02.26',level:'mid',title:'기준금리 2.50% 동결 (5회 연속)',impact:'한국은행 추가 인하 문구 삭제 → 동결 장기화 시사',detail:'→ 2024년 10월 이후 100bp 인하 후 2025년 5월부터 동결 유지.',myImpactType:'neutral',myImpactBuy:'대출금리 추가 인하 기대 어려움. 현재 시뮬레이션 금리(4%) 유지 적절. 하반기 인하 가능성은 남아있으나 불확실.',myImpactRent:'전세대출 금리 추가 하락 기대 어려움. 현 수준 유지 가능성 높음.'},
+    {date:'2026.01',level:'mid',title:'은행권 주담대 위험가중치 15%→20% 조기 시행',impact:'당초 2026년 4월 예정이었으나 1월로 앞당겨 시행',detail:'→ 은행의 자본비용 증가 → 대출 문턱 상승.',myImpactType:'negative',myImpactBuy:'은행별 주담대 한도 소폭 축소 가능. 직접적 LTV/DSR 변경은 아니지만 실질 대출 승인율에 영향.',myImpactRent:'전세대출에는 직접 영향 없음.'},
     {date:'2025.10.15',level:'high',title:'10.15 주택시장 안정화 대책',impact:'서울 전역 + 경기 12곳 규제지역 지정',detail:'→ 성남·안양 LTV 40~50%, 용인 수지·경기 광주는 비규제 유지 (70%)',myImpactType:'negative',myImpactBuy:'성남·안양 매수 시 LTV 40~50% → 자기자금 비중 증가. 비규제(용인 수지·광주) 매수가 유리',myImpactRent:'전세대출에는 직접 영향 없음. 다만 규제지역 전세가 안정화 가능성'},
     {date:'2025.07',level:'high',title:'신혼부부 버팀목 소득 기준 1억 완화안 무산',impact:'가계부채 관리 강화 기조로 시행 취소',detail:'→ 7,500만원 기준 유지, 부부합산 8,740만원 초과로 자격 불가',myImpactType:'negative',myImpactBuy:'해당 없음 (매수용 아닌 전세 정책)',myImpactRent:'합산 8,740만 > 7,500만 → 신혼부부 버팀목 전세대출 이용 불가 유지'},
     {date:'2025.06.27',level:'high',title:'6.27 가계부채 관리 강화',impact:'수도권 주담대 한도 6억 제한, 생애최초 LTV 80%→70%',detail:'→ 자기자금 비중 상승, 매수가능 가격대 하향 압박',myImpactType:'negative',myImpactBuy:'주담대 한도 6억 제한은 우리 가격대(~5억)에는 영향 적음. 생애최초 LTV 하락은 불리',myImpactRent:'전세대출에는 직접 영향 없음'},
