@@ -1077,6 +1077,7 @@ function renderFlagshipChart(entries){
     yMax=Math.ceil((hi+pad)/1000)*1000;
   }
 
+  const isMobile=window.innerWidth<768;
   flagshipChartInstance=new Chart(canvas,{
     type:'line',
     data:{labels:monthLabels,datasets},
@@ -1087,13 +1088,13 @@ function renderFlagshipChart(entries){
       plugins:{
         legend:{
           display:true,
-          position:'right',
-          align:'start',
+          position:isMobile?'top':'right',
+          align:isMobile?'center':'start',
           labels:{
             color:'#a0a0b8',
-            font:{size:11,family:"'Noto Sans KR',sans-serif"},
-            boxWidth:14,
-            padding:10,
+            font:{size:isMobile?10:11,family:"'Noto Sans KR',sans-serif"},
+            boxWidth:isMobile?10:14,
+            padding:isMobile?6:10,
             usePointStyle:true,
             pointStyle:'line',
           },
@@ -1119,13 +1120,13 @@ function renderFlagshipChart(entries){
         },
       },
       scales:{
-        x:{ticks:{color:'#7a7a95',font:{size:11}},grid:{color:'#232336'}},
+        x:{ticks:{color:'#7a7a95',font:{size:isMobile?9:11}},grid:{color:'#232336'}},
         y:{
           min:yMin,
           max:yMax,
           ticks:{
             color:'#7a7a95',
-            font:{size:11},
+            font:{size:isMobile?9:11},
             callback(v){
               if(v>=10000){const a=v/10000;return(a===Math.floor(a)?Math.floor(a):a.toFixed(1))+'억';}
               return v.toLocaleString();

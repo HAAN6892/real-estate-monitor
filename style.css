@@ -422,8 +422,16 @@ tr.highlight td{background:rgba(37,99,235,0.12)!important}
   .flagship-chart-wrap canvas{max-height:320px}
 }
 @media(max-width:768px){
-  .flagship-cards{grid-template-columns:1fr}
+  .flagship-cards{grid-template-columns:1fr;gap:8px}
   .flagship-gu-bar{flex-wrap:nowrap;overflow-x:auto;padding-bottom:8px}
-  .flagship-chart-wrap{height:320px;padding:12px 8px}
-  .flagship-chart-wrap canvas{max-height:280px}
+  .flagship-chart-wrap{height:260px;padding:10px 6px}
+  .flagship-chart-wrap canvas{max-height:220px}
+  .fc-price{font-size:16px}
+  .fc-name{font-size:11px}
+  .fc-meta{font-size:10px}
+  .fc-diff{font-size:10px}
+  .fc-area{font-size:9px}
+  .fc-link{font-size:10px;padding:2px 6px}
+  .fc-links{gap:4px}
+  .fg-chip{font-size:10px;padding:3px 7px}
 }
