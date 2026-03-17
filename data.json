@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-03-17 08:29",
-  "total_count": 1676,
-  "new_count": 48,
+  "updated_at": "2026-03-17 20:36",
+  "total_count": 1678,
+  "new_count": 2,
   "properties": [
     {
       "name": "동성7",
@@ -13944,6 +13944,26 @@
       "lon": 127.06495781882036
     },
     {
+      "name": "보라매갑을",
+      "region": "서울 관악구",
+      "dong": "신림동",
+      "area_m2": 74.7,
+      "area_py": 22.6,
+      "price": 70000,
+      "price_per_py": 3097,
+      "floor": 4,
+      "built_year": 2003,
+      "households": 0,
+      "station": "신림",
+      "line": "신림선",
+      "walk_min": 13,
+      "trade_date": "2026-02-21",
+      "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EB%A6%BC%EB%8F%99%20%EB%B3%B4%EB%9D%BC%EB%A7%A4%EA%B0%91%EC%9D%84",
+      "regulated": false,
+      "lat": 37.48912135913039,
+      "lon": 126.92192068694777
+    },
+    {
       "name": "우미린더헤리티지",
       "region": "인천 서구",
       "dong": "원당동",
@@ -15762,6 +15782,26 @@
       "regulated": false,
       "lat": 37.5939918047468,
       "lon": 127.091325889582
+    },
+    {
+      "name": "보라매갑을",
+      "region": "서울 관악구",
+      "dong": "신림동",
+      "area_m2": 74.7,
+      "area_py": 22.6,
+      "price": 49500,
+      "price_per_py": 2190,
+      "floor": 2,
+      "built_year": 2003,
+      "households": 0,
+      "station": "신림",
+      "line": "신림선",
+      "walk_min": 13,
+      "trade_date": "2026-02-20",
+      "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EB%A6%BC%EB%8F%99%20%EB%B3%B4%EB%9D%BC%EB%A7%A4%EA%B0%91%EC%9D%84",
+      "regulated": false,
+      "lat": 37.48912135913039,
+      "lon": 126.92192068694777
     },
     {
       "name": "힐스테이트태전2차에듀포레C10BL",
