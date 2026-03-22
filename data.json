@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-03-22 20:14",
-  "total_count": 1800,
-  "new_count": 0,
+  "updated_at": "2026-03-23 08:25",
+  "total_count": 1801,
+  "new_count": 1,
   "properties": [
     {
       "name": "한진해모로",
@@ -2202,6 +2202,26 @@
       "regulated": false,
       "lat": 37.58166382598228,
       "lon": 127.07419075861614
+    },
+    {
+      "name": "공릉우성아파트",
+      "region": "서울 노원구",
+      "dong": "공릉동",
+      "area_m2": 59.26,
+      "area_py": 17.9,
+      "price": 59000,
+      "price_per_py": 3296,
+      "floor": 4,
+      "built_year": 1995,
+      "households": 363,
+      "station": "양정",
+      "line": "경의중앙선",
+      "walk_min": 93,
+      "trade_date": "2026-03-09",
+      "link": "https://m.land.naver.com/search/result/%EA%B3%B5%EB%A6%89%EB%8F%99%20%EA%B3%B5%EB%A6%89%EC%9A%B0%EC%84%B1%EC%95%84%ED%8C%8C%ED%8A%B8",
+      "regulated": false,
+      "lat": 37.62857297513071,
+      "lon": 127.07272162045322
     },
     {
       "name": "은빛1단지",
