@@ -859,6 +859,60 @@ def build_rent_region_data(region_name, complex_groups, kakao_key, coord_cache, 
     return data_items
 
 
+def backfill_households(api_key, apt_info_cache, apt_list_cache, regions):
+    """households=0 인 항목의 세대수를 재조회해서 data.json / data-rent.json 업데이트"""
+    # region name → code 맵 구성
+    region_map = {r["name"]: r["code"] for r in regions}
+    # region별 sgg_name도 포함 (도봉구, 중랑구 등 짧은 이름으로 매칭)
+    for r in regions:
+        sgg = r.get("sgg_name", "")
+        if sgg and sgg not in region_map:
+            region_map[sgg] = r["code"]
+
+    updated_buy = updated_rent = 0
+
+    for path, label in [(DATA_JSON_PATH, "매매"), (DATA_RENT_JSON_PATH, "전세")]:
+        if not path.exists():
+            continue
+        data = load_data_json(path)
+        props = data.get("properties", [])
+        changed = False
+
+        for p in props:
+            if p.get("households", -1) != 0:
+                continue
+
+            # region_code 찾기
+            region_code = region_map.get(p.get("region", ""))
+            if not region_code:
+                continue
+
+            apt_name = p["name"]
+            cache_key = f"{region_code}_{apt_name}"
+
+            # 캐시에서 실패 기록 제거 → 재시도
+            if cache_key in apt_info_cache and apt_info_cache[cache_key].get("세대수", 0) == 0:
+                del apt_info_cache[cache_key]
+
+            result = get_apt_household_count(api_key, apt_name, region_code, apt_info_cache, apt_list_cache)
+            hh = result.get("세대수", 0)
+            if hh > 0:
+                p["households"] = hh
+                changed = True
+                if label == "매매":
+                    updated_buy += 1
+                else:
+                    updated_rent += 1
+
+        if changed:
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+            print(f"  ✅ [{label}] 세대수 보완 완료")
+
+    print(f"  📊 세대수 보완: 매매 {updated_buy}건 / 전세 {updated_rent}건 업데이트")
+    save_apt_info_cache(apt_info_cache)
+
+
 # ─── 텔레그램 전송 ───
 def send_telegram(bot_token, chat_id, message):
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
@@ -1080,6 +1134,13 @@ def main():
         "new_count": len(all_new_rent_items),
         "properties": all_rent_properties
     }, DATA_RENT_JSON_PATH)
+
+    # ─── 세대수 미확인(0) 항목 보완 수집 ───
+    zero_hh_buy = sum(1 for p in all_properties if p.get("households", -1) == 0)
+    zero_hh_rent = sum(1 for p in all_rent_properties if p.get("households", -1) == 0)
+    if zero_hh_buy + zero_hh_rent > 0:
+        print(f"\n🔍 세대수 미확인 항목 재조회 중 (매매 {zero_hh_buy}건 / 전세 {zero_hh_rent}건)...")
+        backfill_households(api_key, apt_info_cache, apt_list_cache, regions)
 
     # ─── flagship 워치리스트 업데이트 ───
     flagship_config = load_flagship_config()
