@@ -193,6 +193,7 @@ function highlightSelects(){
 function resetBuyFilters(){
   ['regionFilter','areaFilter','buyVerdictSelect','buyBuiltYearFilter','buyCommuteFilter','buyHouseholdFilter','buySortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
   const bb=document.getElementById('buyBmOnly');if(bb)bb.checked=false;
+  const bne=document.getElementById('buyExcludeNaholo');if(bne)bne.checked=true;
   districtFilterVal='';
   document.querySelectorAll('#districtChips .dc-chip').forEach((b,i)=>{b.classList.toggle('active',i===0);});
   document.getElementById('searchInput').value='';_focusedPropId=null;currentPage=1;update();
@@ -200,6 +201,7 @@ function resetBuyFilters(){
 function resetRentFilters(){
   ['rentRegionFilter','rentAreaFilter','rentVerdictSelect','rentTypeSelect','rentBuiltYearFilter','rentCommuteFilter','rentHouseholdFilter','rentSortSelect'].forEach(id=>{const el=document.getElementById(id);if(el)el.selectedIndex=0;});
   const ac=document.getElementById('rentShowAnomaly');if(ac)ac.checked=false;
+  const rne=document.getElementById('rentExcludeNaholo');if(rne)rne.checked=true;
   const rb=document.getElementById('rentBmOnly');if(rb)rb.checked=false;
   document.getElementById('rentSearchInput').value='';_focusedPropId=null;rentPage=1;update();
 }
@@ -240,7 +242,7 @@ function renderBuyCards(items,eq,mr){
     if(p.station_name)meta.push((p.line?p.line+' ':'')+'도보 '+(p.walk_min||'?')+'분');
     if(p.built_year)meta.push(p.built_year+'년');
     if(p.area_py)meta.push(p.area_py+'평'+(p.area?'('+p.area+')':''));
-    if(p.households>0)meta.push(p.households+'세대');else if(p.households===0)meta.push('<span style="color:var(--text-dim)">세대수 미확인</span>');
+    if(p.households>0)meta.push(p.households+'세대');else if(p.households===0&&isLikelyNaholo(p))meta.push('<span class="tag tag-danger" style="font-size:10px;padding:1px 4px">⚠️ 소단지 추정</span>');else if(p.households===0)meta.push('<span style="color:var(--text-dim)">세대수 미확인</span>');
     const mColor=p.pMonthly>mr?'var(--red)':p.pMonthly>mr*0.85?'var(--yellow)':'var(--green)';
     const details='대출 '+fmtShort(p.pLoan)+' · 자기 '+fmtShort(p.pEquityNeeded)+' · <span style="color:'+mColor+'">월 '+p.pMonthly+'만</span>';
     const tBtn=p.trade_count>1?'<button class="expand-btn" onclick="toggleHistory(this)">▶ 거래내역 '+p.trade_count+'건</button>':'';
@@ -261,7 +263,7 @@ function renderRentCards(items,equity,budget){
     if(p.station_name)meta.push((p.line?p.line+' ':'')+'도보 '+(p.walk_min||'?')+'분');
     if(p.built_year)meta.push(p.built_year+'년');
     if(p.area_py)meta.push(p.area_py+'평'+(p.area?'('+p.area+')':''));
-    if(p.households>0)meta.push(p.households+'세대');else if(p.households===0)meta.push('<span style="color:var(--text-dim)">세대수 미확인</span>');
+    if(p.households>0)meta.push(p.households+'세대');else if(p.households===0&&isLikelyNaholo(p))meta.push('<span class="tag tag-danger" style="font-size:10px;padding:1px 4px">⚠️ 소단지 추정</span>');else if(p.households===0)meta.push('<span style="color:var(--text-dim)">세대수 미확인</span>');
     const needEq=Math.max(0,p.deposit-budget+equity);const loanAmt=p.deposit-needEq;const rr=getVal('rentRate');const mi=Math.round(loanAmt*rr/100/12);
     const miColor=mi<=50?'var(--green)':mi<=80?'var(--yellow)':'var(--red)';
     const priceStr=p.rent_type==='월세'?'월세 '+fmtShort(p.deposit)+'/'+p.monthly_rent+'만':'전세 '+fmtShort(p.deposit);
@@ -442,11 +444,12 @@ function updateBuy(){
   let bn='LTV';if(fL===dsrL)bn='DSR';if(fL===mlL)bn='월상환';document.getElementById('loanBadge').textContent='병목: '+bn;
   updatePropTable(eq,fL,eLTV,rate,term,mr);
 }
+function isLikelyNaholo(item){if(item.households>0)return false;if(/\(\d+(-\d+)?\)/.test(item.name)&&!item.name.includes('단지'))return true;if(item.name.length<=3&&!item.name.includes('단지')&&!item.name.includes('주공'))return true;return false;}
 function commuteMatch(p,cv){if(!cv)return true;if(cv==='transit60')return p.commuteTransit!=null&&p.commuteTransit<=60;if(cv==='subway60')return p.commuteSubway!=null&&p.commuteSubway<=60;if(cv==='transit45')return p.commuteTransit!=null&&p.commuteTransit<=45;return true;}
 function updatePropTable(eq,fL,eLTV,rate,term,mr){
   const scrollEl=document.getElementById('splitList'),savedScroll=_preserveScroll&&scrollEl?scrollEl.scrollTop:0;
   const sq=document.getElementById('searchInput').value.toLowerCase(),rv=document.getElementById('regionFilter').value,av=(document.getElementById('areaFilter')||{}).value||'',vv=(document.getElementById('buyVerdictSelect')||{}).value||'',cv=(document.getElementById('buyCommuteFilter')||{}).value||'',byv=(document.getElementById('buyBuiltYearFilter')||{}).value||'',sv=(document.getElementById('buySortSelect')||{}).value||'value',hhv=parseInt((document.getElementById('buyHouseholdFilter')||{}).value||'0')||0;
-  let f=PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq))return false;if(rv&&p.region!==rv)return false;if(!areaMatch(p.area_py,av))return false;if(!builtYearMatch(p.built_year,byv))return false;if(!commuteMatch(p,cv))return false;if(hhv>0&&(p.households===0||p.households<hhv))return false;return true;});
+  let f=PROPERTIES.filter(p=>{if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq))return false;if(rv&&p.region!==rv)return false;if(!areaMatch(p.area_py,av))return false;if(!builtYearMatch(p.built_year,byv))return false;if(!commuteMatch(p,cv))return false;if(hhv>0&&(p.households===0||p.households<hhv))return false;if(document.getElementById('buyExcludeNaholo')?.checked!==false&&isLikelyNaholo(p))return false;return true;});
   const autoLtv=document.getElementById('autoLtvCheckbox')?.checked!==false;
   const wv=f.map(p=>{const reg=getRegulation(p.region);const pL=autoLtv?reg.ltv:(p.regulated?Math.min(eLTV,50):eLTV);const pLn=Math.min(Math.floor(p.price*pL/100),fL),pEq=p.price-pLn,pM=Math.floor(monthlyPayment(pLn,rate,term));let v,vt;if(pEq>eq){v='자금부족';vt='tag-danger';}else if(pM>mr){v='상환초과';vt='tag-danger';}else if(pM>mr*0.85){v='빠듯함';vt='tag-warn';}else{v='매수가능';vt='tag-ok';}return{...p,pLTV:pL,pLoan:pLn,pEquityNeeded:pEq,pMonthly:pM,verdict:v,verdictTag:vt,regZone:reg.zone};});
   let filtered=vv?wv.filter(p=>p.verdict===vv):wv;
@@ -467,7 +470,7 @@ function updatePropTable(eq,fL,eLTV,rate,term,mr){
   if(currentView==='card'){cardEl.style.display='';tableEl.style.display='none';renderBuyCards(pi,eq,mr);}
   else{cardEl.style.display='none';tableEl.style.display='';
   const tb=document.getElementById('propertyBody');tb.innerHTML='';
-  pi.forEach(p=>{const ex=[];if(p.built_year)ex.push(p.built_year+'년');if(p.households>0)ex.push(p.households+'세대');else if(p.households===0)ex.push('<span style="color:var(--text-dim)">세대수 미확인</span>');if(p.trade_count>1)ex.push(p.trade_count+'건');
+  pi.forEach(p=>{const ex=[];if(p.built_year)ex.push(p.built_year+'년');if(p.households>0)ex.push(p.households+'세대');else if(p.households===0&&isLikelyNaholo(p))ex.push('<span class="tag tag-danger" style="font-size:10px;padding:1px 4px">⚠️ 소단지 추정</span>');else if(p.households===0)ex.push('<span style="color:var(--text-dim)">세대수 미확인</span>');if(p.trade_count>1)ex.push(p.trade_count+'건');
     const tBtn=p.trade_count>1?'<button class="expand-btn" onclick="toggleHistory(this)">▶ 거래내역 '+p.trade_count+'건</button>':'';
     let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.price-p.trades[i+1].price;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'날짜없음')+'</span><span class="trade-price">'+fmtShort(t.price)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');const pd=p.max_price-p.min_price;hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span><span style="font-size:10px;color:var(--text-dim)">'+(pd>0?'변동폭: '+fmtShort(pd):'동일가')+'</span></div>'+rows+'</div>';}
     const stTxt=p.station_name?(p.station_name+(p.walk_min?' '+p.walk_min+'분':'')):'—';
@@ -511,7 +514,7 @@ function updateRentTable(equity,budget){
   const rav=(document.getElementById('rentAreaFilter')||{}).value||'',rvv=(document.getElementById('rentVerdictSelect')||{}).value||'',rtv=(document.getElementById('rentTypeSelect')||{}).value||'',rbyv=(document.getElementById('rentBuiltYearFilter')||{}).value||'',rcv=(document.getElementById('rentCommuteFilter')||{}).value||'',rsv=(document.getElementById('rentSortSelect')||{}).value||'value',rhhv=parseInt((document.getElementById('rentHouseholdFilter')||{}).value||'0')||0;
   const showAnomaly=document.getElementById('rentShowAnomaly')?.checked||false;
   let anomalyHidden=0;
-  let f=RENT_PROPERTIES.filter(p=>{if(!showAnomaly&&p.priceAnomaly){anomalyHidden++;return false;}if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq.toLowerCase()))return false;if(rf&&p.region!==rf)return false;if(rtv&&p.rent_type!==rtv)return false;if(!areaMatch(p.area_py,rav))return false;if(!builtYearMatch(p.built_year,rbyv))return false;if(!commuteMatch(p,rcv))return false;if(rhhv>0&&(p.households===0||p.households<rhhv))return false;return true;});
+  let f=RENT_PROPERTIES.filter(p=>{if(!showAnomaly&&p.priceAnomaly){anomalyHidden++;return false;}if(sq&&!(p.name+' '+p.region+' '+p.dong).toLowerCase().includes(sq.toLowerCase()))return false;if(rf&&p.region!==rf)return false;if(rtv&&p.rent_type!==rtv)return false;if(!areaMatch(p.area_py,rav))return false;if(!builtYearMatch(p.built_year,rbyv))return false;if(!commuteMatch(p,rcv))return false;if(rhhv>0&&(p.households===0||p.households<rhhv))return false;if(document.getElementById('rentExcludeNaholo')?.checked!==false&&isLikelyNaholo(p))return false;return true;});
   const wv=f.map(p=>{let v,vt;if(p.deposit>budget){v='예산초과';vt='tag-danger';}else if(p.deposit>budget*0.9){v='빠듯함';vt='tag-warn';}else{v='가능';vt='tag-ok';}return{...p,verdict:v,verdictTag:vt};});
   let filtered=rvv?wv.filter(p=>p.verdict===rvv):wv;
   if(mapBoundsFilter&&mapBounds)filtered=filtered.filter(p=>inBounds(p));
@@ -530,7 +533,7 @@ function updateRentTable(equity,budget){
   if(currentView==='card'){cardEl.style.display='';tableEl.style.display='none';renderRentCards(pi,equity,budget);}
   else{cardEl.style.display='none';tableEl.style.display='';
   const tb=document.getElementById('rentPropertyBody');if(!tb)return;tb.innerHTML='';
-  pi.forEach(p=>{const ex=[];if(p.built_year)ex.push(p.built_year+'년');if(p.households>0)ex.push(p.households+'세대');else if(p.households===0)ex.push('<span style="color:var(--text-dim)">세대수 미확인</span>');if(p.trade_count>1)ex.push(p.trade_count+'건');
+  pi.forEach(p=>{const ex=[];if(p.built_year)ex.push(p.built_year+'년');if(p.households>0)ex.push(p.households+'세대');else if(p.households===0&&isLikelyNaholo(p))ex.push('<span class="tag tag-danger" style="font-size:10px;padding:1px 4px">⚠️ 소단지 추정</span>');else if(p.households===0)ex.push('<span style="color:var(--text-dim)">세대수 미확인</span>');if(p.trade_count>1)ex.push(p.trade_count+'건');
     const typeTag=p.rent_type==='월세'?'<span class="tag tag-warn" style="font-size:10px">월세</span>':'<span class="tag tag-ok" style="font-size:10px">전세</span>';
     const tBtn=p.trade_count>1?'<button class="expand-btn" onclick="toggleHistory(this)">▶ 거래내역 '+p.trade_count+'건</button>':'';
     let hH='';if(p.trade_count>1){const rows=p.trades.map((t,i)=>{let d='';if(i<p.trades.length-1){const df=t.deposit-p.trades[i+1].deposit;d=df>0?'<span class="trade-delta up">+'+fmtShort(df)+'</span>':df<0?'<span class="trade-delta down">'+fmtShort(df)+'</span>':'<span class="trade-delta same">±0</span>';}return '<div class="trade-row"><span class="trade-date">'+(t.date||'날짜없음')+'</span><span class="trade-price">'+fmtShort(t.deposit)+'</span><span class="trade-floor">'+t.floor+'층</span>'+d+'</div>';}).join('');const pd=p.max_deposit-p.min_deposit;hH='<div class="trade-history"><div class="trade-history-title"><span>📊 거래 히스토리</span><span style="font-size:10px;color:var(--text-dim)">'+(pd>0?'변동폭: '+fmtShort(pd):'동일가')+'</span></div>'+rows+'</div>';}
@@ -780,7 +783,7 @@ function showMobileMapPopup(p){
   const priceVal=currentMode==='buy'?p.price:p.deposit;
   const meta=[];if(p.area_py)meta.push(p.area_py+'평');if(p.area)meta.push('('+p.area+')');
   const station=[];if(p.station_name)station.push(p.station_name);if(p.walk_min)station.push('도보 '+p.walk_min+'분');
-  const extra=[];if(p.built_year)extra.push(p.built_year+'년');if(p.households>0)extra.push(p.households+'세대');else if(p.households===0)extra.push('<span style="color:var(--text-dim)">세대수 미확인</span>');
+  const extra=[];if(p.built_year)extra.push(p.built_year+'년');if(p.households>0)extra.push(p.households+'세대');else if(p.households===0&&isLikelyNaholo(p))extra.push('<span class="tag tag-danger" style="font-size:10px;padding:1px 4px">⚠️ 소단지 추정</span>');else if(p.households===0)extra.push('<span style="color:var(--text-dim)">세대수 미확인</span>');
   let financeInfo='';
   if(currentMode==='buy'&&p.pLoan!==undefined){financeInfo='대출 '+fmtShort(p.pLoan)+' · 자기 '+fmtShort(p.pEquityNeeded)+' · 월 '+p.pMonthly+'만';}
   else if(currentMode!=='buy'){const eq=getVal('cash'),rr=getVal('rentRate'),rlr=getVal('rentLoanRatio'),rll=getVal('rentLoanLimit'),rf=rlr/100;const mbr=rf<1?eq/(1-rf):eq+rll;const aL=Math.min(Math.floor(mbr*rf),rll),budget=eq+aL;const needEq=Math.max(0,p.deposit-budget+eq);const loanAmt=p.deposit-needEq;const mi=Math.round(loanAmt*rr/100/12);financeInfo='대출 '+fmtShort(loanAmt)+' · 이자 '+mi+'만/월';}
