@@ -6,10 +6,15 @@
 """
 import json
 import os
+import sys
 import time
 import requests
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+
+# Windows CP949 터미널에서 한글/이모지 출력 허용
+if sys.stdout.encoding and sys.stdout.encoding.lower() not in ("utf-8", "utf8"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 from naver_parser import session, parse_price, format_price
 
@@ -131,7 +136,13 @@ def fetch_complex_articles(complex_no: str, complex_name: str) -> list[dict]:
             print(f"[{complex_name}] page={page} 3회 실패 → 단지 스킵")
             return all_articles  # 지금까지 수집한 것만 반환
 
-        data = resp.json()
+        try:
+            data = resp.json()
+        except Exception:
+            data = None
+        if not data:
+            print(f"[{complex_name}] page={page} 응답 파싱 실패 → 중단")
+            break
         result = data.get("result", {})
         articles = result.get("list", [])
         if not articles:
