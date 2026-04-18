@@ -578,8 +578,8 @@ function updatePolicy(){
   const i1=getVal('income1'),i2=getVal('income2'),ti=i1+i2,mi=Math.min(i1,i2),hc=parseInt(document.getElementById('houseCount').value);
   const assessedIncome=isMarried?ti:mi;const pg=document.getElementById('policyGrid');pg.innerHTML='';let ec=0;
   const loans=currentMode==='buy'?[
-    {name:'디딤돌 대출',icon:'🏠',incomeLimit:6000,desc:'부부합산 6,000만 이하',maxLoan:'최대 2억',rate:'2.85~4.15%',conditions:['무주택','주택 5억 이하','LTV 70%'],houseReq:0,note:'생애최초: 소득 7,000만·한도 2.4억·LTV 80%'},
-    {name:'보금자리론',icon:'🛡️',incomeLimit:7000,desc:'부부합산 7,000만 이하',maxLoan:'최대 3.6억',rate:'4.05~4.35%',conditions:['무주택/1주택 처분','주택 6억 이하','LTV 70%'],houseReq:1,note:'생애최초: 한도 4.2억·LTV 80%'},
+    {name:'디딤돌 대출',icon:'🏠',incomeLimit:6000,incomeLimitNewlywed:8500,desc:'부부합산 6,000만 이하 (신혼 8,500만)',maxLoan:'최대 2억',rate:'2.85~4.15%',conditions:['무주택','주택 5억 이하','LTV 70%'],houseReq:0,note:'생애최초: 소득 7,000만·한도 2.4억·LTV 80%'},
+    {name:'보금자리론',icon:'🛡️',incomeLimit:7000,incomeLimitNewlywed:8500,desc:'부부합산 7,000만 이하 (신혼 8,500만)',maxLoan:'최대 3.6억',rate:'4.05~4.35%',conditions:['무주택/1주택 처분','주택 6억 이하','LTV 70%'],houseReq:1,note:'생애최초: 한도 4.2억·LTV 80%'},
     {name:'신혼부부 구입',icon:'💍',incomeLimit:8500,desc:'부부합산 8,500만 이하',maxLoan:'최대 3.2억',rate:'1.85~3.65%',conditions:['혼인 7년 이내','무주택','6억 이하','LTV 80%'],houseReq:0,note:'혼인신고 필수'},
     {name:'신생아 특례',icon:'👶',incomeLimit:13000,incomeLimitDual:20000,desc:'1.3억 이하 (맞벌이 2억)',maxLoan:'최대 2.5억',rate:'1.80~4.50%',conditions:['2년 내 출산','무주택','9억 이하'],houseReq:0,special:'출산 시 활용 가능',note:'2025년 이후 출산, 한도 1.3억→2.5억 상향'}
   ]:[
@@ -591,9 +591,9 @@ function updatePolicy(){
     {name:'청년 월세',icon:'💳',incomeLimit:5000,singleOnly:true,desc:'단독 5,000만 이하',maxLoan:'보증금 4,500만',rate:'1.3%',conditions:['만 19~34세','무주택'],houseReq:0,note:'월세 지원 목적, 보증금 소액'}
   ];
   loans.forEach(loan=>{
-    const eil=loan.incomeLimitDual||loan.incomeLimit;let effectiveIncome;if(loan.singleOnly){effectiveIncome=isMarried?ti:mi;}else if(loan.marriedOnly){effectiveIncome=ti;}else{effectiveIncome=isMarried?ti:mi;}
+    let effectiveIncome;if(loan.singleOnly){effectiveIncome=isMarried?ti:mi;}else if(loan.marriedOnly){effectiveIncome=ti;}else{effectiveIncome=isMarried?ti:mi;}let eil;if(loan.incomeLimitDual){eil=loan.incomeLimitDual;}else if(isMarried&&loan.incomeLimitNewlywed){eil=loan.incomeLimitNewlywed;}else{eil=loan.incomeLimit;}const usingNewlywedRate=isMarried&&loan.incomeLimitNewlywed&&!loan.incomeLimitDual&&effectiveIncome>loan.incomeLimit;
     const gap=effectiveIncome-eil,iOk=gap<=0,hOk=hc<=(loan.houseReq||0),isSp=!!loan.special,needsMarriage=!!loan.marriedOnly;
-    let sc,st,cc;if(needsMarriage&&!isMarried){sc='no';st='❌ 혼인신고 필요';cc='ineligible';}else if(iOk&&hOk&&!isSp){sc='yes';st='✅ 자격 충족';cc='eligible';ec++;}else if(isSp){sc='check';st='⏳ '+loan.special;cc='checking';}else if(iOk&&!hOk){sc='maybe';st='⏳ 무주택 시 가능';cc='conditional';}else if(!iOk&&gap<=1000){sc='maybe';st='⚠️ 소득 근접';cc='conditional';}else{sc='no';st='❌ 소득 초과';cc='ineligible';}
+    let sc,st,cc;if(needsMarriage&&!isMarried){sc='no';st='❌ 혼인신고 필요';cc='ineligible';}else if(iOk&&hOk&&!isSp){sc='yes';st='✅ 자격 충족'+(usingNewlywedRate?' 💑 신혼 우대':'');cc='eligible';ec++;}else if(isSp){sc='check';st='⏳ '+loan.special;cc='checking';}else if(iOk&&!hOk){sc='maybe';st='⏳ 무주택 시 가능';cc='conditional';}else if(!iOk&&gap<=1000){sc='maybe';st='⚠️ 소득 근접';cc='conditional';}else{sc='no';st='❌ 소득 초과';cc='ineligible';}
     let gt,gc;if(gap>0){gt=gap.toLocaleString()+'만 초과';gc=gap<=1000?'close':'over';}else if(gap===0){gt='기준 딱 맞음';gc='close';}else{gt=Math.abs(gap).toLocaleString()+'만 여유';gc='under';}
     const nH=loan.note?'<div style="font-size:10px;color:var(--accent2);margin-top:4px">💡 '+loan.note+'</div>':'';
     let whatIfH='';if(isMarried&&!iOk&&!isSp){const altGap=mi-eil;if(altGap<=0)whatIfH='<div class="policy-what-if">💭 미혼 시 단독('+fmtShort(mi)+') → 자격 충족 가능했음 (참고용)</div>';}else if(!isMarried&&iOk&&loan.singleOnly){const altGap=ti-eil;if(altGap>0)whatIfH='<div class="policy-what-if">⚠️ 혼인신고 시 합산('+fmtShort(ti)+') → 소득 '+altGap.toLocaleString()+'만 초과로 탈락</div>';}
