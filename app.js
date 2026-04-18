@@ -1,3 +1,10 @@
+// 관심 지역(Watchlist) — 이 지역만 대시보드에 표시. data.json은 보존됨.
+const WATCHLIST_DISTRICTS=['노원구','도봉구','강북구','중랑구'];
+function isInWatchlist(item){
+  const sgg=item.sgg_name||item.region||'';
+  return WATCHLIST_DISTRICTS.some(d=>sgg.includes(d));
+}
+
 // ─── 지역별 규제등급 매핑 (2025.10.15 대책 기준) ───
 const REGULATION_MAP={
   // 서울 투기과열지구 (LTV 40%) — 서울 전역은 fallback 처리
@@ -379,10 +386,10 @@ async function loadData(){
   let coordCache={};
   try{const cr=await fetch('coord_cache.json');if(cr.ok)coordCache=await cr.json();}catch(e){}
   try{const cr=await fetch('commute_time.json');if(cr.ok)COMMUTE_DATA=await cr.json();}catch(e){}
-  try{const r=await fetch('data.json');if(!r.ok)throw 0;const d=await r.json();DATA_UPDATED_AT=d.updated_at||'';PROPERTIES=groupProperties(d.properties||[]);DATA_LOADED=true;
+  try{const r=await fetch('data.json');if(!r.ok)throw 0;const d=await r.json();DATA_UPDATED_AT=d.updated_at||'';PROPERTIES=groupProperties(d.properties||[]).filter(isInWatchlist);DATA_LOADED=true;
   const regions=[...new Set(PROPERTIES.map(p=>p.region))].sort();const sel=document.getElementById('regionFilter');regions.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;sel.appendChild(o);});
   }catch(e){PROPERTIES=[];DATA_LOADED=false;}
-  try{const r=await fetch('data-rent.json');if(!r.ok)throw 0;const d=await r.json();RENT_UPDATED_AT=d.updated_at||'';RENT_PROPERTIES=groupRentProperties(d.properties||[]);RENT_DATA_LOADED=RENT_PROPERTIES.length>0;
+  try{const r=await fetch('data-rent.json');if(!r.ok)throw 0;const d=await r.json();RENT_UPDATED_AT=d.updated_at||'';RENT_PROPERTIES=groupRentProperties(d.properties||[]).filter(isInWatchlist);RENT_DATA_LOADED=RENT_PROPERTIES.length>0;
   if(RENT_DATA_LOADED){flagRentAnomalies();calcJeonseRate();const rr=[...new Set(RENT_PROPERTIES.map(p=>p.region))].sort();const s1=document.getElementById('regionFilter'),s2=document.getElementById('rentRegionFilter');rr.forEach(r=>{if(![...s1.options].some(o=>o.value===r)){const o=document.createElement('option');o.value=r;o.textContent=r;s1.appendChild(o);}const o2=document.createElement('option');o2.value=r;o2.textContent=r;s2.appendChild(o2);});}
   }catch(e){RENT_PROPERTIES=[];RENT_DATA_LOADED=false;}
   // coord_cache 좌표 매핑 (캐시 키: "경기 수원시 장안구 동신2단지" 형태, 법정동 없음)
@@ -717,7 +724,7 @@ function initMapIfNeeded(){
   if(typeof kakao==='undefined'||!kakao.maps){document.getElementById('mapBadge').textContent='카카오맵 로딩 실패';return;}
   kakao.maps.load(()=>{
     const container=document.getElementById('mapContainer');
-    kakaoMap=new kakao.maps.Map(container,{center:new kakao.maps.LatLng(37.38,127.08),level:8});
+    kakaoMap=new kakao.maps.Map(container,{center:new kakao.maps.LatLng(37.6504,127.0770),level:4});
     kakao.maps.event.addListener(kakaoMap,'idle',onMapIdle);
     kakao.maps.event.addListener(kakaoMap,'click',()=>{hideFullscreenPopup();});
     mapInfoWindow=new kakao.maps.InfoWindow({zIndex:1});
