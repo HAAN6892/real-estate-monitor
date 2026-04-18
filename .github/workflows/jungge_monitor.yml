@@ -1,0 +1,39 @@
+name: 중계 호가 모니터
+
+on:
+  schedule:
+    - cron: '0 12 * * *'   # UTC 12:00 = KST 21:00 (오후 9시)
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # 스냅샷 커밋용
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 패키지 설치
+        run: pip install requests
+
+      - name: 중계 호가 스캔 실행
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python jungge_price_monitor.py
+
+      - name: 스냅샷 커밋
+        if: success()
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add jungge_snapshot.json
+          git diff --staged --quiet || git commit -m "chore: 중계 호가 스냅샷 업데이트 $(date +%Y-%m-%d)"
+          git push
