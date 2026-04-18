@@ -44,7 +44,7 @@ jobs:
                   "min_area": 49,
                   "max_area": 99,
                   "min_price": 0,
-                  "max_price": 70000,
+                  "max_price": 60000,  # 정책대출(디딤돌·보금자리론 신혼) 주택가격 상한 기준
                   "min_floor": 1,
                   "max_build_year": 9999,
                   "min_households": 200,
