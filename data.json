@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-04-19 20:26",
-  "total_count": 2639,
-  "new_count": 0,
+  "updated_at": "2026-04-20 08:34",
+  "total_count": 2640,
+  "new_count": 1,
   "properties": [
     {
       "name": "신성미소지움",
@@ -1302,6 +1302,26 @@
       "regulated": false,
       "lat": 37.46226424908729,
       "lon": 126.89038536461202
+    },
+    {
+      "name": "성원상떼빌",
+      "region": "서울 노원구",
+      "dong": "상계동",
+      "area_m2": 59.93,
+      "area_py": 18.1,
+      "price": 47000,
+      "price_per_py": 2597,
+      "floor": 19,
+      "built_year": 1999,
+      "households": 0,
+      "station": "양정",
+      "line": "경의중앙선",
+      "walk_min": 187,
+      "trade_date": "2026-04-10",
+      "link": "https://m.land.naver.com/search/result/%EC%83%81%EA%B3%84%EB%8F%99%20%EC%84%B1%EC%9B%90%EC%83%81%EB%96%BC%EB%B9%8C",
+      "regulated": false,
+      "lat": 37.66183096882426,
+      "lon": 127.01383589617905
     },
     {
       "name": "수명산롯데캐슬",
