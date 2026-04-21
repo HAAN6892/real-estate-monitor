@@ -12,3 +12,8 @@ theme-comparison.html
 snapshot_history.txt
 .claude/
 .DS_Store
+
+# 개인 스크린샷
+KakaoTalk_*.png
+*.jpeg
+/screenshots/
