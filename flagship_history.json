@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-04-30T21:07:31",
+  "updated_at": "2026-05-01T08:51:18",
   "watchlist": [
     {
       "id": "nowon-forena",
@@ -8,6 +8,13 @@
       "dong": "상계동",
       "area_target": 84,
       "transactions": [
+        {
+          "date": "2026-04",
+          "price": 122000,
+          "floor": 3,
+          "area": 84.9014,
+          "deal_day": "16"
+        },
         {
           "date": "2026-04",
           "price": 120000,
