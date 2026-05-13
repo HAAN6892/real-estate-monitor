@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-05-13T22:06:00",
+  "updated_at": "2026-05-14T08:55:54",
   "watchlist": [
     {
       "id": "nowon-forena",
@@ -1608,6 +1608,13 @@
           "price": 65300,
           "floor": 8,
           "area": 84.92,
+          "deal_day": "14"
+        },
+        {
+          "date": "2026-04",
+          "price": 90000,
+          "floor": 4,
+          "area": 84.87,
           "deal_day": "14"
         },
         {
