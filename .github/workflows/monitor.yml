@@ -2,8 +2,7 @@ name: 부동산 모니터링
 
 on:
   schedule:
-    - cron: '0 23 * * *'
-    - cron: '0 11 * * *'
+    - cron: '0 11 * * *'    # UTC 11:00 = KST 20:00
   workflow_dispatch:
 
 jobs:
@@ -44,7 +43,7 @@ jobs:
                   "min_area": 49,
                   "max_area": 99,
                   "min_price": 0,
-                  "max_price": 60000,  # 정책대출(디딤돌·보금자리론 신혼) 주택가격 상한 기준
+                  "max_price": 200000,  # 20억 (워치리스트 알림 위해 상향, 대시보드 필터에서 6억 컷 가능)
                   "min_floor": 1,
                   "max_build_year": 9999,
                   "min_households": 200,
@@ -60,7 +59,8 @@ jobs:
                   {"name": "서울 노원구", "code": "11350", "sgg_name": "서울 노원구"},
                   {"name": "서울 도봉구", "code": "11320", "sgg_name": "서울 도봉구"},
                   {"name": "서울 강북구", "code": "11305", "sgg_name": "서울 강북구"},
-                  {"name": "서울 중랑구", "code": "11260", "sgg_name": "서울 중랑구"}
+                  {"name": "서울 중랑구", "code": "11260", "sgg_name": "서울 중랑구"},
+                  {"name": "경기 구리시", "code": "41310", "sgg_name": "경기 구리시"}
               ],
               "schedule": {
                   "run_times": ["08:00", "20:00"]

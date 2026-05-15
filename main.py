@@ -16,6 +16,44 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+# ─── 단지별 공급면적 → 평형 매핑 ───
+# 정부 API는 전용면적만 주지만, 시장 통념은 공급면적 평형으로 부름.
+# 워치리스트 단지의 전용면적을 공급면적 평수로 변환.
+SUPPLY_AREA_MAP = {
+    "guri_daerim_hansoop": {
+        # 전용㎡: 공급평
+        51.66: 21,    # 21평형 (대략 71㎡ 공급)
+        62.25: 26,    # 26평형 (대략 85㎡ 공급)
+        84.245: 31,   # 31평형 (대략 105㎡ 공급)
+    },
+    # LG원앙, 덕현은 추후 거래 발생 시 매핑 추가
+}
+
+
+def get_display_pyeong(watchlist_id, area_m2):
+    """단지 ID + 전용면적으로 시장 통념 공급평형 반환. 매핑 없으면 None."""
+    if not watchlist_id or watchlist_id not in SUPPLY_AREA_MAP:
+        return None
+    table = SUPPLY_AREA_MAP[watchlist_id]
+    for m2, pyeong in table.items():
+        if abs(m2 - area_m2) <= 0.5:
+            return pyeong
+    return None
+
+
+def format_price(p):
+    """만원 단위 가격을 '6억 8,000만원' 형식으로. 만원 단위 0이어도 깔끔하게."""
+    if not p:
+        return "—"
+    eok = p // 10000
+    man = p % 10000
+    if eok > 0 and man > 0:
+        return f"{eok}억 {man:,}만원"
+    if eok > 0:
+        return f"{eok}억원"
+    return f"{man:,}만원"
+
+
 # ─── 경로 설정 ───
 BASE_DIR = Path(__file__).parent
 CONFIG_PATH = BASE_DIR / "config.json"
@@ -229,54 +267,66 @@ def save_flagship_history(data):
 
 
 def update_flagship_from_trades(raw_trades_by_code, flagship_config, flagship_history, kst_now):
-    """수집된 실거래 원본에서 워치리스트 단지 매칭 후 flagship_history 업데이트"""
+    """수집된 실거래 원본에서 워치리스트 단지 매칭 후 flagship_history 업데이트.
+    신규 config 스키마(area_targets_py 리스트, region_code, name_aliases) 호환."""
     watchlist = flagship_config["watchlist"]
     history_map = {entry["id"]: entry for entry in flagship_history.get("watchlist", [])}
 
     for item in watchlist:
+        targets_py = item.get("area_targets_py") or (
+            [item.get("area_target")] if item.get("area_target") else []
+        )
+        target_areas_m2 = [py * 3.3058 for py in targets_py if py]
+
         if item["id"] not in history_map:
             history_map[item["id"]] = {
                 "id": item["id"],
                 "name": item["name"],
                 "gu": item["gu"],
                 "dong": item["dong"],
-                "area_target": item["area_target"],
+                "area_targets_py": targets_py,
                 "transactions": [],
             }
 
-        code = item["code"]
+        code = item.get("region_code") or item.get("code")
         trades = raw_trades_by_code.get(code, [])
         entry = history_map[item["id"]]
-        target_area = item["area_target"]
 
         existing_keys = {
-            f"{t['date']}_{t['floor']}_{t['price']}"
+            f"{(t.get('trade_date') or t.get('date',''))}_{t['floor']}_{t['price']}"
             for t in entry["transactions"]
         }
 
+        aliases = item.get("name_aliases", []) + [item.get("name", "")]
         for trade in trades:
             apt_name = trade["아파트"]
-            if item["name"] not in apt_name and apt_name not in item["name"]:
+            if not any(a and (a in apt_name or apt_name in a) for a in aliases):
                 continue
-            if abs(trade["면적"] - target_area) > 5:
+            if target_areas_m2 and not any(abs(trade["면적"] - ta) <= 5 for ta in target_areas_m2):
                 continue
 
-            date_str = f"{trade['거래년도']}-{trade['거래월']:02d}"
-            key = f"{date_str}_{trade['층']}_{trade['거래금액']}"
+            month_str = f"{trade['거래년도']}-{trade['거래월']:02d}"
+            trade_date_str = f"{month_str}-{trade['거래일']:02d}"
+            key = f"{trade_date_str}_{trade['층']}_{trade['거래금액']}"
             if key in existing_keys:
                 continue
 
             entry["transactions"].append({
-                "date": date_str,
+                "trade_date": trade_date_str,
+                "date": month_str,
                 "price": trade["거래금액"],
                 "floor": trade["층"],
-                "area": trade["면적"],
+                "area_m2": trade["면적"],
+                "area_py": round(trade["면적"] / 3.3058, 1),
                 "deal_day": f"{trade['거래일']:02d}",
             })
             existing_keys.add(key)
 
     for entry in history_map.values():
-        entry["transactions"].sort(key=lambda x: (x["date"], x["deal_day"]), reverse=True)
+        entry["transactions"].sort(
+            key=lambda x: (x.get("trade_date") or x.get("date", ""), x.get("deal_day", "")),
+            reverse=True,
+        )
 
     flagship_history["updated_at"] = kst_now.strftime("%Y-%m-%dT%H:%M:%S")
     flagship_history["watchlist"] = list(history_map.values())
@@ -668,14 +718,7 @@ def find_nearest_station(lat, lon):
 
 
 # ─── 포맷팅 함수 ───
-def format_price(price_man):
-    if price_man >= 10000:
-        억 = price_man // 10000
-        나머지 = price_man % 10000
-        if 나머지 > 0:
-            return f"{억}억 {나머지:,}"
-        return f"{억}억"
-    return f"{price_man:,}만"
+# format_price는 상단에 v2 버전으로 정의됨 (모듈 상단)
 
 
 def to_pyeong(m2):
@@ -913,6 +956,112 @@ def backfill_households(api_key, apt_info_cache, apt_list_cache, regions):
     save_apt_info_cache(apt_info_cache)
 
 
+# ─── 워치리스트 매칭 / 알림 빌더 ───
+def match_watchlist(apt_name, dong, watchlist):
+    """거래의 단지명/동이 워치리스트와 매칭되면 해당 항목 반환, 아니면 None."""
+    if not apt_name:
+        return None
+    apt_norm = apt_name.strip()
+    for item in watchlist:
+        if item.get("dong") and dong and item["dong"] != dong:
+            continue
+        aliases = item.get("name_aliases", []) + [item.get("name", "")]
+        for alias in aliases:
+            if not alias:
+                continue
+            if alias in apt_norm or apt_norm in alias:
+                return item
+    return None
+
+
+def find_prev_same_area_trade(history_transactions, current_area_py, current_trade_date):
+    """flagship_history의 transactions에서 같은 평형(±0.5평)의 직전 거래 1건 반환."""
+    if not history_transactions:
+        return None
+    matched = [
+        t for t in history_transactions
+        if abs(t.get("area_py", 0) - current_area_py) <= 0.5
+        and (t.get("trade_date") or t.get("date", "")) < current_trade_date
+    ]
+    if not matched:
+        return None
+    matched.sort(key=lambda x: x.get("trade_date") or x.get("date", ""), reverse=True)
+    return matched[0]
+
+
+def build_watchlist_alert_message(trade, watchlist_item, prev_trade):
+    """단지 단위 상세 알림 메시지 빌더 (텔레그램 Markdown).
+    v2: 공급평형 우선 표기, 공급평 기준 평당가, format_price 통일."""
+    price = trade.get("price", 0)
+    area_py = trade.get("area_py", 0)
+    area_m2 = trade.get("area_m2", 0)
+    floor = trade.get("floor", "")
+    trade_date = trade.get("trade_date", "")
+    households = watchlist_item.get("households", 0)
+    built_year = watchlist_item.get("built_year", "")
+    gu = watchlist_item.get("gu", "")
+    dong = watchlist_item.get("dong", "")
+
+    display_py = get_display_pyeong(watchlist_item.get("id"), area_m2)
+    if display_py:
+        area_line = f"🏠 *{display_py}평형* (전용 {area_m2:.2f}㎡ / {area_py:.1f}평) · {floor}층"
+    else:
+        area_line = f"🏠 *{area_py:.1f}평* (전용 {area_m2:.2f}㎡) · {floor}층"
+
+    basis_py = display_py if display_py else area_py
+    price_per_py = int(price / basis_py) if basis_py else 0
+    pricepp_suffix = "공급 기준" if display_py else "전용 기준"
+
+    meta_bits = [f"{gu} {dong}"]
+    if households:
+        meta_bits.append(f"{households}세대")
+    if built_year:
+        meta_bits.append(f"{built_year}년식")
+
+    lines = [
+        f"🔔 *{watchlist_item['name']}* 신규 실거래",
+        "━━━━━━━━━━━━━━━",
+        "",
+        f"📍 {' · '.join(meta_bits)}",
+        area_line,
+        f"💰 *{format_price(price)}*",
+        f"📅 계약일: {trade_date}",
+        "",
+    ]
+
+    if prev_trade:
+        prev_price = prev_trade.get("price", 0)
+        prev_date = prev_trade.get("trade_date") or prev_trade.get("date", "")
+        diff = price - prev_price
+        diff_pct = (diff / prev_price * 100) if prev_price else 0
+        arrow = "▲" if diff > 0 else ("▼" if diff < 0 else "→")
+        sign = "+" if diff > 0 else ""
+        lines += [
+            "📊 *비교*",
+            f"- 동평형 직전 거래: {format_price(prev_price)} ({prev_date})",
+            f"- 변동: {arrow} {sign}{diff:,}만 ({sign}{diff_pct:.1f}%)",
+            f"- 평당가: {price_per_py:,}만원/평 ({pricepp_suffix})",
+            "",
+        ]
+    else:
+        lines += [
+            f"📊 평당가: {price_per_py:,}만원/평 ({pricepp_suffix})",
+            "",
+        ]
+
+    kb = watchlist_item.get("kb_url", "")
+    hg = watchlist_item.get("hogangnono_url", "")
+    links = []
+    if kb and kb != "TODO":
+        links.append(f"[KB시세]({kb})")
+    if hg and hg != "TODO":
+        links.append(f"[호갱노노]({hg})")
+    links.append("[국토부 실거래](https://rt.molit.go.kr)")
+    lines.append("🔗 " + " · ".join(links))
+
+    return "\n".join(lines)
+
+
 # ─── 텔레그램 전송 ───
 def send_telegram(bot_token, chat_id, message):
     url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
@@ -1044,43 +1193,9 @@ def main():
             rent_region_results[region_name] = {"trades": new_rents, "sgg_name": sgg_name, "region_code": region_code}
             print(f"  ✅ 전월세 새 거래 {len(new_rents)}건")
 
-    # ─── 텔레그램 알림 ───
-    if total_new_trade > 0 or total_new_rent > 0:
-        trade_lines = []
-        rent_lines = []
-
-        for rname, rdata in trade_region_results.items():
-            trade_lines.append(f"  • {rname}: {len(rdata['trades'])}건")
-        for rname, rdata in rent_region_results.items():
-            rent_lines.append(f"  • {rname}: {len(rdata['trades'])}건")
-
-        parts = [
-            f"🏠 *매물 업데이트*",
-            f"━━━━━━━━━━━━━━━",
-            f"⏰ {now.strftime('%Y-%m-%d %H:%M')}",
-        ]
-
-        if total_new_trade > 0:
-            parts.append(f"\n🔑 매매 신규 *{total_new_trade}건*")
-            parts.extend(trade_lines)
-
-        if total_new_rent > 0:
-            parts.append(f"\n🏘 전월세 신규 *{total_new_rent}건*")
-            parts.extend(rent_lines)
-
-        parts.append(f"\n📊 [대시보드에서 확인]({DASHBOARD_URL})")
-        message = "\n".join(parts)
-    else:
-        message = (
-            f"🏠 *매물 업데이트*\n"
-            f"━━━━━━━━━━━━━━━\n"
-            f"⏰ {now.strftime('%Y-%m-%d %H:%M')}\n"
-            f"신규 거래 없음\n\n"
-            f"📊 [대시보드 보기]({DASHBOARD_URL})"
-        )
-
-    send_telegram(bot_token, chat_id, message)
-    print(f"  📤 텔레그램 알림 전송 완료")
+    # REMOVED: 광역 요약 알림 (2026-05-15 단지 단위 알림으로 전환)
+    # 워치리스트 단지(push_enabled)에 매칭된 신규 거래만 상세 알림을 보낸다.
+    # 알림 발송 위치는 data.json 빌드 직후로 이동 (English-keyed all_new_trade_items 사용).
 
     # ─── data.json (매매) 업데이트 ───
     if trade_region_results:
@@ -1108,6 +1223,41 @@ def main():
         "new_count": len(all_new_trade_items),
         "properties": all_properties
     }, DATA_JSON_PATH)
+
+    # ─── 워치리스트 알림 (단지 단위 상세 알림) ───
+    flagship_config_for_alert = load_flagship_config()
+    pushed_count = 0
+    if flagship_config_for_alert:
+        if FLAGSHIP_HISTORY_PATH.exists():
+            with open(FLAGSHIP_HISTORY_PATH, "r", encoding="utf-8") as f:
+                try:
+                    flagship_history_prev = json.load(f)
+                except json.JSONDecodeError:
+                    flagship_history_prev = {"watchlist": []}
+        else:
+            flagship_history_prev = {"watchlist": []}
+
+        watchlist_items = flagship_config_for_alert.get("watchlist", [])
+        push_items = [w for w in watchlist_items if w.get("push_enabled")]
+        history_by_id = {w.get("id"): w for w in flagship_history_prev.get("watchlist", [])}
+
+        for trade_item in all_new_trade_items:
+            apt_name = trade_item.get("name", "")
+            dong = trade_item.get("dong", "")
+            matched = match_watchlist(apt_name, dong, push_items)
+            if not matched:
+                continue
+            hist = history_by_id.get(matched["id"], {})
+            prev = find_prev_same_area_trade(
+                hist.get("transactions", []),
+                trade_item.get("area_py", 0),
+                trade_item.get("trade_date", ""),
+            )
+            msg = build_watchlist_alert_message(trade_item, matched, prev)
+            if send_telegram(bot_token, chat_id, msg):
+                pushed_count += 1
+
+    print(f"  📤 워치리스트 알림 발송: {pushed_count}건")
 
     # ─── data-rent.json (전월세) 업데이트 ───
     if rent_region_results:
