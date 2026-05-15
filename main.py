@@ -16,6 +16,44 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+# ─── 단지별 공급면적 → 평형 매핑 ───
+# 정부 API는 전용면적만 주지만, 시장 통념은 공급면적 평형으로 부름.
+# 워치리스트 단지의 전용면적을 공급면적 평수로 변환.
+SUPPLY_AREA_MAP = {
+    "guri_daerim_hansoop": {
+        # 전용㎡: 공급평
+        51.66: 21,    # 21평형 (대략 71㎡ 공급)
+        62.25: 26,    # 26평형 (대략 85㎡ 공급)
+        84.245: 31,   # 31평형 (대략 105㎡ 공급)
+    },
+    # LG원앙, 덕현은 추후 거래 발생 시 매핑 추가
+}
+
+
+def get_display_pyeong(watchlist_id, area_m2):
+    """단지 ID + 전용면적으로 시장 통념 공급평형 반환. 매핑 없으면 None."""
+    if not watchlist_id or watchlist_id not in SUPPLY_AREA_MAP:
+        return None
+    table = SUPPLY_AREA_MAP[watchlist_id]
+    for m2, pyeong in table.items():
+        if abs(m2 - area_m2) <= 0.5:
+            return pyeong
+    return None
+
+
+def format_price(p):
+    """만원 단위 가격을 '6억 8,000만원' 형식으로. 만원 단위 0이어도 깔끔하게."""
+    if not p:
+        return "—"
+    eok = p // 10000
+    man = p % 10000
+    if eok > 0 and man > 0:
+        return f"{eok}억 {man:,}만원"
+    if eok > 0:
+        return f"{eok}억원"
+    return f"{man:,}만원"
+
+
 # ─── 경로 설정 ───
 BASE_DIR = Path(__file__).parent
 CONFIG_PATH = BASE_DIR / "config.json"
@@ -680,14 +718,7 @@ def find_nearest_station(lat, lon):
 
 
 # ─── 포맷팅 함수 ───
-def format_price(price_man):
-    if price_man >= 10000:
-        억 = price_man // 10000
-        나머지 = price_man % 10000
-        if 나머지 > 0:
-            return f"{억}억 {나머지:,}"
-        return f"{억}억"
-    return f"{price_man:,}만"
+# format_price는 상단에 v2 버전으로 정의됨 (모듈 상단)
 
 
 def to_pyeong(m2):
@@ -943,32 +974,6 @@ def match_watchlist(apt_name, dong, watchlist):
     return None
 
 
-def _format_price_man(price):
-    """68000 → '6억 8,000만원' / 70000 → '7억' / 8500 → '8,500만원'"""
-    if not price:
-        return "—"
-    eok = price // 10000
-    man = price % 10000
-    if eok > 0 and man > 0:
-        return f"{eok}억 {man:,}만원"
-    if eok > 0:
-        return f"{eok}억"
-    return f"{man:,}만원"
-
-
-def _format_price_short(price):
-    """직전 거래 비교용 약식: 7억 1,000만 / 7억 / 8,500만"""
-    if not price:
-        return "—"
-    eok = price // 10000
-    man = price % 10000
-    if eok > 0 and man > 0:
-        return f"{eok}억 {man:,}만"
-    if eok > 0:
-        return f"{eok}억"
-    return f"{man:,}만"
-
-
 def find_prev_same_area_trade(history_transactions, current_area_py, current_trade_date):
     """flagship_history의 transactions에서 같은 평형(±0.5평)의 직전 거래 1건 반환."""
     if not history_transactions:
@@ -985,7 +990,8 @@ def find_prev_same_area_trade(history_transactions, current_area_py, current_tra
 
 
 def build_watchlist_alert_message(trade, watchlist_item, prev_trade):
-    """단지 단위 상세 알림 메시지 빌더 (텔레그램 Markdown)."""
+    """단지 단위 상세 알림 메시지 빌더 (텔레그램 Markdown).
+    v2: 공급평형 우선 표기, 공급평 기준 평당가, format_price 통일."""
     price = trade.get("price", 0)
     area_py = trade.get("area_py", 0)
     area_m2 = trade.get("area_m2", 0)
@@ -996,7 +1002,15 @@ def build_watchlist_alert_message(trade, watchlist_item, prev_trade):
     gu = watchlist_item.get("gu", "")
     dong = watchlist_item.get("dong", "")
 
-    price_per_py = int(price / area_py) if area_py else 0
+    display_py = get_display_pyeong(watchlist_item.get("id"), area_m2)
+    if display_py:
+        area_line = f"🏠 *{display_py}평형* (전용 {area_m2:.2f}㎡ / {area_py:.1f}평) · {floor}층"
+    else:
+        area_line = f"🏠 *{area_py:.1f}평* (전용 {area_m2:.2f}㎡) · {floor}층"
+
+    basis_py = display_py if display_py else area_py
+    price_per_py = int(price / basis_py) if basis_py else 0
+    pricepp_suffix = "공급 기준" if display_py else "전용 기준"
 
     meta_bits = [f"{gu} {dong}"]
     if households:
@@ -1009,8 +1023,8 @@ def build_watchlist_alert_message(trade, watchlist_item, prev_trade):
         "━━━━━━━━━━━━━━━",
         "",
         f"📍 {' · '.join(meta_bits)}",
-        f"🏠 *{area_py:.0f}평* ({area_m2:.2f}㎡) · {floor}층",
-        f"💰 *{_format_price_man(price)}*",
+        area_line,
+        f"💰 *{format_price(price)}*",
         f"📅 계약일: {trade_date}",
         "",
     ]
@@ -1024,14 +1038,14 @@ def build_watchlist_alert_message(trade, watchlist_item, prev_trade):
         sign = "+" if diff > 0 else ""
         lines += [
             "📊 *비교*",
-            f"- 동평형 직전 거래: {_format_price_short(prev_price)} ({prev_date})",
+            f"- 동평형 직전 거래: {format_price(prev_price)} ({prev_date})",
             f"- 변동: {arrow} {sign}{diff:,}만 ({sign}{diff_pct:.1f}%)",
-            f"- 평당가: {price_per_py:,}만원",
+            f"- 평당가: {price_per_py:,}만원/평 ({pricepp_suffix})",
             "",
         ]
     else:
         lines += [
-            f"📊 평당가: {price_per_py:,}만원",
+            f"📊 평당가: {price_per_py:,}만원/평 ({pricepp_suffix})",
             "",
         ]
 
