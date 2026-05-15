@@ -17,3 +17,6 @@ snapshot_history.txt
 KakaoTalk_*.png
 *.jpeg
 /screenshots/
+
+# 백업 파일
+flagship_history.backup-*.json
