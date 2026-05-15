@@ -2,8 +2,7 @@ name: 부동산 모니터링
 
 on:
   schedule:
-    - cron: '0 23 * * *'
-    - cron: '0 11 * * *'
+    - cron: '0 11 * * *'    # UTC 11:00 = KST 20:00
   workflow_dispatch:
 
 jobs:
@@ -60,7 +59,8 @@ jobs:
                   {"name": "서울 노원구", "code": "11350", "sgg_name": "서울 노원구"},
                   {"name": "서울 도봉구", "code": "11320", "sgg_name": "서울 도봉구"},
                   {"name": "서울 강북구", "code": "11305", "sgg_name": "서울 강북구"},
-                  {"name": "서울 중랑구", "code": "11260", "sgg_name": "서울 중랑구"}
+                  {"name": "서울 중랑구", "code": "11260", "sgg_name": "서울 중랑구"},
+                  {"name": "경기 구리시", "code": "41310", "sgg_name": "경기 구리시"}
               ],
               "schedule": {
                   "run_times": ["08:00", "20:00"]
