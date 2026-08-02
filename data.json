@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-08-01 20:54",
-  "total_count": 3001,
-  "new_count": 26,
+  "updated_at": "2026-08-02 20:52",
+  "total_count": 2998,
+  "new_count": 0,
   "properties": [
     {
       "name": "삼익세라믹",
@@ -59962,66 +59962,6 @@
       "regulated": false,
       "lat": 37.6233616314967,
       "lon": 127.084916391452
-    },
-    {
-      "name": "갈매더샵나인힐스",
-      "region": "경기 구리시",
-      "dong": "갈매동",
-      "area_m2": 84.7845,
-      "area_py": 25.6,
-      "price": 72500,
-      "price_per_py": 2832,
-      "floor": 10,
-      "built_year": 2016,
-      "households": 857,
-      "station": "구리",
-      "line": "경의중앙선",
-      "walk_min": 57,
-      "trade_date": "2026-05-03",
-      "link": "https://m.land.naver.com/search/result/%EA%B0%88%EB%A7%A4%EB%8F%99%20%EA%B0%88%EB%A7%A4%EB%8D%94%EC%83%B5%EB%82%98%EC%9D%B8%ED%9E%90%EC%8A%A4",
-      "regulated": false,
-      "lat": 37.62440974659213,
-      "lon": 127.11163981339661
-    },
-    {
-      "name": "번동솔그린",
-      "region": "서울 강북구",
-      "dong": "번동",
-      "area_m2": 84.6,
-      "area_py": 25.6,
-      "price": 59000,
-      "price_per_py": 2305,
-      "floor": 11,
-      "built_year": 1999,
-      "households": 380,
-      "station": "양정",
-      "line": "경의중앙선",
-      "walk_min": 125,
-      "trade_date": "2026-05-03",
-      "link": "https://m.land.naver.com/search/result/%EB%B2%88%EB%8F%99%20%EB%B2%88%EB%8F%99%EC%86%94%EA%B7%B8%EB%A6%B0",
-      "regulated": false,
-      "lat": 37.62617867861673,
-      "lon": 127.03936724322294
-    },
-    {
-      "name": "창동2차현대",
-      "region": "서울 도봉구",
-      "dong": "창동",
-      "area_m2": 59.499,
-      "area_py": 18.0,
-      "price": 63000,
-      "price_per_py": 3500,
-      "floor": 1,
-      "built_year": 2001,
-      "households": 0,
-      "station": "양정",
-      "line": "경의중앙선",
-      "walk_min": 149,
-      "trade_date": "2026-05-03",
-      "link": "https://m.land.naver.com/search/result/%EC%B0%BD%EB%8F%99%20%EC%B0%BD%EB%8F%992%EC%B0%A8%ED%98%84%EB%8C%80",
-      "regulated": false,
-      "lat": 37.64438663234004,
-      "lon": 127.0337443021695
     }
   ]
 }
