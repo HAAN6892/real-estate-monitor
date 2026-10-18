@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-10-17 22:58",
-  "total_count": 1879,
-  "new_count": 35,
+  "updated_at": "2026-10-18 23:11",
+  "total_count": 1877,
+  "new_count": 0,
   "properties": [
     {
       "name": "한진해모로",
@@ -37542,46 +37542,6 @@
       "regulated": false,
       "lat": 37.626006335862655,
       "lon": 127.08062381401028
-    },
-    {
-      "name": "벽산",
-      "region": "서울 중랑구",
-      "dong": "신내동",
-      "area_m2": 59.783,
-      "area_py": 18.1,
-      "price": 55000,
-      "price_per_py": 3039,
-      "floor": 8,
-      "built_year": 2000,
-      "households": 284,
-      "station": "양정",
-      "line": "경의중앙선",
-      "walk_min": 37,
-      "trade_date": "2026-07-19",
-      "link": "https://m.land.naver.com/search/result/%EC%8B%A0%EB%82%B4%EB%8F%99%20%EB%B2%BD%EC%82%B0",
-      "regulated": false,
-      "lat": 37.60314602448667,
-      "lon": 127.10002754172623
-    },
-    {
-      "name": "건영1",
-      "region": "서울 중랑구",
-      "dong": "상봉동",
-      "area_m2": 84.96,
-      "area_py": 25.7,
-      "price": 76500,
-      "price_per_py": 2977,
-      "floor": 11,
-      "built_year": 1997,
-      "households": 408,
-      "station": "양정",
-      "line": "경의중앙선",
-      "walk_min": 142,
-      "trade_date": "2026-07-19",
-      "link": "https://m.land.naver.com/search/result/%EC%83%81%EB%B4%89%EB%8F%99%20%EA%B1%B4%EC%98%811",
-      "regulated": false,
-      "lat": 37.60077027001555,
-      "lon": 127.01361734777973
     }
   ]
 }
