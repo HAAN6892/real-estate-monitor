@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-19T04:10:02",
+  "updated_at": "2026-11-20T04:13:58",
   "watchlist": [
     {
       "id": "guri_daerim_hansoop",
@@ -74,6 +74,15 @@
           "date": "2026-11",
           "price": 96500,
           "floor": 15,
+          "area_m2": 70.2,
+          "area_py": 21.2,
+          "deal_day": "10"
+        },
+        {
+          "trade_date": "2026-11-10",
+          "date": "2026-11",
+          "price": 57000,
+          "floor": 17,
           "area_m2": 70.2,
           "area_py": 21.2,
           "deal_day": "10"
